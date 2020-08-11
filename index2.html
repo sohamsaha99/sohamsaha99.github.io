@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/moon.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>Slide 1</section>
+        <section>Slide 2</section>
+      </div>
+    </div>
+<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		
+    <script src="dist/reveal.js"></script>
+    <script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				controls: true,
+
+	// Display a presentation progress bar
+	progress: true,
+
+	// Push each slide change to the browser history
+	history: false,
+
+	// Enable keyboard shortcuts for navigation
+	keyboard: true,
+
+	// Loop the presentation
+	loop: false,
+
+	// Number of milliseconds between automatically proceeding to the 
+	// next slide, disabled when set to 0
+	autoSlide: 0,
+
+	// Enable slide navigation via mouse wheel
+	mouseWheel: true,
+
+	// Apply a 3D roll to links on hover
+	rollingLinks: true,
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+  </body>
+</html>
