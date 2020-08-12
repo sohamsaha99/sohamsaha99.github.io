@@ -24,13 +24,58 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section id="introduction">
-					<img src="media/movie.gif">
+				<section id="title">
+					<img src="media/movieblack.gif">
 					<h3 style="color: #f82249;">Discontinuous Regression Surface Fitting</h3>
 					<p>Group Project</p>
 					<p><strong>Statistics Comprehensive</strong></p>
 				</section>
-				<section id="brief">Slide 2</section>
+				<section>
+					<section id="introduction" style="text-align: left;">
+						<h3>Introduction</h3>
+						<ul>
+							<li class="fragment fade-up">
+								What are we going to do?
+							</li>
+							<li style="list-style-type: none;" class="fragment fade-in">
+								Informal problem statement goes here.
+							</li>
+							<li class="fragment fade-up">
+								Why are we interested?
+							</li>
+							<li style="list-style-type: none;" class="fragment fade-in">
+								Not just another new type of regression. It has got many practical applications. For example: (contd.)
+							</li>
+						</ul>
+					</section>
+					<section id="introduction1">
+						<ul>
+							<li>
+								Image Denoising:
+								<br>
+								<div style="text-align: center;">
+									<div style="display: inline; vertical-align: middle;">
+										<img src="media/noise.jpeg" width="20%">
+									</div>
+									<div style="display: inline;">
+										$\Longrightarrow$
+									</div>
+									<div style="display: inline; vertical-align: middle;">
+										<img src="media/original.jpeg" width="20%">
+									</div>
+								</div>
+							</li>
+							<li class="fragment" data-fragment-index="1">
+								<span class="fragment" data-fragment-index="1">Working with Elevation data </span><span class="fragment" data-fragment-index="2"> or Temparature Data:</span>
+								<br>
+								<div style="text-align: center;">
+									<img src="media/elevation.png" style="height: 30vh; border-right: 3px solid white; padding-right: 15px" class="fragment" data-fragment-index="1">
+									<img src="media/temparature.jpg" style="height: 30vh; padding-left: 10px" class="fragment" data-fragment-index="2">
+								</div>
+							</li>
+						</ul>
+					</section>
+				</section>
 				<section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"><h3 data-id="heading">V Slide 1</h1><p data-id="equation">$$y=x^2$$</p></section>
 					<section data-auto-animate data-auto-animaye-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"><h3 data-id="heading">V Slide 2</h1><p>$$(a+b)^2=a^2+2ab+b^2$$</p><p data-id="equation">$$y=x^3$$</p></section>
@@ -41,6 +86,7 @@
 		<script src="dist/reveal.js"></script>
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
 		<script src="plugin/math/math.js"></script>
 		<script src="plugin/chalkboard/plugin.js"></script>
@@ -56,7 +102,7 @@
 				// mathjax: 'node_modules/mathjax/es5/tex-chtml-full.js' //offline-local
 				// },
 				// dependencies: [{ src: 'plugin/math/math.js', async: true }],
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard]
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom]
 			});
 			// Reveal.addEventListener("blackTheme", function(){setTimeout(function(){document.getElementById('theme').setAttribute('href','dist/theme/black.css'); return false;}, 1000);});
 			// Reveal.addEventListener("moonTheme", function(){setTimeout(function(){document.getElementById('theme').setAttribute('href','dist/theme/moon.css'); return false;}, 1000);});
