@@ -25,20 +25,23 @@
 		<div class="reveal">
 			<div class="slides">
 				<section id="title">
-					<img src="media/movieblack.gif">
+					<img data-src="media/movieblack.gif">
 					<h3 style="color: #f82249;">Discontinuous Regression Surface Fitting</h3>
 					<p>Group Project</p>
 					<p><strong>Statistics Comprehensive</strong></p>
 				</section>
-				<section>
-					<section id="introduction" style="text-align: left;">
+				<section id="introduction"  style="text-align: left; font-size: 40px;">
+					<section>
 						<h3>Introduction</h3>
 						<ul>
 							<li class="fragment fade-up">
 								What are we going to do?
 							</li>
 							<li style="list-style-type: none;" class="fragment fade-in">
-								Informal problem statement goes here.
+								We have a collection of points in $\mathbb{R}^2$ arranged in a grid inside $[0,1)\times[0,1)$, and also the associated $z$ values for each point. We want to perform <q>smoothing</q> for the given data, and predict $z$ value for some point $(x_0,y_0)\in[0,1)\times[0,1)$.<br>Note that, the underlying function 'may have jumps at some locations, but mostly smooth'.
+								<!-- So we can think of the following:<br>
+								$$z_{ij}=f(x_i, y_j)+\epsilon_{ij}; i,j=1,\ldots,n;$$where $x_i=y_i=\frac{i-1}{n}, i=1,\ldots,n$ & $\epsilon_{ij}$ random error<br>
+								Given $(x_0,y_0) \in [0,1)\times[0,1)$, we want to predict $f(x_0, y_0)$ -->
 							</li>
 							<li class="fragment fade-up">
 								Why are we interested?
@@ -48,20 +51,20 @@
 							</li>
 						</ul>
 					</section>
-					<section id="introduction1">
+					<section>
 						<ul>
 							<li>
 								Image Denoising:
 								<br>
 								<div style="text-align: center;">
 									<div style="display: inline; vertical-align: middle;">
-										<img src="media/noise.jpeg" width="20%">
+										<img data-src="media/noise.jpeg" width="20%">
 									</div>
 									<div style="display: inline;">
 										$\Longrightarrow$
 									</div>
 									<div style="display: inline; vertical-align: middle;">
-										<img src="media/original.jpeg" width="20%">
+										<img data-src="media/original.jpeg" width="20%">
 									</div>
 								</div>
 							</li>
@@ -69,11 +72,70 @@
 								<span class="fragment" data-fragment-index="1">Working with Elevation data </span><span class="fragment" data-fragment-index="2"> or Temparature Data:</span>
 								<br>
 								<div style="text-align: center;">
-									<img src="media/elevation.png" style="height: 30vh; border-right: 3px solid white; padding-right: 15px" class="fragment" data-fragment-index="1">
-									<img src="media/temparature.jpg" style="height: 30vh; padding-left: 10px" class="fragment" data-fragment-index="2">
+									<img data-src="media/elevation.png" style="height: 30vh; border-right: 3px solid white; padding-right: 15px" class="fragment" data-fragment-index="1">
+									<img data-src="media/temparature.jpg" style="height: 30vh; padding-left: 10px" class="fragment" data-fragment-index="2">
 								</div>
 							</li>
 						</ul>
+					</section>
+					<section>
+						<h3>
+							We are going to discuss:
+						</h3>
+						<ol>
+							<li>Defining the problem</li>
+							<li>Describing the conventional method</li>
+							<li>Description of the proposed method considering jumps</li>
+							<li>Results from Simulation Study</li>
+							<li>Concluding Remarks</li>
+						</ol>
+					</section>
+				</section>
+				<section style="text-align: left;">
+					<section>
+						<h3>
+							Problem Statement
+						</h3>
+						$$f:[0,1)\times[0,1)\rightarrow\mathbb{R}^2$$
+						We are given data-points in an $n\times n$ grid: $\{(x_i,y_j)|i,j=1,\ldots,n\}$, where $x_i=y_i=\frac{i-1}{n}$
+						$$z_{ij}=f(x_i,y_j)+\epsilon_{ij}; \epsilon_{ij}\text{ i.i.d. error}$$
+						Given $(x_0,y_0)\in[0,1)\times[0,1)$, want to predict $f(x_0,y_0)$
+					</section>
+				</section>
+				<section style="text-align: left; font-size: 34px;">
+					<section>
+						<h4>Conventional Method : Kernel Smoothing (2-D)</h4>
+						<div class="r-stack">
+							<div class="fragment fade-out" data-fragment-index="0">
+								We can do nonparametric regression, with bivariate kernel.
+								<ul>
+									<li>
+										Any <strong>bivariate density</strong> function can be used.
+									</li>
+									<li>
+										Given any univariate kernel $f(x)$, we can define $K(x,y)=f(x)f(y)$
+									</li>
+									<li>
+										For example, univariate <strong>triangular</strong> kernel is given by, $(1-|x|)I_{\{|x|\leq 1\}}$. So we can define, $K(x,y)=(1-|x|)(1-|y|)I_{\{|x|\leq 1, |y|\leq 1\}}$
+									</li>
+								</ul>
+							</div>
+							<div class="fragment current-visible" data-fragment-index="0" style="text-align: center;">
+								<p>Plot of Triangular Kernel</p>
+								<iframe data-src="media/triangular.html" scrolling="no" height="500px" width="550px" frameborder="0"></iframe>
+							</div>
+							<div class="fragment current-visible" data-fragment-index="1">
+								To predict the response variable at $(x_0, y_0)$, we can use <strong>Local polynomial smoothing</strong>.
+								<div class="fragment current-visible" data-fragment-index="1">
+									For local polynomial of $0-$degree, we minimize,
+									$$\sum_{i=1}^n\sum_{j=1}^n(z_{ij}-\alpha)^2 K\left(\frac{x-x_0}{h},\frac{y-y_0}{h}\right)$$
+									where, $h$ is the <strong>smoothing bandwidth</strong>.
+									<br>
+									The estimated value at $(x_0,y_0)$ is given by, 
+									$$\hat{f}(x_0, y_0)=\hat{\alpha}=\frac{\sum_{i=1}^n\sum_{j=1}^n K\left(\frac{x-x_0}{h},\frac{y-y_0}{h}\right)z_{ij}}{\sum_{i=1}^n\sum_{j=1}^n K\left(\frac{x-x_0}{h},\frac{y-y_0}{h}\right)}$$
+								</div>
+							</div>
+						</div>
 					</section>
 				</section>
 				<section>
