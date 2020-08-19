@@ -15,11 +15,13 @@
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="dist/theme/blood.css" id="theme">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+		<link href="css/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+		<link href="css/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 	</head>
 	<body>
 		<div class="reveal">
@@ -122,7 +124,7 @@
 							</div>
 							<div class="fragment current-visible" data-fragment-index="0" style="text-align: center;">
 								<p>Plot of Triangular Kernel</p>
-								<iframe data-src="media/triangular.html" scrolling="no" height="500px" width="500px" frameborder="0"></iframe>
+								<iframe data-src="media/triangular.html" scrolling="no" height="500px" width="550px" frameborder="0" style="display: block; margin: 0 auto;"></iframe>
 							</div>
 							<div class="fragment current-visible" data-fragment-index="1" style="font-size: 30px;">
 								To predict the response variable at $(x_0, y_0)$, we can use <strong>Local polynomial smoothing</strong>.
@@ -136,11 +138,11 @@
 							</div>
 							<div class="fragment current-visible" data-fragment-index="2" style="font-size: 26px;">
 								For local polynomial of $1$-degree, we minimize,
-								$$\sum_{i=1}^n\sum_{j=1}^n(z_{ij}-\alpha-\beta(x_i-x_0)-\gamma(y_j-y_0))^2 K\left(\frac{x_i-x_0}{h},\frac{y_j-y_0}{h}\right)$$
+								$$\sum_{i=1}^n\sum_{j=1}^n(z_{ij}-\alpha-\beta_1(x_i-x_0)-\beta_2(y_j-y_0))^2 K\left(\frac{x_i-x_0}{h},\frac{y_j-y_0}{h}\right)$$
 								<br>
 								The estimated value at $(x_0,y_0)$ is given by,
 								<div style="font-size: 20px;"> 
-									$$\hat{f_1}(x_0, y_0)=\hat{\alpha}=\\
+									$$\hat{f_1}(x_0, y_0)=\hat{\alpha}\text{, where}, [\hat{\alpha}, \hat{\beta_1}, \hat{\beta_2}]^T=\\
 									\begin{bmatrix}
 									\sum\sum w_{ij} & \sum\sum w_{ij}(x_i-x_0) & \sum\sum w_{ij}(y_j-y_0)\\
 									\sum\sum w_{ij}(x_i-x_0) & \sum\sum w_{ij}(x_i-x_0)^2 & \sum\sum w_{ij}(x_i-x_0)(y_j-y_0)\\
@@ -196,6 +198,157 @@
 							</div>
 						</div>
 					</section>
+					<section>
+						<h4>
+							Drawbacks : Conventional Kernel Smoothing
+						</h4>
+						<div>
+							The jump imformation was completely lost in the last two outputs. The fitted surface was smooth near the &ldquo;Jump Location Curve&rdquo;, but in reality, there is a jump with magnitude $1$ in the true surface.
+						</div>
+						<div class="fragment fade-down">
+							$$\Bigg\downarrow$$
+							To overcome the issue, we propose a method where we try to preserve the jump information while doing kernel smoothing.
+						</div>
+					</section>
+				</section>
+				<section  style="text-align: left;">
+					<section>
+						<h4>
+							Proposed Method
+						</h4>
+						<ul>
+							<li>
+								We want to preserve the jump information.
+							</li>
+							<li>
+								To estimate $f$ at $(x_0,y_0)$, we shall <strong>not</strong> consider <strong>all</strong> points. Instead, we can do a neighbourhood-based clustering.
+							</li>
+							<li>
+								For satisfactory performance, we introduce some more assumptions on $f$.
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h4>
+							Modified Problem Statement
+						</h4>
+						<div style="font-size: 30px;">
+							$$f:[0,1)\times[0,1)\rightarrow\mathbb{R}^2$$
+							We are given data-points in an $n\times n$ grid: $\{(x_i,y_j)|i,j=1,\ldots,n\}$, where $x_i=y_i=\frac{i-1}{n}$
+							$$z_{ij}=f(x_i,y_j)+\epsilon_{ij}; \epsilon_{ij}\sim N(0, \sigma^2)\text{ i.i.d., }\sigma^2\text{ unknown.}$$
+							$f$ has the following properties:
+							<ul>
+								<li>
+									Except at jump location curves, $f$ is continuous & locally linear(i.e., can be approximated by a plane.)
+								</li>
+								<li>
+									The jump location curves are smooth, so that, it can be approximated by a straight line in a small region.
+								</li>
+							</ul>
+							Under this setup, given $(x_0, y_0)\in[0, 1)\times[0,1)$, we want to predict $f(x_0, y_0)$.
+						</div>
+					</section>
+				</section>
+				<section style="text-align: left;">
+					<section>
+						<h4>
+							Proposed Method : Step 1
+						</h4>
+						<div style="font-size: 30px;">
+							Given $(x_0,y_0)$, first we fix a neighbourhood around this point.
+							<br>
+							Fix some $l$. Then we have the square neighbourhood, $$S=[x_0-l,x_0+l]\times[y_0-l,y_0+l]$$
+							<br>
+							Define, $N(x_0, y_0)=$ set of design points contained in $S$.
+							<!-- <br>
+							For points near boundary, the neighbourhood may not be a square. We can do &ldquo;padding&rdquo;, or can work with the truncated neighbourhood. -->
+							<hr>
+							For $100\times 100$ grid, if $(x_0,y_0)$ is a design point, then $l=0.05\Rightarrow N(x_0,y_0)$ is a set of $121$ points arranged in a $11\times 11$ grid.
+							<br>
+							We say that, this is a neighbourhood with &ldquo;window-width $11$&rdquo;.
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 1 (contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							<strong>Example:</strong>
+							<!-- <br> -->
+							Same function $f$, added noise with $\sigma=0.1$
+							<br>
+							Say, $(x_0,y_0)=(0.32, 0.70)$ and $l=0.06$
+							<br>
+							So, $N(x_0, y_0)=\{0.26, 0.28, \ldots,0.38\}\times\{0.64,0.66,\ldots,0.76\}$
+							<br>
+							How does it look like?
+							<br>
+							<div style="text-align: center;" class="r-stack">
+								<div class="fragment current-visible">
+									<iframe data-src="media/grid.html" scrolling="no" height="500px" width="500px" frameborder="0"></iframe>
+								</div>
+								<div class="fragment">
+									<iframe data-src="media/zoomgrid.html" scrolling="no" height="500px" width="500px" frameborder="0"></iframe>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 2
+						</h4>
+						<div style="font-size: 30px;">
+							Fit a least-square plane with the points in $N(x_0,y_0)$, i.e., fit the model,
+							$$z_{ij}=\alpha+\beta_1 x_i+\beta_2 y_j + \eta_{ij}, \eta_{ij}\text{ i.i.d. error}$$
+							<hr>
+							For our example, regression equation: $z=2.9+7.2x-7.3y$
+							<div style="text-align: center;">
+								<iframe data-src="media/lsplane.html" scrolling="no" height="450px" width="500px" frameborder="0"></iframe>
+							</div>
+							<!-- By <a href="https://www.google.com">one theorem</a>, $\hat{\beta_1}, \hat{\beta_2}$ contains jump-information.
+							<br>
+							$\vec{v_{ij}}=(\hat{\beta_1}, \hat{\beta_2})$ denotes the direction of jump. -->
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 2 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							The least square plane is perpendicular to the vector $(\hat{\beta_1}, \hat{\beta_2}, -1)$
+							<hr>
+							Let's draw the normal vector $(7.2, -7.3, -1)$:
+							<div style="text-align: center;">
+								<iframe data-src="media/lsplaneiso.html" scrolling="no" height="500px" width="500px" frameborder="0"></iframe>
+							</div>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 2 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							So, $\vec{v_{ij}}=(\hat{\beta_1}, \hat{\beta_2})$ denotes the direction of jump.
+							<hr>
+							Here is the grid with the vector $\vec{v_{ij}}=(7.2, -7.3)$ on $x-y$ plane:
+							<div style="text-align: center;">
+								<iframe data-src="media/projected.html" scrolling="no" height="500px" width="500px" frameborder="0"></iframe>
+							</div>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 2 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							If there is a jump location curve passing through the grid, it can be approximated by a straight line perpendicular to $\vec{v_{ij}}$, i.e., parallel to $(-\hat{\beta_2}, \hat{\beta_1})$.
+							So, the partitioning line is of the form, $\hat{\beta_1}x+\hat{\beta_2}y=c$, but $c$ is unknown.
+							<hr>
+							<div style="text-align: center;">
+								<iframe data-src="media/parallel.html" scrolling="no" height="500px" width="500px" frameborder="0"></iframe>
+							</div>
+						</div>
+					</section>
 				</section>
 				<section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"><h3 data-id="heading">V Slide 1</h1><p data-id="equation">$$y=x^2$$</p></section>
@@ -222,8 +375,12 @@
 				// // mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js' // online
 				// mathjax: 'node_modules/mathjax/es5/tex-chtml-full.js' //offline-local
 				// },
-				// dependencies: [{ src: 'plugin/math/math.js', async: true }],
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom]
+				// chalkboard: {
+				// 	// src: "chalkboard/chalkboard.json",
+				// 	toggleChalkboardButton: { left: "80px" },
+				// 	toggleNotesButton: { left: "130px" },
+				// },
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom],
 			});
 			// Reveal.addEventListener("blackTheme", function(){setTimeout(function(){document.getElementById('theme').setAttribute('href','dist/theme/black.css'); return false;}, 1000);});
 			// Reveal.addEventListener("moonTheme", function(){setTimeout(function(){document.getElementById('theme').setAttribute('href','dist/theme/moon.css'); return false;}, 1000);});
