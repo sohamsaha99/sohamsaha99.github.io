@@ -88,8 +88,8 @@
 							<li>Defining the problem</li>
 							<li>Describing the conventional method</li>
 							<li>Description of the proposed method considering jumps</li>
-							<li>Results from Simulation Study</li>
-							<li>Concluding Remarks</li>
+							<li>Results from simulation study</li>
+							<li>Concluding remarks</li>
 						</ol>
 					</section>
 				</section>
@@ -303,7 +303,9 @@
 							Fit a least-square plane with the points in $N(x_0,y_0)$, i.e., fit the model,
 							$$z_{ij}=\alpha+\beta_1 x_i+\beta_2 y_j + \eta_{ij}, \eta_{ij}\text{ i.i.d. error}$$
 							<hr>
-							For our example, regression equation: $z=2.9+7.2x-7.3y$
+							<div style="font-size: 26px;">
+								For our example, we obtained: $\hat{z}=2.9+7.2x-7.3y$ & $RSS=15.242$
+							</div>
 							<div style="text-align: center;">
 								<iframe data-src="media/lsplane.html" scrolling="no" height="450px" width="500px" frameborder="0"></iframe>
 							</div>
@@ -346,7 +348,7 @@
 							The jump location curve can be approximated by a straight line perpendicular to $\vec{v_{ij}}$, i.e., parallel to $(-\hat{\beta_2}, \hat{\beta_1})$.
 							So, the partitioning line is of the form, $\hat{\beta_1}x+\hat{\beta_2}y=c$, but $c$ is unknown.
 							<hr>
-							Here are 3 parallel lines for $c=$<font color="green">$-2.2,$</font><font color="black">$-3,$</font><font color="blue">$-3.2$</font>
+							Here are 3 parallel lines for $c=$<div style="display: inline; background-color: #DDDDDD;"><font color="green">$-2.2,$</font><font color="black">$-3.0,$</font><font color="blue">$-3.2$</font></div>
 							<div style="text-align: center;">
 								<iframe data-src="media/parallel.html" scrolling="no" height="500px" width="500px" frameborder="0"></iframe>
 							</div>
@@ -358,9 +360,168 @@
 						<h4>
 							Proposed Method : Step 3
 						</h4>
-						Want to find the best $c$.
-						<br>
-						Criteria for best c:
+						<div style="font-size: 30px;">
+							Now we want to find the best $c$. But, how do we define &ldquo;best&rdquo; in this context?
+							<br>
+							<ul>
+								<li>
+									For each $c$, we get one straight line. Therefore, we have a partition of $N(x_0,y_0)$ with 2 disjoint parts.
+								</li>
+								<li>
+									In each part, we can fit a least-square plane.
+								</li>
+								<li>
+									From these two planes, we can calculate residual sum of squares. Call it $RSS(c)$
+								</li>
+								<li>
+									Optimal $c$ is given by, $c_{opt}=\underset{c\in \mathbb{R}}{\operatorname{arg min}}RSS(c)$
+								</li>
+							</ul>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 3 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							Here is the partition for $c=-3.0$
+							<br>
+							<div style="text-align: center;">
+								<ul>
+									<li style="color: green;">
+										$\hat{\beta_1}x+\hat{\beta_2}y\leq c$
+									</li>
+									<li style="color: red;">
+										$\hat{\beta_1}x+\hat{\beta_2}y> c$
+									</li>
+								</ul>
+							</div>
+							<div style="text-align: center;">
+								<iframe data-src="media/partition-3.html" scrolling="no" height="500px" width="500px" frameborder="0"></iframe>
+							</div>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 3 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							Two least square planes:
+							<br>
+							<!-- <div style="text-align: center;">
+								<ul>
+									<li style="color: green;">
+										$\hat{\beta_1}x+\hat{\beta_2}y\leq c$
+									</li>
+									<li style="color: red;">
+										$\hat{\beta_1}x+\hat{\beta_2}y> c$
+									</li>
+								</ul>
+							</div> -->
+							<div style="text-align: center;">
+								<iframe data-src="media/2planes.html" scrolling="no" height="450px" width="500px" frameborder="0"></iframe>
+								<br>
+								$RSS(c)=$<font color="green">$0.396$</font>$+$<font color="red">$8.932$</font>$=9.328$
+							</div>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 3 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							Want to find $c_{opt}$.
+							<br>
+							<div style="text-align: center;">
+								<img data-src="media/RSSc.png">
+								<br>
+								<strong>$c_{opt}=-2.63$</strong>
+							</div>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 3 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							Optimal partitioning obtained from $\hat{\beta_1}x+\hat{\beta_2}y=c_{opt}$
+							<br>
+							<div style="text-align: center;">
+								<iframe data-src="media/optimalplanes.html" scrolling="no" height="450px" width="500px" frameborder="0"></iframe>
+								<br>
+								<strong>$RSS(c_{opt})=5.614$</strong>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section style="text-align: left;">
+					<section>
+						<h4>
+							Proposed Method : Step 4
+						</h4>
+						<div style="font-size: 30px;">
+							We have obtained a partition. But <strong>is there really a partition?</strong>
+							<br>
+							<ul>
+								<li class="fragment fade-down" data-fragment-index="1">
+									While we fitted a single plane, we obtained one value of $RSS$. Call it $RSS_0$
+								</li>
+								<li class="fragment fade-up" data-fragment-index="1">
+									For the partitioned fit, we obtained $RSS(c_{opt})$, smaller than $RSS_0$.
+								</li>
+								<li class="fragment fade-down" data-fragment-index="2">
+									If there really exists a jump in the neighbourhood, then we expect that $RSS_0$ would be significantly higher than $RSS(c_{opt})$. Otherwise, they would be close to each other.
+								</li>
+								<li class="fragment fade-up" data-fragment-index="2">
+									So we can do a hypothesis testing to determine whether we should <strong>trust</strong> the obtained partition.
+								</li>
+							</ul>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 4 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							<strong>Hypothesis testing:</strong>
+							$$H_0:\text{Jump location curve passes through the neighbourhood}$$
+							$$H_A:H_0\text{ is false}$$
+							<div class="fragment">
+								In other words, we have the model:
+								$$z_{ij} = \begin{cases} 
+								\left(p_1+q_1x_i+r_1y_j+\eta_{ij} \right), & \text{if }(x_i,y_j)\in \text{Cluster-1} \\
+								\left(p_2+q_2x_i+r_2y_j+\eta_{ij} \right), & \text{if }(x_i,y_j)\in \text{Cluster-2}
+								\end{cases}
+								$$
+							</div>
+							<div class="fragment">
+								and, we want to test,
+								$$H_0:p_1=p_2,q_1=q_2,r_1=r_2$$
+								$$H_A:H_0\text{ is false}$$
+							</div>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 4 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							<strong>Hypothesis testing:</strong>
+							We had assumed that noises follow $N(0,\sigma^2)$
+							We can do $F\text{-test}$:
+							$$F=\frac{\left(RSS_0-RSS(c_{opt})\right)/3}{RSS(c_{opt})/(m-6)},m=\#N(x_0,y_0)$$
+							$$\text{Under }H_0, F\sim F_{3,m-6}$$
+							Based on level of significance $\alpha$, we can make a decision.
+							<div class="fragment fade-up">
+								<hr>
+								We had, $RSS_0=15.242$, $RSS(c_{opt})=5.614$.
+								<br>
+								$m=13\times 13=169$. Set $\alpha=0.001$
+								<br>
+								Hence, $F=93.179$. Therefore, $p\text{-value}=3.63\times 10^{-35}$
+								<br>
+								<strong>Conclusion:</strong> There is a jump location curve passing through the neighbourhood. So we shall work with the obtained partition.
+							</div>
 					</section>
 				</section>
 				<section>
