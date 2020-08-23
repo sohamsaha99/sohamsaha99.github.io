@@ -183,7 +183,7 @@
 							<div class="fragment current-visible" data-fragment-index="1">
 								On the noisy input, we performed the conventional kernel smoothing with triangular density and <strong>$h=0.15$</strong>
 								<br>
-								Here is the fitted surface for degree-$0$:
+								Here is the fitted surface for $0$-degree:
 								<div style="text-align: center;">
 									<iframe data-src="media/conv_deg0.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
 								</div>
@@ -191,7 +191,7 @@
 							<div class="fragment current-visible" data-fragment-index="2">
 								On the noisy input, we performed the conventional kernel smoothing with triangular density and <strong>$h=0.15$</strong>
 								<br>
-								Here is the fitted surface for degree-$1$:
+								Here is the fitted surface for $1$-degree:
 								<div style="text-align: center;">
 									<iframe data-src="media/conv_deg1.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
 								</div>
@@ -248,6 +248,39 @@
 								</ul>
 								Under this setup, given $(x_0, y_0)\in[0, 1)\times[0,1)$, we want to predict $f(x_0, y_0)$.
 							</div>
+						</div>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : In Brief
+						</h4>
+						<ul>
+							<li class="fragment">
+								First fix a <strong>neighbourhood</strong> around $(x_0,y_0)$
+							</li>
+							<li class="fragment">
+								Not all points in the neighbourhood may belong to the same suface/layer.
+							</li>
+							<li class="fragment">
+								So, try to <strong>partition</strong> the neighbourhood, with a straight line.
+							</li>
+							<li class="fragment">
+								Check if the partition is worth doing. Does the partition reveal two <strong>distinct</strong> planes?
+							</li>
+							<li class="fragment">
+								Based on that, obtain a set of points which (possibly) <strong>shares the same surface</strong> with $(x_0,y_0)$
+							</li>
+							<li class="fragment">
+								Use only those points to predict $f(x_0,y_0)$
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : In Brief
+						</h4>
+						<div style="text-align: center;">
+							<iframe data-src="media/brief.html" scrolling="no" height="465px" width="465px" frameborder="0"></iframe>
 						</div>
 					</section>
 				</section>
@@ -509,7 +542,7 @@
 						</h4>
 						<div style="font-size: 30px;">
 							<strong>Hypothesis testing:</strong>
-							We had assumed that noises follow $N(0,\sigma^2)$
+							We had assumed that noises follow $N(0,\sigma^2)$.
 							We can do $F\text{-test}$:
 							$$F=\frac{\left(RSS_0-RSS(c_{opt})\right)/3}{RSS(c_{opt})/(m-6)},m=\#N(x_0,y_0)$$
 							$$\text{Under }H_0, F\sim F_{3,m-6}$$
@@ -524,6 +557,241 @@
 								<br>
 								<strong>Conclusion:</strong> There is a jump location curve passing through the neighbourhood. So we shall work with the obtained partition.
 							</div>
+					</section>
+				</section>
+				<section style="text-align: left;">
+					<section>
+						<h4>
+							Proposed Method : Step 5
+						</h4>
+						<div style="font-size: 30px;">
+							We had the point $(x_0,y_0)$ & its neighbourhood $N(x_0,y_0)$.
+							<ul>
+								<li class="fragment fade-in-then-semi-out">
+									After the testing, either we shall work with $N(x_0,y_0)$ or a subset of it. Call it $N^*(x_0,y_0)$
+								</li>
+								<li class="fragment fade-in-then-semi-out">
+									In case we fail to reject $H_0$, $N^*(x_0,y_0)=N(x_0,y_0)$
+								</li>
+								<li class="fragment fade-in-then-semi-out">
+									If $H_0$ was rejected, $N^*(x_0,y_0)$ is the subset of $N(x_0,y_0)$ which shares the same side of the partitioning line with $(x_0,y_0)$
+								</li>
+							</ul>
+					</section>
+					<section>
+						<h4>
+							Proposed Method : Step 5 (Contd.)
+						</h4>
+						<div style="font-size: 30px;">
+							Now we shall do local polynomial smoothing with points in $N^*(x_0,y_0)$
+							<br>
+							<div class="fragment">
+								For $0$-degree local polynomial, we minimize,
+								$$\mathop{\sum\sum}_{(x_i,y_j)\in N^*}(z_{ij}-\alpha)^2 K\left(\frac{x_i-x_0}{h},\frac{y_j-y_0}{h}\right)$$
+							</div>
+							<div class="fragment">
+								and, $\hat{f_0}(x_0,y_0)$ is given by,
+								$$\hat{f_0}(x_0, y_0)=\hat{\alpha}=\frac{\mathop{\sum\sum}_{(x_i,y_j)\in N^*}w_{ij}z_{ij}}{\mathop{\sum\sum}_{(x_i,y_j)\in N^*} w_{ij}}$$
+								where, $w_{ij}=K\left(\frac{x_i-x_0}{h}, \frac{y_j-y_0}{h}\right)$
+							</div>
+							<div class="fragment">
+								Similarly, we can do smoothing with $1$-degree polynomial.
+							</div>
+					</section>
+				</section>
+				<section style="text-align: left;">
+					<section>
+						<h4>
+							Proposed Method : Example
+						</h4>
+						<div style="font-size: 30px;">							
+							<div class="r-stack">
+								<div class="fragment current-visible" data-fragment-index="0" style="font-size: 36px;">
+									Now we know how to estimate $f$ at $(x_0,y_0)$.
+									<br>
+									So for the $100\times 100$ points, let's calculate the estimated values to obtain the fitted surface.
+								</div>
+								<div class="fragment current-visible" data-fragment-index="1">
+									<strong>Example:</strong> Same function $f$, with noise from $N(0, \sigma^2), \sigma=0.3$.
+									<br>
+									Here is the noisy input data:
+									<br>
+									<div style="text-align: center;">
+										<iframe data-src="media/input.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
+									</div>
+								</div>
+								<div class="fragment current-visible" data-fragment-index="2">
+									<strong>Parameters:</strong> We have chosen
+									<br>
+									$$\alpha = 0.001, l=0.03\text{ (or, window width 7)}, h=0.1$$
+									Here is output from the method with $0$-degree polynomial smoothing:
+									<br>
+									<div style="text-align: center;">
+										<iframe data-src="media/proposed_0deg.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section>
+					<section style="text-align: left;">
+						<h4>
+							Simulation Study
+						</h4>
+						<div style="font-size: 30px;">
+							We know the method, but there are unknown parameters: $\alpha, l, h$
+							<br>
+							<div class="fragment">
+								Each of them has different effects.
+							</div>
+							<ul>
+								<li class="fragment fade-in-then-semi-out">
+									<strong>$\alpha$ :</strong> For jump/edge detection.
+								</li>
+								<li class="fragment fade-in-then-semi-out">
+									<strong>$l$ :</strong> Large $l\Rightarrow$ more points, but it can also violate assumptions.
+								</li>
+								<li class="fragment fade-in-then-semi-out">
+									<strong>$h$ :</strong> Smoothing bandwidth. Should be increased if noise is high.
+								</li>
+							</ul>
+							<div class="fragment">
+								<hr>
+								To get an idea on choosing the optimal parameters, we present a simulation study.
+								<br>
+								For different $\sigma$'s, we varied $l$ & $h$, and checked which one gives minimum MSE.
+								<br>
+								$\alpha=0.001$ seemed to be a reasonable choice for this case.
+							</div>
+						</div>
+					</section>
+					<section data-transition="zoom-in">
+						<h4>
+							Simulation Study : $\sigma=0.1$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.1.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=0.2$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.2.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=0.3$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.3.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=0.4$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.4.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=0.5$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.5.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=0.6$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.6.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=0.7$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.7.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=0.8$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.8.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=0.9$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma0.9.png">
+					</section>
+					<section data-transition="fade">
+						<h4>
+							Simulation Study : $\sigma=1.0$
+						</h4>
+						<img class="r-stretch" data-src="media/simulation/sigma1.0.png">
+					</section>
+				</section>
+				<section style="font-size: 32px;">
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h4>
+							One Practical Example
+						</h4>
+						<br>
+						<img data-id="trueimg" data-src="media/practical/pepper.png" height="400px" width="400px">
+						<div data-id="heading">
+							We have this image ($256\times 256$)
+						</div>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h4>
+							One Practical Example
+						</h4>
+						<br>
+						<img data-id="additional" data-src="media/practical/border_nonoise.png" height="400px" width="400px" style="padding-right: 10px;">
+						<img data-id="trueimg" data-src="media/practical/pepper.png" height="400px" width="400px" style="padding-left: 10px;">
+						<br>
+						<div data-id="footer">
+							With $9\times 9$ window, and threshold$=18$, we get these edges.
+						</div>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h4>
+							One Practical Example
+						</h4>
+						<br>
+						<img data-id="trueimg" data-src="media/practical/pepper.png" height="400px" width="400px" style="padding-right: 10px;">
+						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-left: 10px;">
+						<div data-id="heading">
+							After adding noise with $N(0,0.06^2)$
+						</div>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h4>
+							One Practical Example
+						</h4>
+						<br>
+						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px">
+						<div data-id="footer">
+							We shall apply the method on this image with $9\times 9$ window-width, threshold $=18$, and Epanechnikov kernel with $h=\frac{2}{256}$.
+						</div>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h4>
+							One Practical Example
+						</h4>
+						<br>
+						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-right: 10px;">
+						<img data-id="trueimg" data-src="media/practical/border_i.png" height="400px" width="400px" style="padding-left: 10px;">
+						<div data-id="heading">
+							Here are the edges we obtained
+						</div>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h4>
+							One Practical Example
+						</h4>
+						<br>
+						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-right: 10px;">
+						<img data-id="trueimg" data-src="media/practical/smoothed.png" height="400px" width="400px" style="padding-left: 10px;">
+						<div data-id="footer">
+							The smoothed image
+						</div>
 					</section>
 				</section>
 				<section>
