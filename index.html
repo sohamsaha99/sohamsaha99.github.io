@@ -89,7 +89,7 @@
 							<li>Describing the conventional method</li>
 							<li>Description of the proposed method considering jumps</li>
 							<li>Results from simulation study</li>
-							<li>Concluding remarks</li>
+							<li>One practical example</li>
 						</ol>
 					</section>
 				</section>
@@ -758,7 +758,7 @@
 						<img data-id="trueimg" data-src="media/practical/pepper.png" height="400px" width="400px" style="padding-right: 10px;">
 						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-left: 10px;">
 						<div data-id="heading">
-							After adding noise with $N(0,0.06^2)$
+							After adding noise from $N(0,0.06^2)$
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
@@ -790,14 +790,65 @@
 						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-right: 10px;">
 						<img data-id="trueimg" data-src="media/practical/smoothed.png" height="400px" width="400px" style="padding-left: 10px;">
 						<div data-id="footer">
-							The smoothed image
+							And the smoothed image
+						</div>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h4>
+							One Practical Example
+						</h4>
+						<br>
+						<!-- <img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-right: 10px;"> -->
+						<img data-id="trueimg" data-src="media/practical/error.png" height="400px" width="400px">
+						<div data-id="heading" class="r-stack">
+							<div class="fragment fade-out" data-fragment-index="1">
+								Estimated noise $=(\text{noisy image}-\text{smoothed})$
+							</div>
+							<div class="fragment current-visible" data-fragment-index="1">
+								Caution: It contains pattern of the image. Should not be the case.
+							</div>
 						</div>
 					</section>
 				</section>
-				<section>
+				<section style="text-align: left;">
+					<section style="font-size: 32px;">
+						<h4>
+							Concluding Remarks:
+						</h4>
+						We presented a method to fit regression surface considering jumps/edges.
+						<ul>
+							<li class="fragment">
+								In cases where jumps are present, it performs better compared to usual local polynomial smoothing.
+							</li>
+							<li class="fragment">
+								When the true function is unknown (which is going to be the case for practical purposes), <strong>choice of parameters</strong> may be a tough task.
+							</li>
+							<li style="list-style-type: none;" class="fragment">
+								In that case,
+								<ul>
+									<li>
+										<strong>Human presence</strong> is required to determine the optimal parameters. 
+									</li>
+									<li>
+										Or, <strong>task specific / domain specific</strong> parameters can be determined based on some examples.
+									</li>
+								</ul>
+							</li>
+							<li class="fragment">
+								We plan to <strong>explore further</strong> regarding the choice of parameters in different scenarios.
+							</li>
+						</ul>
+					</section>
+				</section>
+				<section data-background="media/collage.png" data-background-opacity=0.1 data-background-transition="zoom">
+					<h2>
+						Thank You
+					</h2>
+				</section>
+				<!-- <section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"><h3 data-id="heading">V Slide 1</h1><p data-id="equation">$$y=x^2$$</p></section>
 					<section data-auto-animate data-auto-animaye-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"><h3 data-id="heading">V Slide 2</h1><p>$$(a+b)^2=a^2+2ab+b^2$$</p><p data-id="equation">$$y=x^3$$</p></section>
-				</section>
+				</section> -->
 			</div>
 		</div>
 
