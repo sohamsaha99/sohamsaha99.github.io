@@ -727,6 +727,29 @@
 						<img class="r-stretch" data-src="media/simulation/sigma1.0.png">
 					</section>
 				</section>
+				<section style="text-align: left; font-size: 32px;">
+					<h4>
+						One Drawback
+					</h4>
+					Assumed that jump location curves are smooth (can be approximated by a straight line). What happens when it is violated?
+					<hr class="fragment" data-fragment-index="1">
+					<div class="r-stack">
+						<div class="fragment current-visible" data-fragment-index="1">
+							Consider this function:
+							$$g(x,y)=x + I_{\{y > 0.375 + 0.25x \text{ or } x > 0.5\}}$$
+							Added noise with $\sigma=0.05$
+							<br>
+							Window-width $9$ and $h=0.05$ were used.
+						</div>
+						<div class="fragment current-visible" data-fragment-index="2">
+							The original function contains a sharp jump location curve. In the fitted plane, the sharp edge was blurred.
+							<br>
+							<div style="text-align: center;">
+								<iframe data-src="media/drawback.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
+							</div>
+						</div>
+					</div>
+				</section>
 				<section style="font-size: 32px;">
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						<h4>
@@ -841,9 +864,51 @@
 					</section>
 				</section>
 				<section data-background="media/collage.png" data-background-opacity=0.1 data-background-transition="zoom">
-					<h2>
-						Thank You
-					</h2>
+					<section style="font-size: 40px; text-align: left;">
+						<ul>
+							<li>
+								<u>Acknowledgement:</u>
+								<ul>
+									<li>
+										Ack 1
+									</li>
+									<li>
+										Ack 2
+									</li>
+								</ul>
+							</li>
+							<li>
+								<u>Reference:</u>
+								<ul>
+									<li>
+										P1
+									</li>
+									<li>
+										P2
+									</li>
+								</ul>
+							</li>
+							<li>
+								<u>Submitted by:</u>
+								<ul>
+									<li>
+										Riddhiman Saha - BS1702
+									</li>
+									<li>
+										Somak Laha - BS1720
+									</li>
+									<li>
+										Souhardya Ray - BS1728
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>
+							Thank You
+						</h2>
+					</section>
 				</section>
 				<!-- <section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"><h3 data-id="heading">V Slide 1</h1><p data-id="equation">$$y=x^2$$</p></section>
