@@ -599,40 +599,110 @@
 							</div>
 					</section>
 				</section>
-				<section style="text-align: left;">
-					<section>
-						<h4>
-							Proposed Method : Example
+				<section>
+					<section data-auto-animate>
+						<h4 data-id="heading">
+							Summary of the method
 						</h4>
-						<div style="font-size: 30px;">							
-							<div class="r-stack">
-								<div class="fragment current-visible" data-fragment-index="0" style="font-size: 36px;">
-									Now we know how to estimate $f$ at $(x_0,y_0)$.
-									<br>
-									So for the $100\times 100$ points, let's calculate the estimated values to obtain the fitted surface.
+						<pre data-id="description">
+							<code class="hljs" data-trim data-line-numbers data-noescape>
+								<strong>So, here is a summary of what we did:</strong>
+							</code>
+						</pre>
+					</section>
+					<section data-auto-animate>
+						<h4 data-id="heading">
+							Summary of the method
+						</h4>
+						<pre data-id="description">
+							<code class="hljs" data-trim data-line-numbers="2,3" data-noescape>
+								<strong>So, here is a summary of what we did:</strong>
+								We started with a point (x<sub>0</sub> ,y<sub>0</sub>)
+								And, constructed its neighbourhood N(x<sub>0</sub> ,y<sub>0</sub>)
+							</code>
+						</pre>
+					</section>
+					<section data-auto-animate>
+						<h4 data-id="heading">
+							Summary of the method
+						</h4>
+						<pre data-id="description">
+							<code class="hljs" data-trim data-line-numbers="4,5" data-noescape>
+								<strong>So, here is a summary of what we did:</strong>
+								We started with a point (x<sub>0</sub> ,y<sub>0</sub>)
+								And, constructed its neighbourhood N(x<sub>0</sub> ,y<sub>0</sub>)
+								In N(x<sub>0</sub> ,y<sub>0</sub>), we fitted least square plane<br>and, projected the normal vector onto x-y plane.
+								This gave the direction of the jump.
+							</code>
+						</pre>
+					</section>
+					<section data-auto-animate>
+						<h4 data-id="heading">
+							Summary of the method
+						</h4>
+						<pre data-id="description">
+							<code class="hljs" data-trim data-line-numbers="6,7" data-noescape>
+								<strong>So, here is a summary of what we did:</strong>
+								We started with a point (x<sub>0</sub> ,y<sub>0</sub>)
+								And, constructed its neighbourhood N(x<sub>0</sub> ,y<sub>0</sub>)
+								In N(x<sub>0</sub> ,y<sub>0</sub>), we fitted least square plane<br>and, projected the normal vector onto x-y plane.
+								This gave the direction of the jump.
+								We tried to find the optimal partition line<br>perpendicular to the direction.
+								And performed a testing to decide if there is a jump.
+							</code>
+						</pre>
+					</section>
+					<section data-auto-animate>
+						<h4 data-id="heading">
+							Summary of the method
+						</h4>
+						<pre data-id="description">
+							<code class="hljs" data-trim data-line-numbers="8,9" data-noescape>
+								<strong>So, here is a summary of what we did:</strong>
+								We started with a point (x<sub>0</sub> ,y<sub>0</sub>)
+								And, constructed its neighbourhood N(x<sub>0</sub> ,y<sub>0</sub>)
+								In N(x<sub>0</sub> ,y<sub>0</sub>), we fitted least square plane<br>and, projected the normal vector onto x-y plane.
+								This gave the direction of the jump.
+								We tried to find the optimal partition line<br>perpendicular to the direction.
+								And performed a testing to decide if there is a jump.
+								Depending on the conclusion, we obtained<br>a set of points similar to (x<sub>0</sub> ,y<sub>0</sub>)
+								With those points, we did local polynomial smoothing,<br>(which is just a weighted-average for 0-degree).
+							</code>
+						</pre>
+					</section>
+				</section>
+				<section style="text-align: left;">
+					<h4>
+						Proposed Method : Example
+					</h4>
+					<div style="font-size: 30px;">							
+						<div class="r-stack">
+							<div class="fragment current-visible" data-fragment-index="0" style="font-size: 36px;">
+								Now we know how to estimate $f$ at $(x_0,y_0)$.
+								<br>
+								So for the $100\times 100$ points, let's calculate the estimated values to obtain the fitted surface.
+							</div>
+							<div class="fragment current-visible" data-fragment-index="1">
+								<strong>Example:</strong> Same function $f$, with noise from $N(0, \sigma^2), \sigma=0.3$.
+								<br>
+								Here is the noisy input data:
+								<br>
+								<div style="text-align: center;">
+									<iframe data-src="media/input.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
 								</div>
-								<div class="fragment current-visible" data-fragment-index="1">
-									<strong>Example:</strong> Same function $f$, with noise from $N(0, \sigma^2), \sigma=0.3$.
-									<br>
-									Here is the noisy input data:
-									<br>
-									<div style="text-align: center;">
-										<iframe data-src="media/input.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
-									</div>
-								</div>
-								<div class="fragment current-visible" data-fragment-index="2">
-									<strong>Parameters:</strong> We have chosen
-									<br>
-									$$\alpha = 0.001, l=0.03\text{ (or, window width 7)}, h=0.1$$
-									Here is output from the method with $0$-degree polynomial smoothing:
-									<br>
-									<div style="text-align: center;">
-										<iframe data-src="media/proposed_0deg.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
-									</div>
+							</div>
+							<div class="fragment current-visible" data-fragment-index="2">
+								<strong>Parameters:</strong> We have chosen
+								<br>
+								$$\alpha = 0.001, l=0.03\text{ (or, window width 7)}, h=0.1$$
+								Here is output from the method with $0$-degree polynomial smoothing:
+								<br>
+								<div style="text-align: center;">
+									<iframe data-src="media/proposed_0deg.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
 								</div>
 							</div>
 						</div>
-					</section>
+					</div>
 				</section>
 				<section>
 					<section style="text-align: left;">
@@ -752,19 +822,20 @@
 				</section>
 				<section style="font-size: 32px;">
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h4>
+						<h3>
 							One Practical Example
-						</h4>
+						</h3>
 						<br>
 						<img data-id="trueimg" data-src="media/practical/pepper.png" height="400px" width="400px">
+						<br>
 						<div data-id="heading">
 							We have this image ($256\times 256$)
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h4>
+						<h3>
 							One Practical Example
-						</h4>
+						</h3>
 						<br>
 						<img data-id="additional" data-src="media/practical/border_nonoise.png" height="400px" width="400px" style="padding-right: 10px;">
 						<img data-id="trueimg" data-src="media/practical/pepper.png" height="400px" width="400px" style="padding-left: 10px;">
@@ -774,55 +845,60 @@
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h4>
+						<h3>
 							One Practical Example
-						</h4>
+						</h3>
 						<br>
 						<img data-id="trueimg" data-src="media/practical/pepper.png" height="400px" width="400px" style="padding-right: 10px;">
 						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-left: 10px;">
+						<br>
 						<div data-id="heading">
 							After adding noise from $N(0,0.06^2)$
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h4>
+						<h3>
 							One Practical Example
-						</h4>
+						</h3>
 						<br>
 						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px">
+						<br>
 						<div data-id="footer">
 							We shall apply the method on this image with $9\times 9$ window-width, threshold $=18$, and Epanechnikov kernel with $h=\frac{2}{256}$.
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h4>
+						<h3>
 							One Practical Example
-						</h4>
+						</h3>
 						<br>
 						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-right: 10px;">
 						<img data-id="trueimg" data-src="media/practical/border_i.png" height="400px" width="400px" style="padding-left: 10px;">
+						<br>
 						<div data-id="heading">
 							Here are the edges we obtained
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h4>
+						<h3>
 							One Practical Example
-						</h4>
+						</h3>
 						<br>
 						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-right: 10px;">
 						<img data-id="trueimg" data-src="media/practical/smoothed.png" height="400px" width="400px" style="padding-left: 10px;">
+						<br>
 						<div data-id="footer">
 							And the smoothed image
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h4>
+						<h3>
 							One Practical Example
-						</h4>
+						</h3>
 						<br>
 						<!-- <img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px" style="padding-right: 10px;"> -->
 						<img data-id="trueimg" data-src="media/practical/error.png" height="400px" width="400px">
+						<br>
 						<div data-id="heading" class="r-stack">
 							<div class="fragment fade-out" data-fragment-index="1">
 								Estimated noise $=(\text{noisy image}-\text{smoothed})$
