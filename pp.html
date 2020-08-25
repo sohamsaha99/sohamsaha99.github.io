@@ -362,6 +362,70 @@
 						</div>
 					</div>
 				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+					<h3>
+						Models
+					</h3>
+					Things to keep in mind:
+					<ul class="fragment">
+						<li>
+							Suppose that, police make more stops in high-crime areas but <strong>treat the different ethnic groups equally</strong> within any locality.
+						</li>
+						<li>
+							Police often enforce / emphasize <strong>local, neighbourhood-level</strong> strategies.
+						</li>
+						<li>
+							It is possible that the patterns are <strong>systematically different</strong> in neighbourhoods with <strong>different ethnic compositions</strong>.
+						</li>
+					</ul>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+					<h3>
+						Models
+					</h3>
+					For each ethnic group $e\in\{1,2,3\}$ & precinct $p$, the number of stops $y_{ep}$ assumed to be a Poisson random variable with mean $\lambda_{ep}$.
+					<br>
+					<div class="fragment" data-fragment-index="1">
+						Poisson regression model was used, i.e., $log(\lambda_{ep})$ is a linear combination of predictors.
+					</div>
+					<div class="fragment" data-fragment-index="2">
+						$$log(\lambda_{ep})=log\left(\frac{15}{12}n_{ep}\right)+\mu + \alpha_e+\beta_p+\epsilon_{ep}$$
+					</div>
+					<div class="fragment" data-fragment-index="3">
+						<ul>
+							<li>
+								$n_{ep}\rightarrow$ Arrest rates of last year (from DCJS)
+							</li>
+							<li>
+								$\frac{15}{12}n_{ep}\rightarrow$ Adjusted to a 15-month period. It serves as a baseline for $\lambda_{ep}$
+							</li>
+							<li>
+								$\mu\rightarrow$ Mean effect
+							</li>
+							<li>
+								$\alpha_{e}\rightarrow$ Ethnicity effect (constraint: $\sum \alpha_e=0$)
+							</li>
+							<li>
+								$\beta_p\rightarrow$ Precinct effect<span class="fragment" data-fragment-index="4"> $|\text{ }\beta_p \sim N(0, \sigma_\beta^2)$</span>
+							</li>
+							<li>
+								$\epsilon_{ep}\rightarrow$ Overdispersion<span class="fragment" data-fragment-index="4"> $|\text{ }\epsilon_{ep}\sim N(0, \sigma_\epsilon^2)$</span>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+					<h3>
+						Models
+					</h3>
+					$$y_{ep}\sim Poisson\left(\frac{15}{12}n_{ep}e^{\mu+\alpha_e+\beta_p+\epsilon_{ep}}\right)$$
+					$$\beta_{p}\sim N(0, \sigma_\beta^2)$$
+					$$\epsilon_{ep}\sim N(0, \sigma_\epsilon^2)$$
+					<div class="fragment">
+						<hr>
+						Model fitted using Bayesian inference with a noninformative uniform prior distribution on the parameters $\mu$, $\alpha_e$, $\sigma_\beta$, $\sigma_\epsilon$
+					</div>
+				</section>
 			</div>
 		</div>
 		<script src="dist/reveal.js"></script>
