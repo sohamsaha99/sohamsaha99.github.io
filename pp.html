@@ -354,7 +354,7 @@
 						</div>
 						<div class="fragment" data-fragment-index="4">
 							<hr>
-							Using those values,
+							Using those values, (adjusted to 15-month period)
 							$$\frac{y_1}{n_1}=1.54\text{ , }\frac{y_2}{n_2}=1.73\text{ , }\frac{y_3}{n_3}=1.24$$
 							<div class="fragment" data-fragment-index="5">
 								i.e., blacks are stopped 23% more often than whites and Hispanics are stopped 39% more often than whites.
@@ -364,7 +364,7 @@
 				</section>
 				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
 					<h3>
-						Models
+						Model
 					</h3>
 					Things to keep in mind:
 					<ul class="fragment">
@@ -381,7 +381,7 @@
 				</section>
 				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
 					<h3>
-						Models
+						Model
 					</h3>
 					For each ethnic group $e\in\{1,2,3\}$ & precinct $p$, the number of stops $y_{ep}$ assumed to be a Poisson random variable with mean $\lambda_{ep}$.
 					<br>
@@ -416,15 +416,110 @@
 				</section>
 				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
 					<h3>
-						Models
+						Model
 					</h3>
 					$$y_{ep}\sim Poisson\left(\frac{15}{12}n_{ep}e^{\mu+\alpha_e+\beta_p+\epsilon_{ep}}\right)$$
 					$$\beta_{p}\sim N(0, \sigma_\beta^2)$$
 					$$\epsilon_{ep}\sim N(0, \sigma_\epsilon^2)$$
-					<div class="fragment">
-						<hr>
-						Model fitted using Bayesian inference with a noninformative uniform prior distribution on the parameters $\mu$, $\alpha_e$, $\sigma_\beta$, $\sigma_\epsilon$
+					<div class="r-stack">
+						<div class="fragment fade-in-then-out">
+							<hr>
+							Model fitted using Bayesian inference with a noninformative uniform prior distribution on the parameters $\mu$, $\alpha_e$, $\sigma_\beta$, $\sigma_\epsilon$
+						</div>
+						<div class="fragment">
+							<hr>
+							Precincts categorized: (ethnic compositions can cause different patterns)
+							<br>
+							<ul>
+								<li>
+									$<10\%$ black population
+								</li>
+								<li>
+									$10-40\%$ black population
+								</li>
+								<li>
+									$>40\%$ black population
+								</li>
+							</ul>
+							<div class="fragment">
+								<br>
+								Corresponding to <strong>4 crime types</strong> & <strong>3 precinct categories</strong>, 12 separate models were fitted in 12 disjoint subsets of the dataset.
+							</div>
+						</div>
 					</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px;">
+					<p>
+						Estimates from the model
+					</p>
+					<img src="paper/table1.png" height="576px">
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 28px;">
+					<p>
+						Estimated rates $e^{\mu+\alpha_e}$ at which people of different ethnic groups were stopped
+					</p>
+					<img src="paper/model_i.png" class="r-stretch">
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+					<h3>
+						Different forms of the model
+					</h3>
+					Batching of precincts into three categories is convenient and makes sense, but there is an "arbitrariness" to this division.
+					<br>
+					<span class="fragment" data-fragment-index="1">Let's partition the precincts into different numbers of categories</span>
+					<br>
+					<img src="paper/diffgroups_i.png" class="fragment" data-fragment-index="2">
+					<br>
+					<div style="text-align: center; font-size: 22px;" class="fragment" data-fragment-index="2">Estimated rates $e^{\mu+\alpha_e}$ | top-black, middle-Hispanic, bottom-white</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+					<h3>
+						Different forms of the model
+					</h3>
+					Instead of batching of precincts, we can also introduce the population proportions of ethnic groups as a predictor variable.
+					<br>
+					<span class="fragment">
+						So, the model becomes,
+						$$y_{ep}\sim Poisson\left(\frac{15}{12}n_{ep}e^{\mu+\alpha_e+\zeta_1 z_{1p}+\zeta_2 z_{2p}+\beta_p+\epsilon_{ep}}\right)$$
+						<ul>
+							<li>
+								$z_{1p}\rightarrow$ Population proportion of blacks in precinct $p$
+							</li>
+							<li>
+								$z_{2p}\rightarrow$ Population proportion of Hispanics in precinct $p$
+							</li>
+						</ul>
+					</span>
+					<br>
+					<span class="fragment">
+						<br>
+						4 separate models were fitted based on crime types (no batching in precincts)
+					</span>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px;">
+					<p>
+						Estimates from the model
+					</p>
+					<img src="paper/proptable.png">
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+					<h3>
+						Different forms of the model
+					</h3>
+					Instead of using $n_{ep}$ as a baseline, we can also use it as another predictor variable.
+					<br>
+					<span class="fragment">
+						So, the model becomes,
+						$$y_{ep}\sim Poisson\left(\frac{15}{12}e^{\gamma log\left(n_{ep}\right)+\mu+\alpha_e+\beta_p+\epsilon_{ep}}\right)$$
+						<ul>
+							<li>
+								$\gamma\rightarrow$ Coefficient of $log\left(n_{ep}\right)$
+							</li>
+							<li>
+								$(\gamma=1)\Rightarrow$ First model
+							</li>
+						</ul>
+					</span>
 				</section>
 			</div>
 		</div>
@@ -460,7 +555,7 @@
 				autoSlide: 0,
 
 				// Enable slide navigation via mouse wheel
-				mouseWheel: true,
+				mouseWheel: false,
 
 				// Apply a 3D roll to links on hover
 				rollingLinks: true,
