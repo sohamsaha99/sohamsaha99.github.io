@@ -180,28 +180,6 @@
 						</span>
 					</div>
 				</section>
-				<!-- <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 32px;">
-					<h4>
-						Previous Approaches:
-					</h4>
-					Here is a list of conclusions/outcomes from past studies:
-					<ul>
-						<li>
-							Two nationwide surveys ('99 & '02) showed that African-Americans were far more likely than others to report being stopped on the highways.
-						</li>
-						<li>
-							Minority drivers also were more likely to report being ticketed, arrested, handcuffed, or searched.
-						</li>
-						<li>
-							Another approach is to compare "hit-rates" between different ethnic groups, i.e., proportion of stops that yield positive results.
-							<br>
-							But this bypasses the quiestion whether police <strong>intend</strong> to discriminate, instead focuses on the <strong>disparate impacts</strong>.
-						</li>
-						<li>
-							In 2001, a study showed that of the drivers on I-95 in Maryland stopped on suspicion of drug trafficking, African-Americans were as likely as whites to have drugs in their cars.
-						</li>
-					</ul>
-				</section> -->
 				<section data-background="paper/bg.jpg" data-background-opacity=0.2>
 					<h4>
 						Data Collection
@@ -290,13 +268,13 @@
 					<br>
 					<ul>
 						<li>
-							Blacks / African-Americans<span> ($51\%$ stops)</span><span class="fragment" data-fragment-index="1"> ($26\%$ of city population)</span>
+							Blacks / African-Americans<span> ($51\%$ stops)</span><span class="fragment" data-fragment-index="1"> [$26\%$ of city population]</span>
 						</li>
 						<li>
-							Hispanics / Latinos<span> ($33\%$ stops)</span><span class="fragment" data-fragment-index="1"> ($24\%$ of city population)</span>
+							Hispanics / Latinos<span> ($33\%$ stops)</span><span class="fragment" data-fragment-index="1"> [$24\%$ of city population]</span>
 						</li>
 						<li>
-							Whites / European-Americans<span> ($12\%$ stops)</span><span class="fragment" data-fragment-index="1"> ($43\%$ of city population)</span>
+							Whites / European-Americans<span> ($12\%$ stops)</span><span class="fragment" data-fragment-index="1"> [$43\%$ of city population]</span>
 						</li>
 					</ul>
 					<br>
@@ -311,7 +289,7 @@
 								Violent crimes<span> ($25\%$ stops)</span>
 							</li>
 							<li>
-								Weapons offenses<span> ($24\%$ stops)</span>
+								Weapons crimes<span> ($24\%$ stops)</span>
 							</li>
 							<li>
 								Property crimes<span> ($20\%$ stops)</span>
@@ -322,13 +300,67 @@
 						</ul>
 					</div>
 				</section>
-				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 36px;">
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px;">
 					<h3>
-						Rates of Stops for Each Ethnic Group
+						Aggregate Rates of Stops for Each Ethnic Group
 					</h3>
 					<img src="paper/all_i.png" class="r-stretch">
 					<br>
 					<span style="font-size: 24px;">____ Blacks, ---- Hispanics, .... Whites</span>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+					<h3>
+						Aggregate Rates : Limitations
+					</h3>
+					It has certain limitations:
+					<ul class="fragment" data-fragment-index="1">
+						<li>
+							Comparison without adjusting for different crime rates by different ethnic groups.
+						</li>
+						<li>
+							Ignoring precinct level effects.
+						</li>
+					</ul>
+					<br>
+					<span class="fragment" data-fragment-index="1">A more relevant comparison may be done w.r.t. the number of crimes committed by members of each ethnic group</span>
+					<br>
+					<blockquote class="fragment" data-fragment-index="2">
+						&ldquo;The racial/ethnic distribution of the subjects of 'stop and frisk' reports reflects the demographics of known violent crime suspects as reported by crime victims. Similarly, the demographics of arrestees in violent crimes also correspond with the demographics of known violent crime suspects.&rdquo;
+						<br><br>
+						- Howard Safir, NY City Police Commissioner, '99
+					</blockquote>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+					<h3>
+						Aggregate Rates adjusted for ethnic groups
+					</h3>
+					Let $y_e$ denote the number of stops for ethnic group $e$, $e=1\text{ (black)},2\text{ (hispanic)},3\text{ (white)}$
+					<br>
+					Similarly $n_e$ denotes the number of "crimes" for ethnic group $e$, $e=1,2,3$
+					<div class="fragment" data-fragment-index="1">
+						<br>
+						We can compare $\left(\frac{y_e}{n_e}\right)$ values to see if stop rates are reflection of crime rates.
+					</div>
+					<div class="r-stack">
+						<div class="fragment fade-out" data-fragment-index="4">
+							<div class="fragment" data-fragment-index="2">
+								<hr>
+								$y_e$ values are easily available from the dataset. But $n_e$ is unknown.
+							</div>
+							<div class="fragment" data-fragment-index="3">
+								<br>
+								So as a proxy for $n_e$, the number of arrests within NY in 1997 was used. It was recorded by the Division of Criminal Justice Services (DCJS).
+							</div>
+						</div>
+						<div class="fragment" data-fragment-index="4">
+							<hr>
+							Using those values,
+							$$\frac{y_1}{n_1}=1.54\text{ , }\frac{y_2}{n_2}=1.73\text{ , }\frac{y_3}{n_3}=1.24$$
+							<div class="fragment" data-fragment-index="5">
+								i.e., blacks are stopped 23% more often than whites and Hispanics are stopped 39% more often than whites.
+							</div>
+						</div>
+					</div>
 				</section>
 			</div>
 		</div>
