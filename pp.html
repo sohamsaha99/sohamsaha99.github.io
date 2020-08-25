@@ -1,0 +1,235 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<title>NYPD</title>
+
+		<meta name="description" content="NYPD">
+		<meta name="author" content="Riddhiman Saha">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+		<link href="css/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+		<link href="css/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left;">
+					<h3 style="color: #f82249DD">
+						<b>An Analysis of the New York City Police Department&rsquo;s &ldquo;Stop-and-Frisk&rdquo; Policy in the Context of Claims of Racial Bias</b>
+					</h3>
+					<div style="text-align: right;">
+						 - Andrew Gelman, Jeffrey Fagan & Alex Kiss (2007)
+					</div>
+					<br>
+					<hr>
+					<div style="text-align: center;">
+						Paper Presentation
+						<br>
+						<strong>Statistics Comprehensive</strong>
+					</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left;">
+					<h3>
+						Question : Bias in police stops?
+					</h3>
+					Concerns:
+					<ul>
+						<li class="fragment">
+							In the late 1990s, concerns were raised across US about police harassment of minority groups.
+						</li>
+						<li class="fragment">
+							Allegedly, police were stopping people on the highways for <strong>driving while black</strong>.
+						</li>
+						<li class="fragment">
+							Racial bias in pedestrian stops of citizens in the name of <strong>zero-tolerance</strong> policies to control quality-of-life crimes.
+						</li>
+					</ul>
+					<div class="fragment">
+						These practices prompted angry reactions among minority citizens.
+					</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left">
+					<h3>
+						Why NYPD?
+					</h3>
+					<div class="fragment">
+						New York City&rsquo;s policing strategy, during the 1990s, involved aggressive stops and searches of pedestrians for a wide range of crimes.
+					</div>
+					<div class="fragment">
+						&ldquo;Temporarily detaining, questioning, and, at times, searching civilians on the street&rdquo;.
+					</div>
+					<div class="fragment">
+						The strategy, known as <strong>New York Strategy</strong>, is credited as a major source of the city’s sharp crime decline.
+					</div>
+					<!-- <div class="fragment">
+						<hr>
+						Were the police disproportionately stopping ethnic minorities?
+						<br>
+						- Analyze the rates at which New Yorkers of different ethnic groups were stopped by the police on city streets.
+					</div> -->
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 36px;">
+					<h3>
+						Why NYPD?
+					</h3>
+					<div>
+						<span>But, </span><span class="fragment">there were complaints of harassment of minority communities, especially by the Street Crimes Unit.</span>
+					</div>
+					<div class="fragment">
+						Events such as,<br>
+						<ul>
+							<li>
+								Well-publicized assault by police of Abner Louima
+							</li>
+							<li>
+								Shootings of Amadou Diallo and Patrick Dorismond
+							</li>
+						</ul>
+					</div>
+					<div class="fragment">
+						Aggressive “stop and frisk” tactics ultimately provoked racial bias in the patterns of “stop and frisk”.
+					</div>
+					<div class="fragment">
+						<hr>
+						Were the police disproportionately stopping ethnic minorities?
+						<br>
+						- Analyze the rates at which New Yorkers of different ethnic groups were stopped by the police on city streets.
+					</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left">
+					<h3>
+						Outline:
+					</h3>
+					<ul>
+						<li>
+							Background
+						</li>
+						<li>
+							Previous Approaches
+						</li>
+						<li>
+							Data collection
+						</li>
+						<li>
+							Summary Statistics
+						</li>
+						<li>
+							Models
+						</li>
+					</ul>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 36px;">
+					<h4>
+						Background : Race, Neighbourhoods, and Police Stops
+					</h4>
+					<div class="r-stack">
+						<ul class="fragment fade-out" data-fragment-index="4">
+							<li class="fragment" data-fragment-index="1">
+								Historically, close surveillance by police has been a part of everyday life for African-Americans.
+							</li>
+							<li class="fragment" data-fragment-index="2">
+								In 1996, court allowed the use of race as a basis for a police stop as long as there were other factors.
+							</li>
+							<li class="fragment" data-fragment-index="3">
+								The legal standard for police conduct sets the parameters of the “reasonable suspicion”.
+							</li>
+							<li class="fragment" data-fragment-index="3">
+								Recently, the courts have expanded the concept of “reasonable suspicion” to include location as well as behaviour.
+							</li>
+						</ul>
+						<ul class="fragment" data-fragment-index="4">
+							<li class="fragment" data-fragment-index="4">
+								“High-crime areas” often have high concentrations of minority citizens.
+							</li>
+							<li class="fragment" data-fragment-index="5">
+								Minorities commit disproportionately more crimes than whites & hence, more aggressive enforcement in minority communities is justified.
+							</li>
+							<li class="fragment" data-fragment-index="6">
+								Higher stop rates of minorities simply represent reasonable and efficient police practice.
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 32px;">
+					<h4>
+						Previous Approaches:
+					</h4>
+					Here is a list of conclusions/outcomes from past studies:
+					<ul>
+						<li>
+							Two nationwide surveys ('99 & '02) showed that African-Americans were far more likely than others to report being stopped on the highways.
+						</li>
+						<li>
+							Minority drivers also were more likely to report being ticketed, arrested, handcuffed, or searched.
+						</li>
+						<li>
+							Another approach is to compare "hit-rates" between different ethnic groups, i.e., proportion of stops that yield positive results.
+							<br>
+							But this bypasses the quiestion whether police <strong>intend</strong> to discriminate, instead focuses on the <strong>disparate impacts</strong>.
+						</li>
+						<li>
+							In 2001, a study showed that of the drivers on I-95 in Maryland stopped by police on suspicion of drug trafficking, African-Americans were as likely as whites to have drugs in their cars.
+						</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
+		<script src="plugin/chalkboard/plugin.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				controls: false,
+
+				// Display a presentation progress bar
+				progress: true,
+
+				// Push each slide change to the browser history
+				history: false,
+
+				// Enable keyboard shortcuts for navigation
+				keyboard: true,
+
+				// Loop the presentation
+				loop: false,
+
+				// Number of milliseconds between automatically proceeding to the 
+				// next slide, disabled when set to 0
+				autoSlide: 0,
+
+				// Enable slide navigation via mouse wheel
+				mouseWheel: true,
+
+				// Apply a 3D roll to links on hover
+				rollingLinks: true,
+				// Learn about plugins: https://revealjs.com/plugins/
+				chalkboard: {
+					// src: "chalkboard/chalkboard.json",
+					toggleChalkboardButton: false,
+					toggleNotesButton: false,
+				},
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom],
+			});
+		</script>
+	</body>
+</html>
