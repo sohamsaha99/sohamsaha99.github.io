@@ -460,9 +460,9 @@
 					</p>
 					<img src="paper/model_i.png" class="r-stretch">
 				</section>
-				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 32px; text-align: left;">
 					<h3>
-						Different forms of the model
+						Different forms of the model : Part 1
 					</h3>
 					Batching of precincts into three categories is convenient and makes sense, but there is an "arbitrariness" to this division.
 					<br>
@@ -472,9 +472,9 @@
 					<br>
 					<div style="text-align: center; font-size: 22px;" class="fragment" data-fragment-index="2">Estimated rates $e^{\mu+\alpha_e}$ | top-black, middle-Hispanic, bottom-white</div>
 				</section>
-				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 32px; text-align: left;">
 					<h3>
-						Different forms of the model
+						Different forms of the model : Part 2
 					</h3>
 					Instead of batching of precincts, we can also introduce the population proportions of ethnic groups as a predictor variable.
 					<br>
@@ -493,7 +493,7 @@
 					<br>
 					<span class="fragment">
 						<br>
-						4 separate models were fitted based on crime types (no batching in precincts)
+						4 separate models were fitted based on crime types (no batching in precincts).
 					</span>
 				</section>
 				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px;">
@@ -502,9 +502,9 @@
 					</p>
 					<img src="paper/proptable.png">
 				</section>
-				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 32px; text-align: left;">
 					<h3>
-						Different forms of the model
+						Different forms of the model : Part 3
 					</h3>
 					Instead of using $n_{ep}$ as a baseline, we can also use it as another predictor variable.
 					<br>
@@ -520,6 +520,135 @@
 							</li>
 						</ul>
 					</span>
+					<br>
+					<span class="fragment">
+						<br>
+						4 separate models were fitted for different crime types (no batching in precincts).
+					</span>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 32px; text-align: left;">
+					<h3>
+						Estimates from the model
+					</h3>
+					<br>
+					<div>
+						The estimates are: (for "violent" crime type only)
+						<br>
+						<table style="color: #fff;">
+							<thead>
+								<tr>
+									<th>Parameters</th>
+									<th>$\gamma=1$</th>
+									<th>$\gamma$ estimated</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Intercept</td>
+									<td>-1.08</td>
+									<td>-0.94</td>
+								</tr>
+								<tr>
+									<td>$\alpha_1$ [blacks]</td>
+									<td>0.40</td>
+									<td>0.41</td>
+								</tr>
+								<tr>
+									<td>$\alpha_2$ [Hispanics]</td>
+									<td>0.10</td>
+									<td>0.10</td>
+								</tr>
+								<tr>
+									<td>$\alpha_3$ [whites]</td>
+									<td>-0.50</td>
+									<td>-0.51</td>
+								</tr>
+								<tr>
+									<td>$\gamma$</td>
+									<td> </td>
+									<td>0.97</td>
+								</tr>
+								<tr>
+									<td>$\sigma_\beta$</td>
+									<td>0.51</td>
+									<td>0.51</td>
+								</tr>
+								<tr>
+									<td>$\sigma_\epsilon$</td>
+									<td>0.26</td>
+									<td>0.26</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+					<h3>
+						Another approach : Compare hit-rates
+					</h3>
+					We can also look at the fraction of stops that led to arrests (i.e., successful stops).
+					<div class="fragment">
+						For the data, the hit-rates were found as:
+						<br>
+						<ul>
+							<li>
+								1 in 7.9 for whites
+							</li>
+							<li>
+								1 in 8.8 for Hispanics
+							</li>
+							<li>
+								1 in 9.5 for blacks
+							</li>
+						</ul>
+					</div>
+					<div class="fragment">
+						<hr>
+						This is consistent with our conclusion that the police were disproportionately stopping minorities, whereas, the stops of whites are more “efficient”.
+					</div>
+					<div class="fragment">
+						<hr>
+						But comparing hit-rates is often unfair, beacuse:
+						<ul>
+							<li>
+								Police are “damned if they do, damned if they don’t”.
+							</li>
+							<li>
+								Because a relatively high rate of whites stopped were arrested, we can also argue that the police were biased against whites in the sense of arresting them.
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+					<h3>
+						Conclusion
+					</h3>
+					<ul>
+						<li>
+							From the data of those 15-months, the findings say that, they were stopping blacks and Hispanics more often than whites.
+						</li>
+						<li>
+							Even after adjusting for population proportions, crime rates & precinct effects, the pattern was present.
+						</li>
+						<li>
+							For violence crimes & weapon crimes, these differences were more significant.
+						</li>
+						<li>
+							Lower hit-rates for minority gropus suggest that the standards for stopping were more "relaxed" for them.
+						</li>
+					</ul>
+					<div class="fragment" style="font-size: 34px;">
+						<hr>
+						These findings do not necessarily imply that the NYPD was acting in an unfair or racist manner. It does only provide evidence that whatever criteria the police used, produced an unjustified disparate impact.
+						<hr>
+					</div>
+				</section>
+				<section data-background="paper/poster.jpg" data-background-opacity=0.1 data-background-size="768px">
+					<h2>Thank you</h2>
+					<hr>
+					<i>Presented By</i>
+					<br>
+					<strong>Riddhiman Saha<br>BS1702</strong>
 				</section>
 			</div>
 		</div>
