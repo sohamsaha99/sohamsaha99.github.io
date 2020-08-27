@@ -100,7 +100,7 @@
 						</h3>
 						$$f:[0,1)\times[0,1)\rightarrow\mathbb{R}^2$$
 						We are given data-points in an $n\times n$ grid: $\{(x_i,y_j)|i,j=1,\ldots,n\}$, where $x_i=y_i=\frac{i-1}{n}$
-						$$z_{ij}=f(x_i,y_j)+\epsilon_{ij}; \epsilon_{ij}\text{ i.i.d. error}$$
+						$$z_{ij}=f(x_i,y_j)+\epsilon_{ij}\text{ , } \epsilon_{ij}\text{ i.i.d. error}$$
 						Given $(x_0,y_0)\in[0,1)\times[0,1)$, want to predict $f(x_0,y_0)$
 					</section>
 				</section>
@@ -126,33 +126,41 @@
 								<p>Plot of Triangular Kernel</p>
 								<iframe data-src="media/triangular.html" scrolling="no" height="500px" width="550px" frameborder="0" style="display: block; margin: 0 auto;"></iframe>
 							</div>
-							<div class="fragment current-visible" data-fragment-index="1" style="font-size: 30px;">
-								To predict the response variable at $(x_0, y_0)$, we can use <strong>Local polynomial smoothing</strong>.
-								For local polynomial of $0$-degree, we minimize,
-								$$\sum_{i=1}^n\sum_{j=1}^n(z_{ij}-\alpha)^2 K\left(\frac{x_i-x_0}{h},\frac{y_j-y_0}{h}\right)$$
-								where, $h$ is the <strong>smoothing bandwidth</strong>.
-								<br>
-								The estimated value at $(x_0,y_0)$ is given by, 
-								$$\hat{f_0}(x_0, y_0)=\hat{\alpha}=\frac{\sum_{i=1}^n\sum_{j=1}^n w_{ij}z_{ij}}{\sum_{i=1}^n\sum_{j=1}^n w_{ij}}$$
-								where, $w_{ij}=K\left(\frac{x_i-x_0}{h}, \frac{y_j-y_0}{h}\right)$
+							<div class="fragment fade-out" data-fragment-index="3" style="font-size: 30px;">
+								<div class="fragment" data-fragment-index="1">
+									To predict the response variable at $(x_0, y_0)$, we can use <strong>Local polynomial smoothing</strong>.
+									For local polynomial of $0$-degree, we minimize,
+									$$\sum_{i=1}^n\sum_{j=1}^n(z_{ij}-\alpha)^2 K\left(\frac{x_i-x_0}{h},\frac{y_j-y_0}{h}\right)$$
+									where, $h$ is the <strong>smoothing bandwidth</strong>.
+								</div>
+								<div class="fragment" data-fragment-index="2">
+									<br>
+									The estimated value at $(x_0,y_0)$ is given by, 
+									$$\hat{f_0}(x_0, y_0)=\hat{\alpha}=\frac{\sum_{i=1}^n\sum_{j=1}^n w_{ij}z_{ij}}{\sum_{i=1}^n\sum_{j=1}^n w_{ij}}$$
+									where, $w_{ij}=K\left(\frac{x_i-x_0}{h}, \frac{y_j-y_0}{h}\right)$
+								</div>
 							</div>
-							<div class="fragment current-visible" data-fragment-index="2" style="font-size: 26px;">
-								For local polynomial of $1$-degree, we minimize,
-								$$\sum_{i=1}^n\sum_{j=1}^n(z_{ij}-\alpha-\beta_1(x_i-x_0)-\beta_2(y_j-y_0))^2 K\left(\frac{x_i-x_0}{h},\frac{y_j-y_0}{h}\right)$$
+							<div class="fragment" data-fragment-index="3" style="font-size: 26px;">
+								<div>
+									For local polynomial of $1$-degree, we minimize,
+									$$\sum_{i=1}^n\sum_{j=1}^n(z_{ij}-\alpha-\beta_1(x_i-x_0)-\beta_2(y_j-y_0))^2 K\left(\frac{x_i-x_0}{h},\frac{y_j-y_0}{h}\right)$$
+								</div>
 								<br>
-								The estimated value at $(x_0,y_0)$ is given by,
-								<div style="font-size: 20px;"> 
-									$$\hat{f_1}(x_0, y_0)=\hat{\alpha}\text{, where}, [\hat{\alpha}, \hat{\beta_1}, \hat{\beta_2}]^T=\\
-									\begin{bmatrix}
-									\sum\sum w_{ij} & \sum\sum w_{ij}(x_i-x_0) & \sum\sum w_{ij}(y_j-y_0)\\
-									\sum\sum w_{ij}(x_i-x_0) & \sum\sum w_{ij}(x_i-x_0)^2 & \sum\sum w_{ij}(x_i-x_0)(y_j-y_0)\\
-									\sum\sum w_{ij}(y_j-y_0) & \sum\sum w_{ij}(x_i-x_0)(y_j-y_0) & \sum\sum w_{ij}(y_j-y_0)^2
-									\end{bmatrix}^{-1}
-									\begin{bmatrix}
-									\sum\sum z_{ij}w_{ij}\\
-									\sum\sum z_{ij}w_{ij}(x_i-x_0)\\
-									\sum\sum z_{ij}w_{ij}(y_j-y_0)
-									\end{bmatrix}$$
+								<div class="fragment" data-fragment-index="4">
+									The estimated value at $(x_0,y_0)$ is given by,
+									<div style="font-size: 20px;"> 
+										$$\hat{f_1}(x_0, y_0)=\hat{\alpha}\text{, where}, [\hat{\alpha}, \hat{\beta_1}, \hat{\beta_2}]^T=\\
+										\begin{bmatrix}
+										\sum\sum w_{ij} & \sum\sum w_{ij}(x_i-x_0) & \sum\sum w_{ij}(y_j-y_0)\\
+										\sum\sum w_{ij}(x_i-x_0) & \sum\sum w_{ij}(x_i-x_0)^2 & \sum\sum w_{ij}(x_i-x_0)(y_j-y_0)\\
+										\sum\sum w_{ij}(y_j-y_0) & \sum\sum w_{ij}(x_i-x_0)(y_j-y_0) & \sum\sum w_{ij}(y_j-y_0)^2
+										\end{bmatrix}^{-1}
+										\begin{bmatrix}
+										\sum\sum z_{ij}w_{ij}\\
+										\sum\sum z_{ij}w_{ij}(x_i-x_0)\\
+										\sum\sum z_{ij}w_{ij}(y_j-y_0)
+										\end{bmatrix}$$
+									</div>
 								</div>
 							</div>
 						</div>
@@ -235,7 +243,7 @@
 						<div style="font-size: 30px;">
 							$$f:[0,1)\times[0,1)\rightarrow\mathbb{R}^2$$
 							We are given data-points in an $n\times n$ grid: $\{(x_i,y_j)|i,j=1,\ldots,n\}$, where $x_i=y_i=\frac{i-1}{n}$
-							$$z_{ij}=f(x_i,y_j)+\epsilon_{ij}; \epsilon_{ij}\sim N(0, \sigma^2)\text{ i.i.d., }\sigma^2\text{ unknown.}$$
+							$$z_{ij}=f(x_i,y_j)+\epsilon_{ij}\text{ , } \epsilon_{ij}\sim N(0, \sigma^2)\text{ i.i.d., }\sigma^2\text{ unknown.}$$
 							<div class="fragment">
 								$f$ has the following properties:
 								<ul>
@@ -297,10 +305,12 @@
 							Define, $N(x_0, y_0)=$ set of design points contained in $S$.
 							<!-- <br>
 							For points near boundary, the neighbourhood may not be a square. We can do &ldquo;padding&rdquo;, or can work with the truncated neighbourhood. -->
-							<hr>
-							For $100\times 100$ grid, if $(x_0,y_0)$ is a design point, then $l=0.05\Rightarrow N(x_0,y_0)$ is a set of $121$ points arranged in a $11\times 11$ grid.
-							<br>
-							We say that, this is a neighbourhood with &ldquo;window-width $11$&rdquo;.
+							<div class="fragment">
+								<hr>
+								For $100\times 100$ grid, if $(x_0,y_0)$ is a design point, then $l=0.05\Rightarrow N(x_0,y_0)$ is a set of $121$ points arranged in a $11\times 11$ grid.
+								<br>
+								We say that, this is a neighbourhood with &ldquo;window-width $11$&rdquo;.
+							</div>
 						</div>
 					</section>
 					<section>
@@ -336,7 +346,7 @@
 						</h4>
 						<div style="font-size: 30px;">
 							Fit a least-square plane with the points in $N(x_0,y_0)$, i.e., fit the model,
-							$$z_{ij}=\alpha+\beta_1 x_i+\beta_2 y_j + \eta_{ij}, \eta_{ij}\text{ i.i.d. error}$$
+							$$z_{ij}=\alpha+\beta_1 x_i+\beta_2 y_j + \eta_{ij}\text{ , } \eta_{ij}\text{ i.i.d. error}$$
 							<hr>
 							<div style="font-size: 26px;">
 								For our example, we obtained: $\hat{z}=2.9+7.2x-7.3y$ & $RSS=15.242$
@@ -544,12 +554,12 @@
 							<strong>Hypothesis testing:</strong>
 							We had assumed that noises follow $N(0,\sigma^2)$.
 							We can do $F\text{-test}$:
-							$$F=\frac{\left(RSS_0-RSS(c_{opt})\right)/3}{RSS(c_{opt})/(m-6)},m=\#N(x_0,y_0)$$
+							$$F=\frac{\left(RSS_0-RSS\right)/3}{RSS/(m-6)},m=\#N(x_0,y_0)$$
 							$$\text{Under }H_0, F\sim F_{3,m-6}$$
 							Based on level of significance $\alpha$, we can make a decision.
 							<div class="fragment fade-up">
 								<hr>
-								We had, $RSS_0=15.242$, $RSS(c_{opt})=5.614$.
+								We had, $RSS_0=15.242$, $RSS=5.614$.
 								<br>
 								$m=13\times 13=169$. Set $\alpha=0.001$
 								<br>
@@ -605,8 +615,8 @@
 							Summary of the method
 						</h4>
 						<pre data-id="description">
-							<code class="hljs" data-trim data-line-numbers data-noescape>
-								<strong>So, here is a summary of what we did:</strong>
+							<code class="hljs" data-trim data-noescape>
+								<strong>Here is a summary of what we did:</strong>
 							</code>
 						</pre>
 					</section>
@@ -615,8 +625,7 @@
 							Summary of the method
 						</h4>
 						<pre data-id="description">
-							<code class="hljs" data-trim data-line-numbers="2,3" data-noescape>
-								<strong>So, here is a summary of what we did:</strong>
+							<code class="hljs" data-trim data-line-numbers="1,2" data-noescape>
 								We started with a point (x<sub>0</sub> ,y<sub>0</sub>)
 								And, constructed its neighbourhood N(x<sub>0</sub> ,y<sub>0</sub>)
 							</code>
@@ -627,8 +636,7 @@
 							Summary of the method
 						</h4>
 						<pre data-id="description">
-							<code class="hljs" data-trim data-line-numbers="4,5" data-noescape>
-								<strong>So, here is a summary of what we did:</strong>
+							<code class="hljs" data-trim data-line-numbers="3,4" data-noescape>
 								We started with a point (x<sub>0</sub> ,y<sub>0</sub>)
 								And, constructed its neighbourhood N(x<sub>0</sub> ,y<sub>0</sub>)
 								In N(x<sub>0</sub> ,y<sub>0</sub>), we fitted least square plane<br>and, projected the normal vector onto x-y plane.
@@ -641,8 +649,7 @@
 							Summary of the method
 						</h4>
 						<pre data-id="description">
-							<code class="hljs" data-trim data-line-numbers="6,7" data-noescape>
-								<strong>So, here is a summary of what we did:</strong>
+							<code class="hljs" data-trim data-line-numbers="5,6" data-noescape>
 								We started with a point (x<sub>0</sub> ,y<sub>0</sub>)
 								And, constructed its neighbourhood N(x<sub>0</sub> ,y<sub>0</sub>)
 								In N(x<sub>0</sub> ,y<sub>0</sub>), we fitted least square plane<br>and, projected the normal vector onto x-y plane.
@@ -657,8 +664,7 @@
 							Summary of the method
 						</h4>
 						<pre data-id="description">
-							<code class="hljs" data-trim data-line-numbers="8,9" data-noescape>
-								<strong>So, here is a summary of what we did:</strong>
+							<code class="hljs" data-trim data-line-numbers="7,8" data-noescape>
 								We started with a point (x<sub>0</sub> ,y<sub>0</sub>)
 								And, constructed its neighbourhood N(x<sub>0</sub> ,y<sub>0</sub>)
 								In N(x<sub>0</sub> ,y<sub>0</sub>), we fitted least square plane<br>and, projected the normal vector onto x-y plane.
@@ -671,38 +677,44 @@
 						</pre>
 					</section>
 				</section>
-				<section style="text-align: left;">
-					<h4>
-						Proposed Method : Example
-					</h4>
-					<div style="font-size: 30px;">							
-						<div class="r-stack">
-							<div class="fragment current-visible" data-fragment-index="0" style="font-size: 36px;">
-								Now we know how to estimate $f$ at $(x_0,y_0)$.
-								<br>
-								So for the $100\times 100$ points, let's calculate the estimated values to obtain the fitted surface.
-							</div>
-							<div class="fragment current-visible" data-fragment-index="1">
-								<strong>Example:</strong> Same function $f$, with noise from $N(0, \sigma^2), \sigma=0.3$.
-								<br>
-								Here is the noisy input data:
-								<br>
-								<div style="text-align: center;">
-									<iframe data-src="media/input.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
+				<section>
+					<section style="text-align: left;">
+						<h4>
+							Proposed Method : Example
+						</h4>
+						<div style="font-size: 30px;">							
+							<div class="r-stack">
+								<div class="fragment current-visible" data-fragment-index="0" style="font-size: 36px;">
+									Now we know how to estimate $f$ at $(x_0,y_0)$.
+									<br>
+									So for the $100\times 100$ points, let's calculate the estimated values to obtain the fitted surface.
 								</div>
-							</div>
-							<div class="fragment current-visible" data-fragment-index="2">
-								<strong>Parameters:</strong> We have chosen
-								<br>
-								$$\alpha = 0.001, l=0.03\text{ (or, window width 7)}, h=0.1$$
-								Here is output from the method with $0$-degree polynomial smoothing:
-								<br>
-								<div style="text-align: center;">
-									<iframe data-src="media/proposed_0deg.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
+								<div class="fragment current-visible" data-fragment-index="1">
+									<strong>Example:</strong> Same function $f$, with noise from $N(0, \sigma^2), \sigma=0.3$.
+									<br>
+									Here is the noisy input data:
+									<br>
+									<div style="text-align: center;">
+										<iframe data-src="media/input.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
+									</div>
+								</div>
+								<div class="fragment current-visible" data-fragment-index="2">
+									<strong>Parameters:</strong> We have chosen
+									<br>
+									$$\alpha = 0.001, l=0.03\text{ (or, window width 7)}, h=0.1$$
+									Here is output from the method with $0$-degree polynomial smoothing:
+									<br>
+									<div style="text-align: center;">
+										<iframe data-src="media/proposed_0deg.html" scrolling="no" height="450px" width="850px" frameborder="0"></iframe>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</section>
+					<section>
+						<iframe data-src="media/conv_deg0.html" scrolling="no" height="330px" width="850px" frameborder="0"></iframe>
+						<iframe data-src="media/proposed_0deg.html" scrolling="no" height="330px" width="850px" frameborder="0"></iframe>
+					</section>
 				</section>
 				<section>
 					<section style="text-align: left;">
@@ -841,7 +853,7 @@
 						<img data-id="trueimg" data-src="media/practical/pepper.png" height="400px" width="400px" style="padding-left: 10px;">
 						<br>
 						<div data-id="footer">
-							With $9\times 9$ window, and threshold$=18$, we get these edges.
+							Applying the method, we get these edges.
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
@@ -864,7 +876,7 @@
 						<img data-id="additional" data-src="media/practical/noise.png" height="400px" width="400px">
 						<br>
 						<div data-id="footer">
-							We shall apply the method on this image with $9\times 9$ window-width, threshold $=18$, and Epanechnikov kernel with $h=\frac{2}{256}$.
+							We applied the method on this image with $9\times 9$ window-width, threshold $=18$, and Epanechnikov kernel with $h=\frac{2}{256}$.
 						</div>
 					</section>
 					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
@@ -901,7 +913,7 @@
 						<br>
 						<div data-id="heading" class="r-stack">
 							<div class="fragment fade-out" data-fragment-index="1">
-								Estimated noise $=(\text{noisy image}-\text{smoothed})$
+								Estimated noise $=(\text{noisy image}-\text{smoothed image})$
 							</div>
 							<div class="fragment current-visible" data-fragment-index="1">
 								Caution: It contains pattern of the image. Should not be the case.
@@ -940,30 +952,29 @@
 					</section>
 				</section>
 				<section data-background="media/collage.png" data-background-opacity=0.1 data-background-transition="zoom">
-					<section style="font-size: 40px; text-align: left;">
+					<section style="font-size: 34px; text-align: left;">
 						<ul>
 							<li>
 								<u>Acknowledgement:</u>
 								<ul>
 									<li>
-										Ack 1
+										Dr. Partha Sarathi Mukherjee, Associate Professor, ISI Kolkata
 									</li>
 									<li>
-										Ack 2
+										Dr. Debasis Sengupta, Professor, ISI Kolkata
 									</li>
 								</ul>
 							</li>
+							<br>
 							<li>
 								<u>Reference:</u>
 								<ul>
 									<li>
-										P1
-									</li>
-									<li>
-										P2
+										Qiu, P., & Yandell, B. (1997). Jump Detection in Regression Surfaces. Journal of Computational and Graphical Statistics, 6(3), 332-354. doi:10.2307/1390737
 									</li>
 								</ul>
 							</li>
+							<br>
 							<li>
 								<u>Submitted by:</u>
 								<ul>
