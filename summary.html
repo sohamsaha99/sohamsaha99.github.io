@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>Discontinuous Regression Surface Fitting</title>
+
+        <meta name="description" content="Discontinuous Regression Surface Fitting">
+        <meta name="author" content="Riddhiman Saha">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+        <link href="css/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+        <link href="css/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section style="text-align: left; font-size: 20px;">
+                    <h4>Analysis of NYPD's stop-&-frisk policy in the context of claims of racial bias (2007)</h4>
+                    <div>
+                        <strong>Background:</strong>
+                        Historical conflict between whites vs other minorities, we all know. Also some surveys indicated that police did not enforce equal treatment to all ethnic groups. Hence this paper.
+                    </div>
+                    <div>
+                        <strong>Question:</strong> Does police disproportionately stop ethnic minorities?
+                    </div>
+                    <div>
+                        <strong>Data collection:</strong>
+                        NYPD has a form to keep record on stops, "UF-250". From Jan'98 to Mar'99, for this 15 month, there were about 1,75,000 recorded stops. For 28% of those cases, recording was optional (hence, maybe affected by selection bias). Remaining 72% were used for analysis.
+                    </div>
+                    <div>
+                        <strong>Categories:</strong>
+                        There were 4types of crimes: Violent, Weapons, Property, Drug (First two took significant proportions)
+                    </div>
+                    <div>
+                        <strong>Ethnic groups:</strong>
+                        These 3 groups were considered: Blacks, Hispanics, Whites
+                    </div>
+                    <div>
+                        <strong>
+                            Summary Stat:
+                        </strong>
+                        In the dataset, Blacks were 51%, Hispanics 33%, Whites 12% (these %'s are significantly different from population proportions)
+                        <br>
+                        But then police claims that these %'s should not represent demographics, but should reflect crime proportions of each ethnic group. (because, minorities commit disproportionately more crimes than whites. Hence they should be stopped more).
+                        <br>
+                        Hence, they compared $\frac{\#\text{ of stops in the dataset}}{\#\text{ of arrests in previous year}}$ for each ethnic group. Result was, blacks are stopped 23% more often than whites and Hispanics are stopped 39% more often than whites.
+                        <br>
+                        Then the counter-argument was, we should not look after these whole aggregates, because there are areas where crime rate is verryyy high & contains high concentration of minorities, so in those areas, many persons are stopped, and this causes the minority stop count to go high.
+                    </div>
+                </section>
+                <section style="text-align: left; font-size: 20px;">
+                    <strong>Model: </strong>
+                    So now they try to fit a model, where they want to consider all effects, e.g., previous crime rates in an area, area effect (i.e., grouping based on police station/precinct), ethnicity effect. Naturally, if we consider "all" effects, and police treats all groups equally in an area, then ethnicity effects should be zero.
+                    <br>
+                    They fitted Poisson regression model,
+                    $$y_{ep}\sim Poisson\left(\frac{15}{12}n_{ep}e^{\mu+\alpha_e+\beta_p+\epsilon_{ep}}\right)$$
+                    $$\beta_{p}\sim N(0, \sigma_\beta^2)$$
+                    $$\epsilon_{ep}\sim N(0, \sigma_\epsilon^2)$$
+                    <ul>
+                        <li>
+                            $n_{ep}\rightarrow$ Arrest rates of last year (for 12 month period)
+                        </li>
+                        <li>
+                            $\frac{15}{12}n_{ep}\rightarrow$ Adjusted to a 15-month period. It serves as a baseline for $\lambda_{ep}$
+                        </li>
+                        <li>
+                            $\mu\rightarrow$ Mean effect
+                        </li>
+                        <li>
+                            $\alpha_{e}\rightarrow$ Ethnicity effect (constraint: $\sum \alpha_e=0$)(1 for black, 2 for hispanic, 3 for white)
+                        </li>
+                        <li>
+                            $\beta_p\rightarrow$ Precinct effect<span> $|\text{ }\beta_p \sim N(0, \sigma_\beta^2)$</span>
+                        </li>
+                        <li>
+                            $\epsilon_{ep}\rightarrow$ Overdispersion<span> $|\text{ }\epsilon_{ep}\sim N(0, \sigma_\epsilon^2)$</span>
+                        </li>
+                    </ul>
+                    <br>
+                    They fitted seperate models for 4 crime categories (I'm not including those details here). For all models, it was found that, $\alpha_1$ & $\alpha_2$ were significantly positive and $\alpha_3$ significantly negative. Hence police did not treat all ethnic groups equally.
+                </section>
+                <section style="text-align: left; font-size: 20px;">
+                    They also considered some other variations of the previous model, but the results were similar, so not including those here.
+                    <br>
+                    <strong>Hit-rates: </strong>
+                    Then they also conducted a hit-rate analysis (i.e., proportion of stops that led to arrests.)
+                    Result was, <br>
+                    <ul>
+                        <li>
+                            1 in 7.9 for whites
+                        </li>
+                        <li>
+                            1 in 8.8 for Hispanics
+                        </li>
+                        <li>
+                            1 in 9.5 for blacks
+                        </li>
+                    </ul>
+                    <br>
+                    This is consistent with our conclusion that the police were disproportionately stopping minorities, whereas, the stops of whites are more “efficient”.
+                    <br>
+                    <strong>Conclusion: </strong>
+                    <ul>
+                        <li>
+                            From the data of those 15-months, the findings say that, police were stopping blacks and Hispanics more often than whites.
+                        </li>
+                        <li>
+                            Even after adjusting for population proportions, crime rates & precinct effects, the pattern remained same.
+                        </li>
+                        <li>
+                            For violence crimes & weapon crimes, those differences were more significant.
+                        </li>
+                        <li>
+                            Lower hit-rates for minority groups suggest that the standards for stopping were more "relaxed" for them.
+                        </li>
+                    </ul>
+                    But in the conclusion, they did not call NYPD racist, as it'd be controversial.The conclusion was, <br>
+                    <hr>
+                    These findings do not necessarily imply that the NYPD was acting in an unfair or racist manner. It does only provide evidence that whatever criteria the police used, produced an unjustified disparate impact.
+                    <hr>
+                </section>
+            </div>
+        </div>
+
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/zoom/zoom.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script src="plugin/math/math.js"></script>
+        <script src="plugin/chalkboard/plugin.js"></script>
+        <script>
+            // More info about initialization & config:
+            // - https://revealjs.com/initialization/
+            // - https://revealjs.com/config/
+            Reveal.initialize({
+                hash: true,
+                transition: 'convex',
+                // math: {
+                // // mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js' // online
+                // mathjax: 'node_modules/mathjax/es5/tex-chtml-full.js' //offline-local
+                // },
+                // chalkboard: {
+                //  // src: "chalkboard/chalkboard.json",
+                //  toggleChalkboardButton: { left: "80px" },
+                //  toggleNotesButton: { left: "130px" },
+                // },
+                plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom],
+            });
+            // Reveal.addEventListener("blackTheme", function(){setTimeout(function(){document.getElementById('theme').setAttribute('href','dist/theme/black.css'); return false;}, 1000);});
+            // Reveal.addEventListener("moonTheme", function(){setTimeout(function(){document.getElementById('theme').setAttribute('href','dist/theme/moon.css'); return false;}, 1000);});
+            // Reveal.addEventListener("moonTheme", function(){document.getElementById('theme').setAttribute('href','dist/theme/moon.css'); return false;});
+        </script>
+    </body>
+</html>
