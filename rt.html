@@ -1,0 +1,710 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>An Analysis of Beijing Multi-Site Air Quality Data</title>
+
+        <meta name="description" content="NYPD">
+        <meta name="author" content="Riddhiman Saha">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/night.css" id="theme">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+        <link href="css/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+        <link href="css/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="font-size: 37px;">
+                    <img data-src="rt2020/fog2.gif">
+                    <!-- <img data-src="https://i.ndtvimg.com/i/2017-02/china-pollution-reuters_650x400_41487060700.jpg" height="200px"> -->
+                    <h3 style="color: #f82249DD; text-align: center;">
+                        <b>An Analysis of <br>Beijing Multi-Site Air Quality Data</b>
+                    </h3>
+                    <!-- <br> -->
+                    <hr>
+                    <!-- <br> -->
+                    <div style="text-align: center;">
+                        Group Project
+                        <br>
+                        <strong>Regression Techniques</strong>
+                        <br>
+                        M.Stat. $1^{\text{st}}$ Year, ISI Kolkata
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 37px;">
+                    <h3>
+                        Dataset Description:
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            Hourly data measured by 12 sites of Beijing Municipal Environmental Monitoring Center.
+                        </li>
+                        <li class="fragment">
+                            Contains data from <strong>March &rsquo;13</strong> to <strong> February &rsquo;17</strong>.
+                        </li>
+                        <li class="fragment">
+                            Attributes are:
+                            <ul>
+                                <li>
+                                    $\text{PM}_{2.5}\text{, PM}_{10}\text{, SO}_2\text{, NO}_2\text{, O}_3$
+                                </li>
+                                <li>
+                                    Temparature, Pressure, Dew-point, Wind Speed, Wind direction, Rain
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fragment">
+                            Meteorological data are matched with the nearest weather station from the China Meteorological Administration.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left">
+                    <h3>
+                        Why NYPD?
+                    </h3>
+                    <div class="fragment">
+                        New York City&rsquo;s policing strategy, during the 1990s, involved aggressive stops and searches of pedestrians for a wide range of crimes.
+                    </div>
+                    <div class="fragment">
+                        &ldquo;Temporarily detaining, questioning, and, at times, searching civilians on the street&rdquo;.
+                    </div>
+                    <div class="fragment">
+                        The strategy, known as <strong>New York Strategy</strong>, is credited as a major source of the city’s sharp crime decline.
+                    </div>
+                    <!-- <div class="fragment">
+                        <hr>
+                        Were the police disproportionately stopping ethnic minorities?
+                        <br>
+                        - Analyze the rates at which New Yorkers of different ethnic groups were stopped by the police on city streets.
+                    </div> -->
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Why NYPD?
+                    </h3>
+                    <div>
+                        <span>But, </span><span class="fragment">there were complaints of harassment of minority communities, especially by the Street Crimes Unit.</span>
+                    </div>
+                    <div class="fragment">
+                        Events such as,<br>
+                        <ul>
+                            <li>
+                                Well-publicized assault by police of Abner Louima
+                            </li>
+                            <li>
+                                Shootings of Amadou Diallo and Patrick Dorismond
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        Aggressive “stop and frisk” tactics ultimately provoked racial bias in the patterns of “stop and frisk”.
+                    </div>
+                    <div class="fragment">
+                        <hr>
+                        Were the police disproportionately stopping ethnic minorities?
+                        <br>
+                        - Analyze the rates at which New Yorkers of different ethnic groups were stopped by the police on city streets.
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left">
+                    <h3>
+                        Outline:
+                    </h3>
+                    <ul>
+                        <li>
+                            Background
+                        </li>
+                        <li>
+                            Data collection
+                        </li>
+                        <li>
+                            Summary Statistics
+                        </li>
+                        <li>
+                            Models
+                        </li>
+                        <li>
+                            Conclusion
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Background : Race, Neighbourhoods, and Police Stops
+                    </h3>
+                    <div class="r-stack">
+                        <span>
+                            <ul class="fragment fade-out" data-fragment-index="4">
+                                <li class="fragment" data-fragment-index="1">
+                                    Historically, close surveillance by police has been a part of everyday life for African-Americans.
+                                </li>
+                                <li class="fragment" data-fragment-index="2">
+                                    In 1996, court allowed the use of race as a basis for a police stop as long as there were other factors.
+                                </li>
+                                <li class="fragment" data-fragment-index="3">
+                                    The legal standard for police conduct sets some parameters for “reasonable suspicion”.
+                                </li>
+                                <li class="fragment" data-fragment-index="3">
+                                    Recently, the courts have expanded the concept of “reasonable suspicion” to include location as well as behaviour.
+                                </li>
+                            </ul>
+                        </span>
+                        <span class="fragment fade-out" data-fragment-index="7">
+                            <ul class="fragment" data-fragment-index="4">
+                                <li class="fragment" data-fragment-index="4">
+                                    Two nationwide surveys ('99 & '02) showed that African-Americans were far more likely than others to report being stopped on the highways.
+                                </li>
+                                <li class="fragment" data-fragment-index="5">
+                                    Minority drivers also were more likely to report being ticketed, arrested, handcuffed, or searched.
+                                </li>
+                                <li class="fragment" data-fragment-index="6">
+                                    In 2001, a study showed that of the drivers on I-95 in Maryland stopped on suspicion of drug trafficking, African-Americans were as likely as whites to have drugs in their cars.
+                                </li>
+                            </ul>
+                        </span>
+                        <span>
+                            <ul class="fragment" data-fragment-index="7">
+                                Police have defended these claims on the grounds that,
+                                <li class="fragment" data-fragment-index="8">
+                                    “High-crime areas” often have high concentrations of minority citizens.
+                                </li>
+                                <li class="fragment" data-fragment-index="9">
+                                    Minorities commit disproportionately more crimes than whites & hence, more aggressive enforcement in minority communities is justified.
+                                </li>
+                                <li class="fragment" data-fragment-index="10">
+                                    Higher stop rates of minorities simply represent reasonable and efficient police practice.
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2>
+                    <h4>
+                        Data Collection
+                    </h4>
+                    <div style="text-align: center;">
+                        UF-250 Form : Keeping records on stops
+                        <br>
+                    </div>
+                    <img src="paper/uf250.png" class="r-stretch">
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Data Collection
+                    </h3>
+                    Information was collected for all stops from January 1998 through March 1999.
+                    About 175,000 stops were recorded in that period.
+                    <br>
+                    <span class="fragment">
+                        The police are not required to fill out a form for every stop.
+                        <br>
+                        <ul>
+                            <li>
+                                Mandated cases : $72\%$
+                            </li>
+                            <li>
+                                Non-mandated cases : $28\%$ (reporting was optional)
+                            </li>
+                        </ul>
+                    </span>
+                    <br>
+                    <span class="fragment">The form has one field: <strong>“Factors which caused officer to reasonably suspect person stopped (include information from third persons and their identity, if known).”</strong></span>
+                    <br>
+                    <span class="fragment">
+                        These forms and the reasons for the stops were examined for a citywide sample of 5,000 cases, along with 10,869 others, representing 50% of the cases in a nonrandom sample of 8 of the 75 police precincts.
+                    </span>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Data Collection : Examples
+                    </h3>
+                    <div class="r-stack">
+                        <div class="fragment fade-out" data-fragment-index="3">
+                            Here are some examples that motivated police decisions to stop suspects:
+                            <br>
+                            <blockquote>
+                                “At TPO male was with person who fit description of person wanted for GLA [grand larceny auto] in 072 pct. log . . . upon approach male discarded small coin roller which contained 5 bags of alleged crack.”
+                            </blockquote>
+                            <blockquote class="fragment" data-fragment-index="1">
+                                “Did have on a large bubble coat with a bulge in right pocket.”
+                            </blockquote>
+                            <blockquote class="fragment" data-fragment-index="2">
+                                “Person stopped did stop walking and reverse direction upon seeing police. Attempted to enter store as police approached; Frisked for safety.”
+                            </blockquote>
+                        </div>
+                        <div class="fragment" data-fragment-index="3">
+                            The New York State Attorney General’s office used some rules to characterize the rationales of the stops.
+                            <ul>
+                                <li>
+                                    Reasonable suspicion : $61\%$ <span class="fragment" data-fragment-index="4">(1 in 7 led to arrest)</span>
+                                </li>
+                                <li>
+                                    Not reasonable : $15\%$ <span class="fragment" data-fragment-index="4">(1 in 29 led to arrest)</span>
+                                </li>
+                                <li>
+                                    Insufficient information : $24\%$
+                                </li>
+                            </ul>
+                            <br>
+                            <br>
+                            <span>
+                                For Street Crimes Unit, 23% of stops were judged to not have a reasonable suspicion.
+                            </span>
+                            <br>
+                            <br>
+                            <span class="fragment" data-fragment-index="5">
+                                <strong>There was no strong pattern by ethnicity here. The rate of unreasonable stops was about the same for all ethnic groups.</strong>
+                            </span>
+                        </div>
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Classification:
+                    </h3>
+                    The following groups were considered:
+                    <br>
+                    <ul>
+                        <li>
+                            Blacks / African-Americans<span> ($51\%$ stops)</span><span class="fragment" data-fragment-index="1"> [$26\%$ of city population]</span>
+                        </li>
+                        <li>
+                            Hispanics / Latinos<span> ($33\%$ stops)</span><span class="fragment" data-fragment-index="1"> [$24\%$ of city population]</span>
+                        </li>
+                        <li>
+                            Whites / European-Americans<span> ($12\%$ stops)</span><span class="fragment" data-fragment-index="1"> [$43\%$ of city population]</span>
+                        </li>
+                    </ul>
+                    <br>
+                    Others represented only $4\%$ of stops, and excluded.
+                    <br>
+                    <br>
+                    <div class="fragment">
+                        Crimes were categorized:
+                        <br>
+                        <ul>
+                            <li>
+                                Violent crimes<span> ($25\%$ stops)</span>
+                            </li>
+                            <li>
+                                Weapons crimes<span> ($24\%$ stops)</span>
+                            </li>
+                            <li>
+                                Property crimes<span> ($20\%$ stops)</span>
+                            </li>
+                            <li>
+                                Drug crimes<span> ($11\%$ stops)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px;">
+                    <h3>
+                        Aggregate Rates of Stops for Each Ethnic Group
+                    </h3>
+                    <img src="paper/all_i.png" class="r-stretch">
+                    <br>
+                    <span style="font-size: 24px;">____ Blacks, ---- Hispanics, .... Whites</span>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+                    <h3>
+                        Aggregate Rates : Limitations
+                    </h3>
+                    It has certain limitations:
+                    <ul class="fragment" data-fragment-index="1">
+                        <li>
+                            Comparison without adjusting for different crime rates by different ethnic groups.
+                        </li>
+                        <li>
+                            Ignoring precinct level effects.
+                        </li>
+                    </ul>
+                    <br>
+                    <span class="fragment" data-fragment-index="1">A more relevant comparison may be done w.r.t. the number of crimes committed by members of each ethnic group.</span>
+                    <br>
+                    <blockquote class="fragment" data-fragment-index="2">
+                        &ldquo;The racial/ethnic distribution of the subjects of 'stop and frisk' reports reflects the demographics of known violent crime suspects as reported by crime victims. Similarly, the demographics of arrestees in violent crimes also correspond with the demographics of known violent crime suspects.&rdquo;
+                        <br><br>
+                        - Howard Safir, NY City Police Commissioner, '99
+                    </blockquote>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+                    <h3>
+                        Aggregate Rates adjusted for ethnic groups
+                    </h3>
+                    Let $y_e$ denote the number of stops for ethnic group $e$, $e=1\text{ (black)},2\text{ (hispanic)},3\text{ (white)}$
+                    <br>
+                    Similarly $n_e$ denotes the number of "crimes" for ethnic group $e$, $e=1,2,3$
+                    <div class="fragment" data-fragment-index="1">
+                        <br>
+                        We can compare $\left(\frac{y_e}{n_e}\right)$ values to see if stop rates are reflection of crime rates.
+                    </div>
+                    <div class="r-stack">
+                        <div class="fragment fade-out" data-fragment-index="4">
+                            <div class="fragment" data-fragment-index="2">
+                                <hr>
+                                $y_e$ values are easily available from the dataset. But $n_e$ is unknown.
+                            </div>
+                            <div class="fragment" data-fragment-index="3">
+                                <br>
+                                So as a proxy for $n_e$, the number of arrests within NY in 1997 was used. It was recorded by the Division of Criminal Justice Services (DCJS).
+                            </div>
+                        </div>
+                        <div class="fragment" data-fragment-index="4">
+                            <hr>
+                            Using those values, (adjusted to 15-month period)
+                            $$\frac{y_1}{n_1}=1.54\text{ , }\frac{y_2}{n_2}=1.73\text{ , }\frac{y_3}{n_3}=1.24$$
+                            <div class="fragment" data-fragment-index="5">
+                                i.e., blacks are stopped 23% more often than whites and Hispanics are stopped 39% more often than whites.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+                    <h3>
+                        Model
+                    </h3>
+                    Things to keep in mind:
+                    <ul class="fragment">
+                        <li>
+                            Suppose that, police make more stops in high-crime areas but <strong>treat the different ethnic groups equally</strong> within any locality.
+                        </li>
+                        <li>
+                            Police often enforce / emphasize <strong>local, neighbourhood-level</strong> strategies.
+                        </li>
+                        <li>
+                            It is possible that the patterns are <strong>systematically different</strong> in neighbourhoods with <strong>different ethnic compositions</strong>.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+                    <h3>
+                        Model
+                    </h3>
+                    For each ethnic group $e\in\{1,2,3\}$ & precinct $p$, the number of stops $y_{ep}$ assumed to be a Poisson random variable with mean $\lambda_{ep}$.
+                    <br>
+                    <div class="fragment" data-fragment-index="1">
+                        Poisson regression model was used, i.e., $log(\lambda_{ep})$ is a linear combination of predictors.
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                        $$log(\lambda_{ep})=log\left(\frac{15}{12}n_{ep}\right)+\mu + \alpha_e+\beta_p+\epsilon_{ep}$$
+                    </div>
+                    <div class="fragment" data-fragment-index="3">
+                        <ul>
+                            <li>
+                                $n_{ep}\rightarrow$ Arrest rates of last year (from DCJS)
+                            </li>
+                            <li>
+                                $\frac{15}{12}n_{ep}\rightarrow$ Adjusted to a 15-month period. It serves as a baseline for $\lambda_{ep}$
+                            </li>
+                            <li>
+                                $\mu\rightarrow$ Mean effect
+                            </li>
+                            <li>
+                                $\alpha_{e}\rightarrow$ Ethnicity effect (constraint: $\sum \alpha_e=0$)
+                            </li>
+                            <li>
+                                $\beta_p\rightarrow$ Precinct effect<span class="fragment" data-fragment-index="4"> $|\text{ }\beta_p \sim N(0, \sigma_\beta^2)$</span>
+                            </li>
+                            <li>
+                                $\epsilon_{ep}\rightarrow$ Overdispersion<span class="fragment" data-fragment-index="4"> $|\text{ }\epsilon_{ep}\sim N(0, \sigma_\epsilon^2)$</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left; font-size: 30px;">
+                    <h3>
+                        Model
+                    </h3>
+                    $$y_{ep}\sim Poisson\left(\frac{15}{12}n_{ep}e^{\mu+\alpha_e+\beta_p+\epsilon_{ep}}\right)$$
+                    $$\beta_{p}\sim N(0, \sigma_\beta^2)$$
+                    $$\epsilon_{ep}\sim N(0, \sigma_\epsilon^2)$$
+                    <div class="r-stack">
+                        <div class="fragment fade-in-then-out">
+                            <hr>
+                            Model fitted using Bayesian inference with a noninformative uniform prior distribution on the parameters $\mu$, $\alpha_e$, $\sigma_\beta$, $\sigma_\epsilon$
+                        </div>
+                        <div class="fragment">
+                            <hr>
+                            Precincts categorized: (ethnic compositions can cause different patterns)
+                            <br>
+                            <ul>
+                                <li>
+                                    $<10\%$ black population
+                                </li>
+                                <li>
+                                    $10-40\%$ black population
+                                </li>
+                                <li>
+                                    $>40\%$ black population
+                                </li>
+                            </ul>
+                            <div class="fragment">
+                                <br>
+                                Corresponding to <strong>4 crime types</strong> & <strong>3 precinct categories</strong>, 12 separate models were fitted in 12 disjoint subsets of the dataset.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px;">
+                    <p>
+                        Estimates from the model
+                    </p>
+                    <img src="paper/table1.png" height="576px">
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 28px;">
+                    <p>
+                        Estimated rates $e^{\mu+\alpha_e}$ at which people of different ethnic groups were stopped
+                    </p>
+                    <img src="paper/model_i.png" class="r-stretch">
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 32px; text-align: left;">
+                    <h3>
+                        Different forms of the model : Part 1
+                    </h3>
+                    Batching of precincts into three categories is convenient and makes sense, but there is an "arbitrariness" to this division.
+                    <br>
+                    <span class="fragment" data-fragment-index="1">Let's partition the precincts into different numbers of categories.</span>
+                    <br>
+                    <img src="paper/diffgroups_i.png" class="fragment" data-fragment-index="2">
+                    <br>
+                    <div style="text-align: center; font-size: 22px;" class="fragment" data-fragment-index="2">Estimated rates $e^{\mu+\alpha_e}$ | top-black, middle-Hispanic, bottom-white</div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 32px; text-align: left;">
+                    <h3>
+                        Different forms of the model : Part 2
+                    </h3>
+                    Instead of batching of precincts, we can also introduce the population proportions of ethnic groups as a predictor variable.
+                    <br>
+                    <span class="fragment">
+                        So, the model becomes,
+                        $$y_{ep}\sim Poisson\left(\frac{15}{12}n_{ep}e^{\mu+\alpha_e+\zeta_1 z_{1p}+\zeta_2 z_{2p}+\beta_p+\epsilon_{ep}}\right)$$
+                        <ul>
+                            <li>
+                                $z_{1p}\rightarrow$ Population proportion of blacks in precinct $p$
+                            </li>
+                            <li>
+                                $z_{2p}\rightarrow$ Population proportion of Hispanics in precinct $p$
+                            </li>
+                        </ul>
+                    </span>
+                    <br>
+                    <span class="fragment">
+                        <br>
+                        4 separate models were fitted based on crime types (no batching in precincts).
+                    </span>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px;">
+                    <p>
+                        Estimates from the model
+                    </p>
+                    <img src="paper/proptable.png">
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 32px; text-align: left;">
+                    <h3>
+                        Different forms of the model : Part 3
+                    </h3>
+                    Instead of using $n_{ep}$ as a baseline, we can also use it as another predictor variable.
+                    <br>
+                    <span class="fragment">
+                        So, the model becomes,
+                        $$y_{ep}\sim Poisson\left(\frac{15}{12}e^{\gamma log\left(n_{ep}\right)+\mu+\alpha_e+\beta_p+\epsilon_{ep}}\right)$$
+                        <ul>
+                            <li>
+                                $\gamma\rightarrow$ Coefficient of $log\left(n_{ep}\right)$
+                            </li>
+                            <li>
+                                $(\gamma=1)\Rightarrow$ First model
+                            </li>
+                        </ul>
+                    </span>
+                    <br>
+                    <span class="fragment">
+                        <br>
+                        4 separate models were fitted for different crime types (no batching in precincts).
+                    </span>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 32px; text-align: left;">
+                    <h3>
+                        Estimates from the model
+                    </h3>
+                    <br>
+                    <div>
+                        The estimates are: (for "violent" crime type only)
+                        <br>
+                        <table style="color: #fff;">
+                            <thead>
+                                <tr>
+                                    <th>Parameters</th>
+                                    <th>$\gamma=1$</th>
+                                    <th>$\gamma$ estimated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Intercept</td>
+                                    <td>-1.08</td>
+                                    <td>-0.94</td>
+                                </tr>
+                                <tr>
+                                    <td>$\alpha_1$ [blacks]</td>
+                                    <td>0.40</td>
+                                    <td>0.41</td>
+                                </tr>
+                                <tr>
+                                    <td>$\alpha_2$ [Hispanics]</td>
+                                    <td>0.10</td>
+                                    <td>0.10</td>
+                                </tr>
+                                <tr>
+                                    <td>$\alpha_3$ [whites]</td>
+                                    <td>-0.50</td>
+                                    <td>-0.51</td>
+                                </tr>
+                                <tr>
+                                    <td>$\gamma$</td>
+                                    <td> </td>
+                                    <td>0.97</td>
+                                </tr>
+                                <tr>
+                                    <td>$\sigma_\beta$</td>
+                                    <td>0.51</td>
+                                    <td>0.51</td>
+                                </tr>
+                                <tr>
+                                    <td>$\sigma_\epsilon$</td>
+                                    <td>0.26</td>
+                                    <td>0.26</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+                    <h3>
+                        Another approach : Compare hit-rates
+                    </h3>
+                    We can also look at the fraction of stops that led to arrests (i.e., successful stops).
+                    <div class="fragment">
+                        For the data, the hit-rates were found as:
+                        <br>
+                        <ul>
+                            <li>
+                                1 in 7.9 for whites
+                            </li>
+                            <li>
+                                1 in 8.8 for Hispanics
+                            </li>
+                            <li>
+                                1 in 9.5 for blacks
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        <hr>
+                        This is consistent with our conclusion that the police were disproportionately stopping minorities, whereas, the stops of whites are more “efficient”.
+                    </div>
+                    <div class="fragment">
+                        <hr>
+                        But comparing hit-rates is often unfair, beacuse:
+                        <ul>
+                            <li>
+                                Police are “damned if they do, damned if they don’t”.
+                            </li>
+                            <li>
+                                Because a relatively high rate of whites stopped were arrested, we can also argue that the police were biased against whites in the sense of arresting them.
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="font-size: 30px; text-align: left;">
+                    <h3>
+                        Conclusion
+                    </h3>
+                    <ul>
+                        <li>
+                            From the data of those 15-months, the findings say that, police were stopping blacks and Hispanics more often than whites.
+                        </li>
+                        <li>
+                            Even after adjusting for population proportions, crime rates & precinct effects, the pattern remained same.
+                        </li>
+                        <li>
+                            For violence crimes & weapon crimes, those differences were more significant.
+                        </li>
+                        <li>
+                            Lower hit-rates for minority groups suggest that the standards for stopping were more "relaxed" for them.
+                        </li>
+                    </ul>
+                    <div class="fragment" style="font-size: 34px;">
+                        <hr>
+                        These findings do not necessarily imply that the NYPD was acting in an unfair or racist manner. It does only provide evidence that whatever criteria the police used, produced an unjustified disparate impact.
+                        <hr>
+                    </div>
+                </section>
+                <section data-background="paper/poster.jpg" data-background-opacity=0.1 data-background-size="768px">
+                    <h2>Thank you</h2>
+                    <hr>
+                    <i>Presented By</i>
+                    <br>
+                    <strong>Riddhiman Saha<br>BS1702</strong>
+                </section>
+            </div>
+        </div>
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/zoom/zoom.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script src="plugin/math/math.js"></script>
+        <script src="plugin/chalkboard/plugin.js"></script>
+        <script>
+            // More info about initialization & config:
+            // - https://revealjs.com/initialization/
+            // - https://revealjs.com/config/
+            Reveal.initialize({
+                hash: true,
+                // controls: false,
+
+                // Display a presentation progress bar
+                progress: true,
+
+                // Push each slide change to the browser history
+                history: false,
+
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
+
+                // Loop the presentation
+                loop: false,
+
+                // Number of milliseconds between automatically proceeding to the 
+                // next slide, disabled when set to 0
+                autoSlide: 0,
+
+                // Enable slide navigation via mouse wheel
+                mouseWheel: false,
+
+                // Apply a 3D roll to links on hover
+                rollingLinks: true,
+                // Learn about plugins: https://revealjs.com/plugins/
+                // chalkboard: {
+                    // src: "chalkboard/chalkboard.json",
+                    // toggleChalkboardButton: false,
+                    // toggleNotesButton: false,
+                // },
+                plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom],
+            });
+        </script>
+    </body>
+</html>
