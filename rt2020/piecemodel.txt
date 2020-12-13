@@ -1,0 +1,47 @@
+Call:
+lm(formula = log(PM2.5) ~ sin(2 * pi * No/24) + cos(2 * pi * 
+    No/24) + log(SO2) + I(log(SO2) * SO2large) + SO2large + log(NO2) + 
+    I(log(NO2) * NO2large) + NO2large + log(CO) + I(log(CO) * 
+    COlarge) + log(O3) + DEWP + log(PRES) + RAIN + month_number + 
+    station, data = train_dat[!bad_cases, ])
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.92472 -0.24927  0.00459  0.26131  2.75171 
+
+Coefficients:
+                         Estimate Std. Error t value Pr(>|t|)    
+(Intercept)            37.0150635  3.4655333  10.681  < 2e-16 ***
+sin(2 * pi * No/24)    -0.0762300  0.0043478 -17.533  < 2e-16 ***
+cos(2 * pi * No/24)     0.0724955  0.0041475  17.479  < 2e-16 ***
+log(SO2)                0.2822197  0.0086411  32.660  < 2e-16 ***
+I(log(SO2) * SO2large)  0.0637371  0.0115529   5.517 3.48e-08 ***
+SO2large               -0.0515072  0.0361220  -1.426   0.1539    
+log(NO2)                0.1197390  0.0101626  11.782  < 2e-16 ***
+I(log(NO2) * NO2large)  0.3560944  0.0162255  21.947  < 2e-16 ***
+NO2large               -1.1970848  0.0581545 -20.585  < 2e-16 ***
+log(CO)                 0.3853594  0.0069738  55.258  < 2e-16 ***
+I(log(CO) * COlarge)    0.0104144  0.0011900   8.752  < 2e-16 ***
+log(O3)                -0.0208861  0.0034980  -5.971 2.39e-09 ***
+DEWP                    0.0429893  0.0006058  70.959  < 2e-16 ***
+log(PRES)              -5.4004590  0.5011932 -10.775  < 2e-16 ***
+RAIN                    0.2194079  0.0864746   2.537   0.0112 *  
+month_number            0.1214104  0.0037977  31.970  < 2e-16 ***
+stationChangping        0.1444035  0.0141397  10.213  < 2e-16 ***
+stationDingling         0.4090198  0.0140340  29.145  < 2e-16 ***
+stationDongsi           0.1732482  0.0142363  12.169  < 2e-16 ***
+stationGuanyuan         0.0153284  0.0135513   1.131   0.2580    
+stationGucheng          0.0039919  0.0147456   0.271   0.7866    
+stationHuairou          0.2701692  0.0140761  19.193  < 2e-16 ***
+stationNongzhanguan     0.1356339  0.0138033   9.826  < 2e-16 ***
+stationShunyi           0.2926349  0.0137781  21.239  < 2e-16 ***
+stationTiantan          0.1555230  0.0138771  11.207  < 2e-16 ***
+stationWanliu          -0.0210734  0.0139238  -1.513   0.1302    
+stationWanshouxigong    0.0308787  0.0134974   2.288   0.0222 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4415 on 25873 degrees of freedom
+Multiple R-squared:  0.8662,	Adjusted R-squared:  0.866 
+F-statistic:  6439 on 26 and 25873 DF,  p-value: < 2.2e-16
+

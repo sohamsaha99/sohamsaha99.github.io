@@ -1,0 +1,32 @@
+Linear mixed-effects model fit by REML
+ Data: train_dat
+       AIC      BIC    logLik
+  31359.28 31498.03 -15662.64
+
+Random effects:
+ Formula: ~1 | station
+        (Intercept) Residual
+StdDev:   0.1361253 0.441552
+
+Fixed effects: log(PM2.5) ~ sin(2 * pi * No/24) + cos(2 * pi * No/24) + log(SO2) +      I(log(SO2) * SO2large) + log(NO2) + I(log(NO2) * NO2large) +      (NO2large) + log(CO) + I(log(CO) * COlarge) + log(O3) + (DEWP) +      log(PRES) + RAIN + month_number 
+                          Value Std.Error    DF   t-value p-value
+(Intercept)            37.47478  3.459479 25874  10.83249  0.0000
+sin(2 * pi * No/24)    -0.07634  0.004346 25874 -17.56476  0.0000
+cos(2 * pi * No/24)     0.07215  0.004135 25874  17.44906  0.0000
+log(SO2)                0.28872  0.007337 25874  39.35026  0.0000
+I(log(SO2) * SO2large)  0.04819  0.003589 25874  13.42904  0.0000
+log(NO2)                0.11614  0.009887 25874  11.74599  0.0000
+I(log(NO2) * NO2large)  0.36453  0.014956 25874  24.37338  0.0000
+NO2large               -1.22684  0.053631 25874 -22.87568  0.0000
+log(CO)                 0.38499  0.006971 25874  55.22699  0.0000
+I(log(CO) * COlarge)    0.01084  0.001159 25874   9.34849  0.0000
+log(O3)                -0.02004  0.003455 25874  -5.79859  0.0000
+DEWP                    0.04296  0.000605 25874  70.96695  0.0000
+log(PRES)              -5.44853  0.500311 25874 -10.89029  0.0000
+RAIN                    0.21370  0.086396 25874   2.47353  0.0134
+month_number            0.12179  0.003787 25874  32.16372  0.0000
+
+paste(seasonal_year)2   0.12747  0.062163    44   2.05061  0.0463
+paste(seasonal_year)3   0.17065  0.062177    44   2.74457  0.0087
+paste(seasonal_year)4   0.22195  0.062188    44   3.56903  0.0009
+

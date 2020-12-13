@@ -1,0 +1,42 @@
+Call:
+lm(formula = (PM2.5) ~ sin(2 * pi * No/24) + cos(2 * pi * No/24) + 
+    month_number + DEWP + WSPM + PRES + TEMP + RAIN + station + 
+    SO2 + NO2 + CO + O3, data = train_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-430.61  -27.26   -4.72   18.56  459.57 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)          -1.132e+02  6.318e+01  -1.792   0.0732 .  
+sin(2 * pi * No/24)   2.368e-01  5.662e-01   0.418   0.6758    
+cos(2 * pi * No/24)   6.020e+00  5.316e-01  11.323  < 2e-16 ***
+month_number          1.281e+01  4.471e-01  28.645  < 2e-16 ***
+DEWP                  4.462e+00  7.559e-02  59.032  < 2e-16 ***
+WSPM                  3.107e+00  3.303e-01   9.405  < 2e-16 ***
+PRES                  8.761e-02  6.219e-02   1.409   0.1589    
+TEMP                 -8.768e-01  1.155e-01  -7.594 3.22e-14 ***
+RAIN                 -4.100e+01  1.006e+01  -4.074 4.63e-05 ***
+stationChangping      6.320e+00  1.595e+00   3.963 7.44e-05 ***
+stationDingling       2.874e+01  1.603e+00  17.935  < 2e-16 ***
+stationDongsi         9.506e+00  1.580e+00   6.016 1.82e-09 ***
+stationGuanyuan      -3.470e+00  1.568e+00  -2.213   0.0269 *  
+stationGucheng       -1.928e+01  1.639e+00 -11.761  < 2e-16 ***
+stationHuairou        1.467e+01  1.643e+00   8.931  < 2e-16 ***
+stationNongzhanguan   6.680e+00  1.572e+00   4.249 2.16e-05 ***
+stationShunyi         1.738e+01  1.578e+00  11.012  < 2e-16 ***
+stationTiantan        3.646e+00  1.586e+00   2.300   0.0215 *  
+stationWanliu        -1.553e+01  1.613e+00  -9.628  < 2e-16 ***
+stationWanshouxigong  1.653e+00  1.569e+00   1.053   0.2921    
+SO2                   4.469e-01  1.399e-02  31.942  < 2e-16 ***
+NO2                   9.185e-01  1.852e-02  49.597  < 2e-16 ***
+CO                    2.721e-02  3.945e-04  68.985  < 2e-16 ***
+O3                    6.985e-01  2.422e-02  28.844  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 51.3 on 25896 degrees of freedom
+Multiple R-squared:  0.7597,	Adjusted R-squared:  0.7595 
+F-statistic:  3560 on 23 and 25896 DF,  p-value: < 2.2e-16
+

@@ -1,0 +1,38 @@
+Call:
+lm(formula = PM2.5 ~ sin(2 * pi * hour/24) + cos(2 * pi * hour/24) + 
+    TEMP + PRES + DEWP + station + month_number + RAIN + WSPM, 
+    data = train_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-251.06  -47.92  -11.76   30.70  601.55 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(>|t|)    
+(Intercept)            150.82776   96.09912   1.570  0.11654    
+sin(2 * pi * hour/24)  -10.42687    0.75967 -13.725  < 2e-16 ***
+cos(2 * pi * hour/24)    0.03913    0.84293   0.046  0.96298    
+TEMP                    -3.32817    0.16970 -19.612  < 2e-16 ***
+PRES                     0.04890    0.09464   0.517  0.60536    
+DEWP                    10.00022    0.09677 103.335  < 2e-16 ***
+stationChangping        19.13986    2.41744   7.917 2.52e-15 ***
+stationDingling          9.63755    2.41744   3.987 6.72e-05 ***
+stationDongsi           23.40131    2.39027   9.790  < 2e-16 ***
+stationGuanyuan          4.36065    2.38207   1.831  0.06717 .  
+stationGucheng          11.34187    2.40378   4.718 2.39e-06 ***
+stationHuairou           1.08693    2.45238   0.443  0.65761    
+stationNongzhanguan     25.06289    2.39027  10.485  < 2e-16 ***
+stationShunyi            7.83615    2.39250   3.275  0.00106 ** 
+stationTiantan          17.66983    2.39027   7.392 1.49e-13 ***
+stationWanliu           18.57454    2.38207   7.798 6.54e-15 ***
+stationWanshouxigong    20.79018    2.38581   8.714  < 2e-16 ***
+month_number            13.68644    0.64482  21.225  < 2e-16 ***
+RAIN                  -205.74689   15.28953 -13.457  < 2e-16 ***
+WSPM                    -6.73357    0.47992 -14.031  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 78.28 on 25900 degrees of freedom
+Multiple R-squared:  0.4404,	Adjusted R-squared:   0.44 
+F-statistic:  1073 on 19 and 25900 DF,  p-value: < 2.2e-16
+
