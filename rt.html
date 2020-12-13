@@ -87,22 +87,6 @@
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
                     <h3>
-                        $\mathbf{\text{PM}_{2.5}}$ concentration: <br><u>Background</u>
-                    </h3>
-                    <ul>
-                        <li class="fragment">
-                            The official air-quality statistic reported that Beijing had a <strong>9.9% decline</strong> in the annual concentration of $\text{PM}_{2.5}$ in 2016.
-                        </li>
-                        <li class="fragment">
-                            It was in a sharp contrast to local experience. There was <strong>severe smog</strong> during  winter&rsquo;16.
-                        </li>
-                        <li class="fragment">
-                            Observed $\text{PM}_{2.5}$ level is <strong>signifiantly impacted</strong> by the meteorological condition and presence of other pollutants. So measurements may not reflect the true situation.
-                        </li>
-                    </ul>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
-                    <h3>
                         Before starting:
                     </h3>
                     <ul>
@@ -128,6 +112,22 @@
                         </li>
                         <li class="fragment">
                             Hence, for a given year and season, there are nearly 2160 observations per station.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        $\mathbf{\text{PM}_{2.5}}$ concentration: <br><u>Background</u>
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            The official air-quality statistic reported that Beijing had a <strong>9.9% decline</strong> in the annual concentration of $\text{PM}_{2.5}$ in 2016.
+                        </li>
+                        <li class="fragment">
+                            It was in a sharp contrast to local experience. There was <strong>severe smog</strong> during  winter&rsquo;16.
+                        </li>
+                        <li class="fragment">
+                            Observed $\text{PM}_{2.5}$ level is <strong>signifiantly impacted</strong> by the meteorological condition and presence of other pollutants. So measurements may not reflect the true situation.
                         </li>
                     </ul>
                 </section>
@@ -398,6 +398,75 @@
                         <img data-src="rt2020/finalmodelQQ.png" class="fragment current-visible" data-fragment-index="0" height="500px">
                         <img data-src="rt2020/finalmodelACF.png" class="fragment" height="500px">
                     </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Next step:
+                    </h3>
+                    <ul>
+                        <li>
+                            Now we can use this model to make predictions for next 3 winters.
+                        </li>
+                        <li>
+                            If the distribution of $\text{PM}_{2.5}$ (given the other factors) remains same over the years, we can expect that the predictions will be similar to the actual data.
+                        </li>
+                        <li>
+                            If there is really a decrease in $\text{PM}_{2.5}$ concentration, we can expect that the predictions will be higher than actual data.
+                        </li>
+                        <li>
+                            If there is an increase in $\text{PM}_{2.5}$ concentration, we would expect that the predictions will be lower than actual data.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Predictions:
+                    </h3>
+                    Plot of yearwise median of actual data and fitted values:
+                    <img data-src="rt2020/prediction.png">
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Checking &ldquo;year&rdquo; effect
+                    </h3>
+                    Instead of fitting on the first year, we can consider model for 4 years, and check if there is any &ldquo;year&rdquo; effect. The result is as follows:
+                    <pre class="fragment"><code data-trim data-noescape>
+                        Fixed effects:
+                        |                         Value Std.Error  t-value p-value
+                        paste(seasonal_year)2   0.12747  0.062163  2.05061  0.0463
+                        paste(seasonal_year)3   0.17065  0.062177  2.74457  0.0087
+                        paste(seasonal_year)4   0.22195  0.062188  3.56903  0.0009
+                        ... other effects are similar as before.
+                    </code></pre>
+                    <span class="fragment">
+                        If there was a decrease, the estimates were supposed to be negative. But they are not very significant, and the values are positive.
+                    </span>
+                    <span class="fragment">
+                        <hr>
+                        The results indicate that the air pollution situation was not as good as the official statistic would convey, and improvement, if any, was rather uncertain.
+                    </span>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Effects on <strong>Temparature</strong>
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            Find the variables that influence temparature.
+                        </li>
+                        <li class="fragment">
+                            Check model assumptions and remove multicollinearity.
+                        </li>
+                        <li class="fragment">
+                            Check prediction errors.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Full model:
+                    </h3>
+                    $$TEMP\sim\text{Daily trend + Yearly trend + All attributes}$$
                 </section>
                 <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left">
                     <h3>
