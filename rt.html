@@ -154,7 +154,7 @@
                     </h3>
                     <ul>
                         <li>
-                            Try to model $\text{PM}_{2.5}$ using other variables.
+                            Try to model $\text{PM}_{2.5}$ using other variables. First consider only the winter of first year.
                         </li>
                         <li>
                             Check the model assumptions.
@@ -212,12 +212,12 @@
                         F-statistic:  1073 on 19 and 25900 DF,  p-value: < 2.2e-16
                     </code></pre>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                <!-- <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
                         Model with meteorological factors:
                     </h3>
                     <img data-src="rt2020/basicmodelhistogram.png">
-                </section>
+                </section> -->
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
                         Include pollutants:
@@ -248,7 +248,7 @@
                         NO2                   9.185e-01  1.852e-02  49.597  < 2e-16 ***
                         CO                    2.721e-02  3.945e-04  68.985  < 2e-16 ***
                         O3                    6.985e-01  2.422e-02  28.844  < 2e-16 ***
-                        .... and station effects                                     ***
+                        .... and station effects                                    ***
                         ---
                         Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -262,6 +262,142 @@
                         Include pollutants:
                     </h3>
                     <img data-src="rt2020/model0.1histogram.png">
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
+                    <h3>
+                        Modifications:
+                    </h3>
+                    <ul>
+                        <li>
+                            Skewed error. Try to model $log(PM_{2.5})$
+                        </li>
+                        <li>
+                            Explore relationships. May not be linear.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Plots:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/piecemodelSO2.png" class="fragment fade-out" data-fragment-index="0">
+                        <img data-src="rt2020/piecemodelNO2.png" class="fragment current-visible" data-fragment-index="0">
+                        <img data-src="rt2020/PM2.5vsTEMP.png" class="fragment">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Piecewise linear model:
+                    </h3>
+                    $$log(PM_{2.5})\sim\text{linear with meteorological factors and}\\ \text{piecewise linear with }log_e\text{ of }SO_2, NO_2, CO, O_3$$
+                    <pre><code data-trim data-noescape>
+                        |                        Estimate Std. Error t value Pr(>|t|)    
+                        (Intercept)            37.0150635  3.4655333  10.681  < 2e-16 ***
+                        sin(2 * pi * No/24)    -0.0762300  0.0043478 -17.533  < 2e-16 ***
+                        cos(2 * pi * No/24)     0.0724955  0.0041475  17.479  < 2e-16 ***
+                        log(SO2)                0.2822197  0.0086411  32.660  < 2e-16 ***
+                        I(log(SO2) * SO2large)  0.0637371  0.0115529   5.517 3.48e-08 ***
+                        SO2large               -0.0515072  0.0361220  -1.426   0.1539    
+                        log(NO2)                0.1197390  0.0101626  11.782  < 2e-16 ***
+                        I(log(NO2) * NO2large)  0.3560944  0.0162255  21.947  < 2e-16 ***
+                        NO2large               -1.1970848  0.0581545 -20.585  < 2e-16 ***
+                        log(CO)                 0.3853594  0.0069738  55.258  < 2e-16 ***
+                        I(log(CO) * COlarge)    0.0104144  0.0011900   8.752  < 2e-16 ***
+                        log(O3)                -0.0208861  0.0034980  -5.971 2.39e-09 ***
+                        DEWP                    0.0429893  0.0006058  70.959  < 2e-16 ***
+                        log(PRES)              -5.4004590  0.5011932 -10.775  < 2e-16 ***
+                        RAIN                    0.2194079  0.0864746   2.537   0.0112 *  
+                        month_number            0.1214104  0.0037977  31.970  < 2e-16 ***<!-- stationChangping        0.1444035  0.0141397  10.213  < 2e-16 ***
+                        stationDingling         0.4090198  0.0140340  29.145  < 2e-16 ***
+                        stationDongsi           0.1732482  0.0142363  12.169  < 2e-16 ***
+                        stationGuanyuan         0.0153284  0.0135513   1.131   0.2580    
+                        stationGucheng          0.0039919  0.0147456   0.271   0.7866    
+                        stationHuairou          0.2701692  0.0140761  19.193  < 2e-16 ***
+                        stationNongzhanguan     0.1356339  0.0138033   9.826  < 2e-16 ***
+                        stationShunyi           0.2926349  0.0137781  21.239  < 2e-16 ***
+                        stationTiantan          0.1555230  0.0138771  11.207  < 2e-16 ***
+                        stationWanliu          -0.0210734  0.0139238  -1.513   0.1302    
+                        stationWanshouxigong    0.0308787  0.0134974   2.288   0.0222 *   -->
+                        .... and station effects                                      ***
+                        ---
+                        Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+                        Residual standard error: 0.4415 on 25873 degrees of freedom
+                        Multiple R-squared:  0.8662,    Adjusted R-squared:  0.866 
+                        F-statistic:  6439 on 26 and 25873 DF,  p-value: < 2.2e-16
+                    </code></pre>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Piecewise linear model:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/model2histogram.png" class="fragment fade-out" data-fragment-index="0" height="500px">
+                        <img data-src="rt2020/model2diag1.png" class="fragment current-visible" data-fragment-index="0" height="500px">
+                        <img data-src="rt2020/model2diag2.png" class="fragment current-visible" data-fragment-index="1" height="500px">
+                        <img data-src="rt2020/model2diag3.png" class="fragment current-visible" data-fragment-index="2" height="500px">
+                        <img data-src="rt2020/model2acf.png" class="fragment" height="500px">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Spatio-temporal model:
+                    </h3>
+                    <ul>
+                        <li>
+                            Include subject-specific random intercept for different stations.
+                        </li>
+                        <li>
+                            Consider $AR(1)$ structure for temporal autocorrelation.
+                        </li>
+                        <li class="fragment">
+                            Model: $$log(PM_{2.5})_{it}=\text{Linear effects as before }+b_i+\epsilon_{it},\\ i=1,\ldots, 12\text{ and }t=1,\ldots, 2160,\\ b_1,\ldots, b_{12}\sim N(0, \sigma_b^2)\text{ i.i.d., }\epsilon_{it}\sim  N(0, \sigma_{\epsilon}^2),\\ cor(\epsilon_{it}, \epsilon_{jt})=0\text{ for }i\ne j\text{ and }cor(\epsilon_{it}, \epsilon_{i,t+k})=\rho^k$$
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Spatio-temporal model:
+                    </h3>
+                    <pre><code data-trim data-noescape>
+                        Random effects:
+                        |       (Intercept) Residual
+                        StdDev:   0.1361253 0.441552
+
+                        Correlation Structure: AR(1)
+                        |Parameter estimate(s):
+                        |     Phi
+                        0.7139503
+
+                        Fixed effects:
+                        |                         Value Std.Error   t-value p-value
+                        (Intercept)            37.47478  3.459479  10.83249  0.0000
+                        sin(2 * pi * No/24)    -0.07634  0.004346 -17.56476  0.0000
+                        cos(2 * pi * No/24)     0.07215  0.004135  17.44906  0.0000
+                        log(SO2)                0.28872  0.007337  39.35026  0.0000
+                        I(log(SO2) * SO2large)  0.04819  0.003589  13.42904  0.0000
+                        log(NO2)                0.11614  0.009887  11.74599  0.0000
+                        I(log(NO2) * NO2large)  0.36453  0.014956  24.37338  0.0000
+                        NO2large               -1.22684  0.053631 -22.87568  0.0000
+                        log(CO)                 0.38499  0.006971  55.22699  0.0000
+                        I(log(CO) * COlarge)    0.01084  0.001159   9.34849  0.0000
+                        log(O3)                -0.02004  0.003455  -5.79859  0.0000
+                        DEWP                    0.04296  0.000605  70.96695  0.0000
+                        log(PRES)              -5.44853  0.500311 -10.89029  0.0000
+                        RAIN                    0.21370  0.086396   2.47353  0.0134
+                        month_number            0.12179  0.003787  32.16372  0.0000
+                    </code></pre>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Spatio-temporal model:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/finalmodelhistogram.png" class="fragment fade-out" data-fragment-index="0" height="500px">
+                        <img data-src="rt2020/finalmodelQQ.png" class="fragment current-visible" data-fragment-index="0" height="500px">
+                        <img data-src="rt2020/finalmodelACF.png" class="fragment" height="500px">
+                    </div>
                 </section>
                 <section data-background="paper/bg.jpg" data-background-opacity=0.2 style="text-align: left">
                     <h3>
