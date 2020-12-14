@@ -78,10 +78,10 @@
                             Is there a <strong>decrease in $\mathbf{\text{PM}_{2.5}}$ concentration</strong> over the years?
                         </li>
                         <li>
-                            What are the effects of the variables on <strong>temparature</strong>?
+                            What are the factors that influence <strong>rainfall</strong>?
                         </li>
                         <li>
-                            What are the factors that influence <strong>rainfall</strong>?
+                            What are the effects of the variables on <strong>temparature</strong>?
                         </li>
                     </ul>
                 </section>
@@ -446,7 +446,7 @@
                         The results indicate that the air pollution situation was not as good as the official statistic would convey, and improvement, if any, was rather uncertain.
                     </span>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
                     <h3>
                         Effects on <strong>Rainfall</strong>
                     </h3>
@@ -458,6 +458,22 @@
                             Check accuracy on training and test data.
                         </li>
                     </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
+                    <h3>
+                        Effects on <strong>Rainfall</strong>
+                    </h3>
+                    <ul>
+                        <li>
+                            Fit a model to predict rainfall.
+                        </li>
+                        <li>
+                            Check accuracy on training and test data.
+                        </li>
+                    </ul>
+                    <div style="text-align: center;">
+                        <img data-src="rt2020/rain_with_time.png" height="450px">
+                    </div>
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
                     <h3>
@@ -761,7 +777,9 @@
                         <span class="fragment current-visible" data-fragment-index="0">
                             Performing Ridge regression on the data
                             <br>
-                            <img data-src="rt2020/ridge_lambda.jpeg"  height="450px">
+                            <img data-src="rt2020/ridge_lambda.jpeg"  height="425px">
+                            <br>
+                            $$\lambda=0.9430256$$
                         </span>
                         <span class="fragment current-visible" data-fragment-index="1">
                             Coefficients
@@ -769,14 +787,14 @@
                             <img data-src="rt2020/ridge_coeff.png"  height="400px">
                         </span>
                         <span class="fragment current-visible" data-fragment-index="2">
-                            Correlation
-                            <br>
-                            <img data-src="rt2020/corplot2.jpeg"  height="450px">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="3">
                             
                             <br>
                             <img data-src="rt2020/ridge.jpeg"  height="450px">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="3">
+                            Correlation
+                            <br>
+                            <img data-src="rt2020/corplot2.jpeg"  height="450px">
                         </span>
                         <span class="fragment">
                             Final model
