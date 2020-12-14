@@ -448,142 +448,6 @@
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
                     <h3>
-                        Effects on <strong>Temparature</strong>
-                    </h3>
-                    <ul>
-                        <li>
-                            Find the variables that influence temparature.
-                        </li>
-                        <li>
-                            Check model assumptions and remove multicollinearity.
-                        </li>
-                        <li>
-                            Check prediction errors.
-                        </li>
-                    </ul>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Full model:
-                    </h3>
-                    $$TEMP\sim\text{Daily trend + Yearly trend + All attributes}\\ \text{(except RAIN)}$$
-                    <div style="text-align: center;" class="fragment">
-                        Fitted on 1st seasonal year (i.e., March&lsquo;13-February&lsquo;14)
-                        <img data-src="rt2020/rain_fullmodel.png">
-                        <br>
-                        $$\text{Multiple }R^2=0.9343$$
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Variable selection:
-                    </h3>
-                    <ul>
-                        <li>
-                            <strong>Forward selection:</strong> All variables except $NO_2$ were selected.
-                        </li>
-                        <li>
-                            <strong>Backward elimination:</strong> Same result.
-                        </li>
-                        <li class="fragment">
-                            Fitted model:
-                            <div style="text-align: center;">
-                                <img data-src="rt2020/rain_variableselection.png">
-                                <br>
-                                $$\text{Multiple }R^2=0.9343$$
-                            </div>
-                        </li>
-                    </ul>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Diagnostics:
-                    </h3>
-                    <div class="r-stack">
-                        <img data-src="rt2020/rain_selectiondiag1.png" class="fragment fade-out" data-fragment-index="0">
-                        <img data-src="rt2020/rain_selectiondiag2.png" class="fragment current-visible" data-fragment-index="0">
-                        <img data-src="rt2020/rain_selectiondiag3.png" class="fragment current-visible" data-fragment-index="1">
-                        <img data-src="rt2020/rain_selectiondiag4.png" class="fragment current-visible" data-fragment-index="2">
-                        <img data-src="rt2020/rain_selectiondiag5.png" class="fragment">
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Prediction error:
-                    </h3>
-                    <table style="color: #fff;">
-                        <thead>
-                            <tr>
-                                <th>Year</th>
-                                <th>Data</th>
-                                <th>MSE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Seasonal year 1</td>
-                                <td>Training data</td>
-                                <td>2.861424</td>
-                            </tr>
-                            <tr>
-                                <td>Seasonal year 2</td>
-                                <td>Test data</td>
-                                <td>3.419270</td>
-                            </tr>
-                            <tr>
-                                <td>Seasonal year 3</td>
-                                <td>Test data</td>
-                                <td>3.638287</td>
-                            </tr>
-                            <tr>
-                                <td>Seasonal year 4</td>
-                                <td>Test data</td>
-                                <td>3.588154</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Handle multicollinearity
-                    </h3>
-                    <div class="r-stack" style="text-align: center;">
-                        <span class="fragment fade-out" data-fragment-index="0">
-                            Correlation structure between explanatory variables
-                            <br>
-                            <img data-src="rt2020/corplot1.jpeg" height="450px">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="0">
-                            Performing Ridge regression on the data
-                            <br>
-                            <img data-src="rt2020/ridge_lambda.jpeg"  height="450px">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="1">
-                            Coefficients
-                            <br>
-                            <img data-src="rt2020/ridge_coeff.png"  height="400px">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="2">
-                            Correlation
-                            <br>
-                            <img data-src="rt2020/corplot2.jpeg"  height="450px">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="3">
-                            
-                            <br>
-                            <img data-src="rt2020/ridge.jpeg"  height="450px">
-                        </span>
-                        <span class="fragment">
-                            Final model
-                            <br>
-                            <img data-src="rt2020/ridge_model.png"  height="400px">
-                            <br>
-                            $$\text{Multiple }R^2=0.9319$$
-                        </span>
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
-                    <h3>
                         Effects on <strong>Rainfall</strong>
                     </h3>
                     <ul>
@@ -787,10 +651,146 @@
                     </table>
                     </div>
                 </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Effects on <strong>Temparature</strong>
+                    </h3>
+                    <ul>
+                        <li>
+                            Find the variables that influence temparature.
+                        </li>
+                        <li>
+                            Check model assumptions and remove multicollinearity.
+                        </li>
+                        <li>
+                            Check prediction errors.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Full model:
+                    </h3>
+                    $$TEMP\sim\text{Daily trend + Yearly trend + All attributes}\\ \text{(except RAIN)}$$
+                    <div style="text-align: center;" class="fragment">
+                        Fitted on 1st seasonal year (i.e., March&lsquo;13-February&lsquo;14)
+                        <img data-src="rt2020/rain_fullmodel.png">
+                        <br>
+                        $$\text{Multiple }R^2=0.9343$$
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Variable selection:
+                    </h3>
+                    <ul>
+                        <li>
+                            <strong>Forward selection:</strong> All variables except $NO_2$ were selected.
+                        </li>
+                        <li>
+                            <strong>Backward elimination:</strong> Same result.
+                        </li>
+                        <li class="fragment">
+                            Fitted model:
+                            <div style="text-align: center;">
+                                <img data-src="rt2020/rain_variableselection.png">
+                                <br>
+                                $$\text{Multiple }R^2=0.9343$$
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Diagnostics:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/rain_selectiondiag1.png" class="fragment fade-out" data-fragment-index="0">
+                        <img data-src="rt2020/rain_selectiondiag2.png" class="fragment current-visible" data-fragment-index="0">
+                        <img data-src="rt2020/rain_selectiondiag3.png" class="fragment current-visible" data-fragment-index="1">
+                        <img data-src="rt2020/rain_selectiondiag4.png" class="fragment current-visible" data-fragment-index="2">
+                        <img data-src="rt2020/rain_selectiondiag5.png" class="fragment">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Prediction error:
+                    </h3>
+                    <table style="color: #fff;">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Data</th>
+                                <th>MSE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Seasonal year 1</td>
+                                <td>Training data</td>
+                                <td>2.861424</td>
+                            </tr>
+                            <tr>
+                                <td>Seasonal year 2</td>
+                                <td>Test data</td>
+                                <td>3.419270</td>
+                            </tr>
+                            <tr>
+                                <td>Seasonal year 3</td>
+                                <td>Test data</td>
+                                <td>3.638287</td>
+                            </tr>
+                            <tr>
+                                <td>Seasonal year 4</td>
+                                <td>Test data</td>
+                                <td>3.588154</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Handle multicollinearity
+                    </h3>
+                    <div class="r-stack" style="text-align: center;">
+                        <span class="fragment fade-out" data-fragment-index="0">
+                            Correlation structure between explanatory variables
+                            <br>
+                            <img data-src="rt2020/corplot1.jpeg" height="450px">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="0">
+                            Performing Ridge regression on the data
+                            <br>
+                            <img data-src="rt2020/ridge_lambda.jpeg"  height="450px">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="1">
+                            Coefficients
+                            <br>
+                            <img data-src="rt2020/ridge_coeff.png"  height="400px">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="2">
+                            Correlation
+                            <br>
+                            <img data-src="rt2020/corplot2.jpeg"  height="450px">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="3">
+                            
+                            <br>
+                            <img data-src="rt2020/ridge.jpeg"  height="450px">
+                        </span>
+                        <span class="fragment">
+                            Final model
+                            <br>
+                            <img data-src="rt2020/ridge_model.png"  height="400px">
+                            <br>
+                            $$\text{Multiple }R^2=0.9319$$
+                        </span>
+                    </div>
+                </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-background-transition="zoom">
                     <ul>
                         <li>
-                            <u>Reference:</u>
+                            <u>References:</u>
                             <ul>
                                 <li>
                                     Dataset obtained from <strong>UCI Machine Learning Repository</strong>
