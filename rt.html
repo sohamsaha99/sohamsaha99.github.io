@@ -57,7 +57,7 @@
                             Attributes are:
                             <ul>
                                 <li>
-                                    $\text{PM}_{2.5}\text{, PM}_{10}\text{, SO}_2\text{, NO}_2\text{, O}_3$
+                                    $\text{PM}_{2.5}\text{, PM}_{10}\text{, SO}_2\text{, NO}_2\text{, CO, O}_3$
                                 </li>
                                 <li>
                                     Temparature, Pressure, Dew-point, Wind Speed, Wind direction, Rain
@@ -127,7 +127,7 @@
                             It was in a sharp contrast to local experience. There was <strong>severe smog</strong> during  winter&rsquo;16.
                         </li>
                         <li class="fragment">
-                            Observed $\text{PM}_{2.5}$ level is <strong>signifiantly impacted</strong> by the meteorological condition and presence of other pollutants. So measurements may not reflect the true situation.
+                            Observed $\text{PM}_{2.5}$ level is <strong>significantly impacted</strong> by the meteorological condition and presence of other pollutants. So measurements may not reflect the true situation.
                         </li>
                     </ul>
                 </section>
@@ -466,7 +466,7 @@
                     <h3>
                         Full model:
                     </h3>
-                    $$TEMP\sim\text{Daily trend + Yearly trend + All attributes}$$
+                    $$TEMP\sim\text{Daily trend + Yearly trend + All attributes}\\ \text{(except RAIN)}$$
                     <div style="text-align: center;" class="fragment">
                         Fitted on 1st seasonal year (i.e., March&lsquo;13-February&lsquo;14)
                         <img data-src="rt2020/rain_fullmodel.png">
@@ -654,12 +654,12 @@
                             <tr>
                                 <td>Yes</td>
                                 <td>20.44</td>
-                                <td>79.56</td>
+                                <td>0.41</td>
                             </tr>
                             <tr>
                                 <td>No</td>
-                                <td>0.41</td>
-                                <td>99.51</td>
+                                <td>79.56</td>
+                                <td>99.59</td>
                             </tr>
                         </tbody>
                     </table>
@@ -684,11 +684,11 @@
                             <tr>
                                 <td>Yes</td>
                                 <td>17.71</td>
-                                <td>82.29</td>
+                                <td>0.16</td>
                             </tr>
                             <tr>
                                 <td>No</td>
-                                <td>0.16</td>
+                                <td>82.29</td>
                                 <td>99.84</td>
                             </tr>
                         </tbody>
@@ -746,11 +746,11 @@
                             <tr>
                                 <td>Yes</td>
                                 <td>8.83</td>
-                                <td>91.17</td>
+                                <td>0.10</td>
                             </tr>
                             <tr>
                                 <td>No</td>
-                                <td>0.10</td>
+                                <td>91.17</td>
                                 <td>99.90</td>
                             </tr>
                         </tbody>
@@ -776,11 +776,11 @@
                             <tr>
                                 <td>Yes</td>
                                 <td>7.97</td>
-                                <td>92.03</td>
+                                <td>0.04</td>
                             </tr>
                             <tr>
                                 <td>No</td>
-                                <td>0.04</td>
+                                <td>92.03</td>
                                 <td>99.96</td>
                             </tr>
                         </tbody>
