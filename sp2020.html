@@ -1,0 +1,895 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>Markov Decision Processes (MDP)</title>
+
+        <meta name="description" content="SP2020">
+        <meta name="author" content="Riddhiman Saha">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/night.css" id="theme">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+        <link href="css/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+        <link href="css/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-background="sp2020/cartpole_preview_loop.gif" data-background-opacity=0.05 style="font-size: 37px;">
+                    <!-- <video autoplay="autoplay" controls>
+                        <source data-src="sp2020/2048_preview.webm" type="video/webm">
+                    </video> -->
+                    <img data-src="sp2020/2048_preview.gif" style="margin-bottom: 30px;">
+                    <h3 style="color: #f82249DD; text-align: center;">
+                        <b>Markov Decision Processes<br>Theory and Applications</b>
+                    </h3>
+                    <!-- <br> -->
+                    <hr>
+                    <!-- <br> -->
+                    <div style="text-align: center;">
+                        Group Project
+                        <br>
+                        <strong>Stochastic Processes</strong>
+                        <br>
+                        M.Stat. $1^{\text{st}}$ Year, ISI Kolkata
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left;">
+                    <h3>
+                        Dataset Description:
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            Hourly data measured by 12 sites of Beijing Municipal Environmental Monitoring Center.
+                        </li>
+                        <li class="fragment">
+                            Contains data from <strong>March &rsquo;13</strong> to <strong> February &rsquo;17</strong>.
+                        </li>
+                        <li class="fragment">
+                            Attributes are:
+                            <ul>
+                                <li>
+                                    $\text{PM}_{2.5}\text{, PM}_{10}\text{, SO}_2\text{, NO}_2\text{, CO, O}_3$
+                                </li>
+                                <li>
+                                    Temparature, Pressure, Dew-point, Wind Speed, Wind direction, Rain
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fragment">
+                            Meteorological data are matched with the nearest weather station from the China Meteorological Administration.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left;">
+                    <h3>
+                        We are going to discuss:
+                    </h3>
+                    <ul>
+                        <li>
+                            Is there a <strong>decrease in $\mathbf{\text{PM}_{2.5}}$ concentration</strong> over the years?
+                        </li>
+                        <li>
+                            What are the factors that influence <strong>rainfall</strong>?
+                        </li>
+                        <li>
+                            What are the effects of the variables on <strong>temparature</strong>?
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Before starting:
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            Instead of calendar years, we shall work with seasonal years.
+                        </li>
+                        <li class="fragment">
+                            4 seasons in a year:
+                            <ul>
+                                <li>
+                                    Spring (March - May)
+                                </li>
+                                <li>
+                                    Summer (June - August)
+                                </li>
+                                <li>
+                                    Autumn (September - November)
+                                </li>
+                                <li>
+                                    Winter (December - February)
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fragment">
+                            Hence, for a given year and season, there are nearly 2160 observations per station.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        $\mathbf{\text{PM}_{2.5}}$ concentration: <br><u>Background</u>
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            The official air-quality statistic reported that Beijing had a <strong>9.9% decline</strong> in the annual concentration of $\text{PM}_{2.5}$ in 2016.
+                        </li>
+                        <li class="fragment">
+                            It was in a sharp contrast to local experience. There was <strong>severe smog</strong> during  winter&rsquo;16.
+                        </li>
+                        <li class="fragment">
+                            Observed $\text{PM}_{2.5}$ level is <strong>significantly impacted</strong> by the meteorological condition and presence of other pollutants. So measurements may not reflect the true situation.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="font-size: 36px;">
+                    <h3>
+                        Centrality measures
+                    </h3>
+                    <div class="r-stack">
+                        <span class="fragment fade-out" data-fragment-index="3">
+                            <img data-src="rt2020/Yearwise.png" height="450px">
+                            <br>
+                            <span class="fragment fade-in-then-out" data-fragment-index="2" style="text-align: center; align-content: center;">
+                                <strong>&ldquo;Are you watching closely?&rdquo;</strong>
+                            </span>
+                        </span>
+                        <span class="fragment" data-fragment-index="3">
+                            <img data-src="rt2020/seasonwise.png">
+                        </span>
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Goal
+                    </h3>
+                    <ul>
+                        <li>
+                            Try to model $\text{PM}_{2.5}$ using other variables. First consider only the winter of first year.
+                        </li>
+                        <li>
+                            Check the model assumptions.
+                        </li>
+                        <li>
+                            See how does a same model perform for different years. Also check, whether a factor of &ldquo;year&rdquo; improves the model.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Effect of time:
+                    </h3>
+                    <div style="text-align: center;" class="r-stack">
+                        <span class="fragment fade-out" data-fragment-index="0">
+                            <img data-src="rt2020/dailytrend.png">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="0">
+                            <img src="rt2020/montheffect.png">
+                        </span>
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Model with meteorological factors:
+                    </h3>
+                    $$\text{PM}_{2.5} \sim sin\left(\frac{2\pi h}{24}\right)+cos\left(\frac{2\pi h}{24}\right) + month+ TEMP\\+PRES+DEWP+WSPM+RAIN+station$$
+                    <pre class="fragment"><code data-trim data-noescape>
+                        |                       Estimate Std. Error t value Pr(>|t|)    
+                        (Intercept)            150.82776   96.09912   1.570  0.11654    
+                        sin(2 * pi * hour/24)  -10.42687    0.75967 -13.725  < 2e-16 ***
+                        cos(2 * pi * hour/24)    0.03913    0.84293   0.046  0.96298    
+                        TEMP                    -3.32817    0.16970 -19.612  < 2e-16 ***
+                        PRES                     0.04890    0.09464   0.517  0.60536    
+                        DEWP                    10.00022    0.09677 103.335  < 2e-16 ***<!-- stationChangping        19.13986    2.41744   7.917 2.52e-15 ***
+                        stationDingling          9.63755    2.41744   3.987 6.72e-05 ***
+                        stationDongsi           23.40131    2.39027   9.790  < 2e-16 ***
+                        stationGuanyuan          4.36065    2.38207   1.831  0.06717 .  
+                        stationGucheng          11.34187    2.40378   4.718 2.39e-06 ***
+                        stationHuairou           1.08693    2.45238   0.443  0.65761    
+                        stationNongzhanguan     25.06289    2.39027  10.485  < 2e-16 ***
+                        stationShunyi            7.83615    2.39250   3.275  0.00106 ** 
+                        stationTiantan          17.66983    2.39027   7.392 1.49e-13 ***
+                        stationWanliu           18.57454    2.38207   7.798 6.54e-15 ***
+                        stationWanshouxigong    20.79018    2.38581   8.714  < 2e-16 *** -->
+                        month_number            13.68644    0.64482  21.225  < 2e-16 ***
+                        RAIN                  -205.74689   15.28953 -13.457  < 2e-16 ***
+                        WSPM                    -6.73357    0.47992 -14.031  < 2e-16 ***
+                        .... and station effects                                     ***
+                        ---
+                        Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+                        Residual standard error: 78.28 on 25900 degrees of freedom
+                        Multiple R-squared:  0.4404,    Adjusted R-squared:   0.44 
+                        F-statistic:  1073 on 19 and 25900 DF,  p-value: < 2.2e-16
+                    </code></pre>
+                </section>
+                <!-- <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Model with meteorological factors:
+                    </h3>
+                    <img data-src="rt2020/basicmodelhistogram.png">
+                </section> -->
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Include pollutants:
+                    </h3>
+                    $$\text{Include }SO_2, NO_2, CO, O_3$$
+                    <pre class="fragment"><code data-trim data-noescape>
+                        |                      Estimate Std. Error t value Pr(>|t|)    
+                        (Intercept)          -1.132e+02  6.318e+01  -1.792   0.0732 .  
+                        sin(2 * pi * No/24)   2.368e-01  5.662e-01   0.418   0.6758    
+                        cos(2 * pi * No/24)   6.020e+00  5.316e-01  11.323  < 2e-16 ***
+                        month_number          1.281e+01  4.471e-01  28.645  < 2e-16 ***
+                        DEWP                  4.462e+00  7.559e-02  59.032  < 2e-16 ***
+                        WSPM                  3.107e+00  3.303e-01   9.405  < 2e-16 ***
+                        PRES                  8.761e-02  6.219e-02   1.409   0.1589    
+                        TEMP                 -8.768e-01  1.155e-01  -7.594 3.22e-14 ***
+                        RAIN                 -4.100e+01  1.006e+01  -4.074 4.63e-05 ***<!-- stationChangping      6.320e+00  1.595e+00   3.963 7.44e-05 ***
+                        stationDingling       2.874e+01  1.603e+00  17.935  < 2e-16 ***
+                        stationDongsi         9.506e+00  1.580e+00   6.016 1.82e-09 ***
+                        stationGuanyuan      -3.470e+00  1.568e+00  -2.213   0.0269 *  
+                        stationGucheng       -1.928e+01  1.639e+00 -11.761  < 2e-16 ***
+                        stationHuairou        1.467e+01  1.643e+00   8.931  < 2e-16 ***
+                        stationNongzhanguan   6.680e+00  1.572e+00   4.249 2.16e-05 ***
+                        stationShunyi         1.738e+01  1.578e+00  11.012  < 2e-16 ***
+                        stationTiantan        3.646e+00  1.586e+00   2.300   0.0215 *  
+                        stationWanliu        -1.553e+01  1.613e+00  -9.628  < 2e-16 ***
+                        stationWanshouxigong  1.653e+00  1.569e+00   1.053   0.2921     -->
+                        SO2                   4.469e-01  1.399e-02  31.942  < 2e-16 ***
+                        NO2                   9.185e-01  1.852e-02  49.597  < 2e-16 ***
+                        CO                    2.721e-02  3.945e-04  68.985  < 2e-16 ***
+                        O3                    6.985e-01  2.422e-02  28.844  < 2e-16 ***
+                        .... and station effects                                    ***
+                        ---
+                        Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+                        Residual standard error: 51.3 on 25896 degrees of freedom
+                        Multiple R-squared:  0.7597,    Adjusted R-squared:  0.7595 
+                        F-statistic:  3560 on 23 and 25896 DF,  p-value: < 2.2e-16
+                    </code></pre>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Include pollutants:
+                    </h3>
+                    <img data-src="rt2020/model0.1histogram.png">
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
+                    <h3>
+                        Modifications:
+                    </h3>
+                    <ul>
+                        <li>
+                            Skewed error. Try to model $log(PM_{2.5})$
+                        </li>
+                        <li>
+                            Explore relationships. May not be linear.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Plots:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/piecemodelSO2.png" class="fragment fade-out" data-fragment-index="0">
+                        <img data-src="rt2020/piecemodelNO2.png" class="fragment current-visible" data-fragment-index="0">
+                        <img data-src="rt2020/PM2.5vsTEMP.png" class="fragment">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Piecewise linear model:
+                    </h3>
+                    $$log(PM_{2.5})\sim\text{linear with meteorological factors and}\\ \text{piecewise linear with }log_e\text{ of }SO_2, NO_2, CO, O_3$$
+                    <pre><code data-trim data-noescape>
+                        |                        Estimate Std. Error t value Pr(>|t|)    
+                        (Intercept)            37.0150635  3.4655333  10.681  < 2e-16 ***
+                        sin(2 * pi * No/24)    -0.0762300  0.0043478 -17.533  < 2e-16 ***
+                        cos(2 * pi * No/24)     0.0724955  0.0041475  17.479  < 2e-16 ***
+                        log(SO2)                0.2822197  0.0086411  32.660  < 2e-16 ***
+                        I(log(SO2) * SO2large)  0.0637371  0.0115529   5.517 3.48e-08 ***
+                        SO2large               -0.0515072  0.0361220  -1.426   0.1539    
+                        log(NO2)                0.1197390  0.0101626  11.782  < 2e-16 ***
+                        I(log(NO2) * NO2large)  0.3560944  0.0162255  21.947  < 2e-16 ***
+                        NO2large               -1.1970848  0.0581545 -20.585  < 2e-16 ***
+                        log(CO)                 0.3853594  0.0069738  55.258  < 2e-16 ***
+                        I(log(CO) * COlarge)    0.0104144  0.0011900   8.752  < 2e-16 ***
+                        log(O3)                -0.0208861  0.0034980  -5.971 2.39e-09 ***
+                        DEWP                    0.0429893  0.0006058  70.959  < 2e-16 ***
+                        log(PRES)              -5.4004590  0.5011932 -10.775  < 2e-16 ***
+                        RAIN                    0.2194079  0.0864746   2.537   0.0112 *  
+                        month_number            0.1214104  0.0037977  31.970  < 2e-16 ***<!-- stationChangping        0.1444035  0.0141397  10.213  < 2e-16 ***
+                        stationDingling         0.4090198  0.0140340  29.145  < 2e-16 ***
+                        stationDongsi           0.1732482  0.0142363  12.169  < 2e-16 ***
+                        stationGuanyuan         0.0153284  0.0135513   1.131   0.2580    
+                        stationGucheng          0.0039919  0.0147456   0.271   0.7866    
+                        stationHuairou          0.2701692  0.0140761  19.193  < 2e-16 ***
+                        stationNongzhanguan     0.1356339  0.0138033   9.826  < 2e-16 ***
+                        stationShunyi           0.2926349  0.0137781  21.239  < 2e-16 ***
+                        stationTiantan          0.1555230  0.0138771  11.207  < 2e-16 ***
+                        stationWanliu          -0.0210734  0.0139238  -1.513   0.1302    
+                        stationWanshouxigong    0.0308787  0.0134974   2.288   0.0222 *   -->
+                        .... and station effects                                      ***
+                        ---
+                        Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+                        Residual standard error: 0.4415 on 25873 degrees of freedom
+                        Multiple R-squared:  0.8662,    Adjusted R-squared:  0.866 
+                        F-statistic:  6439 on 26 and 25873 DF,  p-value: < 2.2e-16
+                    </code></pre>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Piecewise linear model:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/model2histogram.png" class="fragment fade-out" data-fragment-index="0" height="500px">
+                        <img data-src="rt2020/model2diag1.png" class="fragment current-visible" data-fragment-index="0" height="500px">
+                        <img data-src="rt2020/model2diag2.png" class="fragment current-visible" data-fragment-index="1" height="500px">
+                        <img data-src="rt2020/model2diag3.png" class="fragment current-visible" data-fragment-index="2" height="500px">
+                        <img data-src="rt2020/model2acf.png" class="fragment" height="500px">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Spatio-temporal model:
+                    </h3>
+                    <ul>
+                        <li>
+                            Include subject-specific random intercept for different stations.
+                        </li>
+                        <li>
+                            Consider $AR(1)$ structure for temporal autocorrelation.
+                        </li>
+                        <li class="fragment">
+                            Model: $$log(PM_{2.5})_{it}=\text{Linear effects as before }+b_i+\epsilon_{it},\\ i=1,\ldots, 12\text{ and }t=1,\ldots, 2160,\\ b_1,\ldots, b_{12}\sim N(0, \sigma_b^2)\text{ i.i.d., }\epsilon_{it}\sim  N(0, \sigma_{\epsilon}^2),\\ cor(\epsilon_{it}, \epsilon_{jt})=0\text{ for }i\ne j\text{ and }cor(\epsilon_{it}, \epsilon_{i,t+k})=\rho^k$$
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Spatio-temporal model:
+                    </h3>
+                    <pre><code data-trim data-noescape>
+                        Random effects:
+                        |       (Intercept) Residual
+                        StdDev:   0.1361253 0.441552
+
+                        Correlation Structure: AR(1)
+                        |Parameter estimate(s):
+                        |     Phi
+                        0.7139503
+
+                        Fixed effects:
+                        |                         Value Std.Error   t-value p-value
+                        (Intercept)            37.47478  3.459479  10.83249  0.0000
+                        sin(2 * pi * No/24)    -0.07634  0.004346 -17.56476  0.0000
+                        cos(2 * pi * No/24)     0.07215  0.004135  17.44906  0.0000
+                        log(SO2)                0.28872  0.007337  39.35026  0.0000
+                        I(log(SO2) * SO2large)  0.04819  0.003589  13.42904  0.0000
+                        log(NO2)                0.11614  0.009887  11.74599  0.0000
+                        I(log(NO2) * NO2large)  0.36453  0.014956  24.37338  0.0000
+                        NO2large               -1.22684  0.053631 -22.87568  0.0000
+                        log(CO)                 0.38499  0.006971  55.22699  0.0000
+                        I(log(CO) * COlarge)    0.01084  0.001159   9.34849  0.0000
+                        log(O3)                -0.02004  0.003455  -5.79859  0.0000
+                        DEWP                    0.04296  0.000605  70.96695  0.0000
+                        log(PRES)              -5.44853  0.500311 -10.89029  0.0000
+                        RAIN                    0.21370  0.086396   2.47353  0.0134
+                        month_number            0.12179  0.003787  32.16372  0.0000
+                    </code></pre>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Spatio-temporal model:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/finalmodelhistogram.png" class="fragment fade-out" data-fragment-index="0" height="500px">
+                        <img data-src="rt2020/finalmodelQQ.png" class="fragment current-visible" data-fragment-index="0" height="500px">
+                        <img data-src="rt2020/finalmodelACF.png" class="fragment" height="500px">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Next step:
+                    </h3>
+                    <ul>
+                        <li>
+                            Now we can use this model to make predictions for next 3 winters.
+                        </li>
+                        <li>
+                            If the distribution of $\text{PM}_{2.5}$ (given the other factors) remains same over the years, we can expect that the predictions will be similar to the actual data.
+                        </li>
+                        <li>
+                            If there is really a decrease in $\text{PM}_{2.5}$ concentration, we can expect that the predictions will be higher than actual data.
+                        </li>
+                        <li>
+                            If there is an increase in $\text{PM}_{2.5}$ concentration, we would expect that the predictions will be lower than actual data.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Predictions:
+                    </h3>
+                    Plot of yearwise median of actual data and predicted values:
+                    <img data-src="rt2020/prediction.png">
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Checking &ldquo;year&rdquo; effect
+                    </h3>
+                    Instead of fitting on the first year, we can consider model for 4 years, and check if there is any &ldquo;year&rdquo; effect. The result is as follows:
+                    <pre class="fragment"><code data-trim data-noescape>
+                        Fixed effects:
+                        |                         Value Std.Error  t-value p-value
+                        paste(seasonal_year)2   0.12747  0.062163  2.05061  0.0463
+                        paste(seasonal_year)3   0.17065  0.062177  2.74457  0.0087
+                        paste(seasonal_year)4   0.22195  0.062188  3.56903  0.0009
+                        ... other effects are similar as before.
+                    </code></pre>
+                    <span class="fragment">
+                        If there was a decrease, the estimates were supposed to be negative. But they are not very significant, and the values are positive.
+                    </span>
+                    <span class="fragment">
+                        <hr>
+                        The results indicate that the air pollution situation was not as good as the official statistic would convey, and improvement, if any, was rather uncertain.
+                    </span>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
+                    <h3>
+                        Effects on <strong>Rainfall</strong>
+                    </h3>
+                    <ul>
+                        <li>
+                            Fit a model to predict rainfall.
+                        </li>
+                        <li>
+                            Check accuracy on training and test data.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
+                    <h3>
+                        Effects on <strong>Rainfall</strong>
+                    </h3>
+                    <ul>
+                        <li>
+                            Fit a model to predict rainfall.
+                        </li>
+                        <li>
+                            Check accuracy on training and test data.
+                        </li>
+                    </ul>
+                    <div style="text-align: center;">
+                        <img data-src="rt2020/rain_with_time.png" height="450px">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Relationship with other variables:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/rain_plot1.png" height="500px" class="fragment fade-out" data-fragment-index="0">
+                        <img data-src="rt2020/rain_plot2.png" height="500px" class="fragment" data-fragment-index="0">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Model 1:
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            By converting the amount of rainfall to a binary(yes-no) variable, a logit model was fitted with all the predictors.
+                        </li>
+                        <li class="fragment">
+                            The model was fitted on seasonal year 1. Seasonal year 2 was used for testing.
+                        </li>
+                        <li class="fragment">
+                            $PM_{10}$ was an insignificant predictor.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Model 1:
+                    </h3>
+                    <div style="text-align: center;">
+                        Fit on training data:
+                        <br>
+                        <img data-src="rt2020/rainfall_logit.png" height="500px">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Model 1:
+                    </h3>
+                    <div style="text-align: center;">
+                        Accuracy on training data:
+                        <br>
+                        <table style="color: #fff;">
+                        <thead>
+                            <tr>
+                                <th>Predicted</th>
+                                <th>True</th>
+                                <th>(in %)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> </td>
+                                <td>Yes</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Yes</td>
+                                <td>20.44</td>
+                                <td>0.41</td>
+                            </tr>
+                            <tr>
+                                <td>No</td>
+                                <td>79.56</td>
+                                <td>99.59</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div style="text-align: center;" class="fragment">
+                        Accuracy on test data:
+                        <br>
+                        <table style="color: #fff;">
+                        <thead>
+                            <tr>
+                                <th>Predicted</th>
+                                <th>True</th>
+                                <th>(in %)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> </td>
+                                <td>Yes</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Yes</td>
+                                <td>17.71</td>
+                                <td>0.16</td>
+                            </tr>
+                            <tr>
+                                <td>No</td>
+                                <td>82.29</td>
+                                <td>99.84</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Model 2:
+                    </h3>
+                    <ul>
+                        <li>
+                            Similarly a Tobit model was fitted with the assumption of normal distribution.
+                        </li>
+                        <li class="fragment">
+                            Fit on training data:
+                            <br>
+                            <div style="text-align: center;">
+                                <img data-src="rt2020/rain_tobit.png" height="450px">
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Model 2:
+                    </h3>
+                    <div style="text-align: center;">
+                        Prediction of rainfall:
+                        <br>
+                        <img data-src="rt2020/rainfall_tobit.png" height="500px">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Model 2:
+                    </h3>
+                    <div style="text-align: center;">
+                        Accuracy on training data:
+                        <br>
+                        <table style="color: #fff;">
+                        <thead>
+                            <tr>
+                                <th>Predicted</th>
+                                <th>True</th>
+                                <th>(in %)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> </td>
+                                <td>Yes</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Yes</td>
+                                <td>8.83</td>
+                                <td>0.10</td>
+                            </tr>
+                            <tr>
+                                <td>No</td>
+                                <td>91.17</td>
+                                <td>99.90</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div style="text-align: center;" class="fragment">
+                        Accuracy on test data:
+                        <br>
+                        <table style="color: #fff;">
+                        <thead>
+                            <tr>
+                                <th>Predicted</th>
+                                <th>True</th>
+                                <th>(in %)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> </td>
+                                <td>Yes</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Yes</td>
+                                <td>7.97</td>
+                                <td>0.04</td>
+                            </tr>
+                            <tr>
+                                <td>No</td>
+                                <td>92.03</td>
+                                <td>99.96</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Effects on <strong>Temparature</strong>
+                    </h3>
+                    <ul>
+                        <li>
+                            Find the variables that influence temparature.
+                        </li>
+                        <li>
+                            Check model assumptions and remove multicollinearity.
+                        </li>
+                        <li>
+                            Check prediction errors.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Full model:
+                    </h3>
+                    $$TEMP\sim\text{Daily trend + Yearly trend + All attributes}\\ \text{(except RAIN)}$$
+                    <div style="text-align: center;" class="fragment">
+                        Fitted on 1st seasonal year (i.e., March&lsquo;13-February&lsquo;14)
+                        <img data-src="rt2020/rain_fullmodel.png">
+                        <br>
+                        $$\text{Multiple }R^2=0.9343$$
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Variable selection:
+                    </h3>
+                    <ul>
+                        <li>
+                            <strong>Forward selection:</strong> All variables except $NO_2$ were selected.
+                        </li>
+                        <li>
+                            <strong>Backward elimination:</strong> Same result.
+                        </li>
+                        <li class="fragment">
+                            Fitted model:
+                            <div style="text-align: center;">
+                                <img data-src="rt2020/rain_variableselection.png">
+                                <br>
+                                $$\text{Multiple }R^2=0.9343$$
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Diagnostics:
+                    </h3>
+                    <div class="r-stack">
+                        <img data-src="rt2020/rain_selectiondiag1.png" class="fragment fade-out" data-fragment-index="0">
+                        <img data-src="rt2020/rain_selectiondiag2.png" class="fragment current-visible" data-fragment-index="0">
+                        <img data-src="rt2020/rain_selectiondiag3.png" class="fragment current-visible" data-fragment-index="1">
+                        <img data-src="rt2020/rain_selectiondiag4.png" class="fragment current-visible" data-fragment-index="2">
+                        <img data-src="rt2020/rain_selectiondiag5.png" class="fragment">
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Prediction error:
+                    </h3>
+                    <table style="color: #fff;">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Data</th>
+                                <th>MSE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Seasonal year 1</td>
+                                <td>Training data</td>
+                                <td>2.861424</td>
+                            </tr>
+                            <tr>
+                                <td>Seasonal year 2</td>
+                                <td>Test data</td>
+                                <td>3.419270</td>
+                            </tr>
+                            <tr>
+                                <td>Seasonal year 3</td>
+                                <td>Test data</td>
+                                <td>3.638287</td>
+                            </tr>
+                            <tr>
+                                <td>Seasonal year 4</td>
+                                <td>Test data</td>
+                                <td>3.588154</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Handle multicollinearity
+                    </h3>
+                    <div class="r-stack" style="text-align: center;">
+                        <span class="fragment fade-out" data-fragment-index="0">
+                            Correlation structure between explanatory variables
+                            <br>
+                            <img data-src="rt2020/corplot1.jpeg" height="450px">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="0">
+                            Performing Ridge regression on the data
+                            <br>
+                            <img data-src="rt2020/ridge_lambda.jpeg"  height="425px">
+                            <br>
+                            $$\lambda=0.9430256$$
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="1">
+                            Coefficients
+                            <br>
+                            <img data-src="rt2020/ridge_coeff.png"  height="400px">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="2">
+                            
+                            <br>
+                            <img data-src="rt2020/ridge.jpeg"  height="450px">
+                        </span>
+                        <span class="fragment current-visible" data-fragment-index="3">
+                            Correlation
+                            <br>
+                            <img data-src="rt2020/corplot2.jpeg"  height="450px">
+                        </span>
+                        <span class="fragment">
+                            Final model
+                            <br>
+                            <img data-src="rt2020/ridge_model.png"  height="400px">
+                            <br>
+                            $$\text{Multiple }R^2=0.9319$$
+                        </span>
+                    </div>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-background-transition="zoom">
+                    <ul>
+                        <li>
+                            <u>References:</u>
+                            <ul>
+                                <li>
+                                    Dataset obtained from <strong>UCI Machine Learning Repository</strong>
+                                </li>
+                                <li>
+                                    Zhang, S., Guo, B., Dong, A., He, J., Xu, Z. and Chen, S.X. (2017) <strong>Cautionary Tales on Air-Quality Improvement in Beijing</strong>. Proceedings of the Royal Society A, Volume 473, No. 2205, Pages 20170457.
+
+                                </li>
+                            </ul>
+                        </li>
+                        <br>
+                        <li>
+                            <u>Presented by:</u>
+                            <ul>
+                                <li>
+                                    Dibyendu Saha
+                                </li>
+                                <li>
+                                    Riddhiman Saha
+                                </li>
+                                <li>
+                                    Souhardya Ray
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07>
+                    <h2>
+                        Thank You
+                    </h2>
+                </section>
+            </div>
+        </div>
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/zoom/zoom.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script src="plugin/math/math.js"></script>
+        <script src="plugin/chalkboard/plugin.js"></script>
+        <script>
+            // More info about initialization & config:
+            // - https://revealjs.com/initialization/
+            // - https://revealjs.com/config/
+            Reveal.initialize({
+                hash: true,
+                transition: 'convex',
+                // controls: false,
+
+                // Display a presentation progress bar
+                progress: true,
+
+                // Push each slide change to the browser history
+                history: false,
+
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
+
+                // Loop the presentation
+                loop: false,
+
+                // Number of milliseconds between automatically proceeding to the 
+                // next slide, disabled when set to 0
+                autoSlide: 0,
+
+                // Enable slide navigation via mouse wheel
+                mouseWheel: false,
+
+                // Apply a 3D roll to links on hover
+                rollingLinks: true,
+                // Learn about plugins: https://revealjs.com/plugins/
+                // chalkboard: {
+                    // src: "chalkboard/chalkboard.json",
+                    // toggleChalkboardButton: false,
+                    // toggleNotesButton: false,
+                // },
+                plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom],
+            });
+        </script>
+    </body>
+</html>
