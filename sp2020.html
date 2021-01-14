@@ -44,6 +44,76 @@
                         M.Stat. $1^{\text{st}}$ Year, ISI Kolkata
                     </div>
                 </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left;">
+                    <h3>
+                        We are going to discuss:
+                    </h3>
+                    <ul>
+                        <li>
+                            Definition and Objective
+                        </li>
+                        <li>
+                            Value functions
+                        </li>
+                        <li>
+                            Bellman's equation
+                        </li>
+                        <li>
+                            Iterative methods
+                        </li>
+                        <li>
+                            Linear programming
+                        </li>
+                        <li>
+                            Two &ldquo;Toy&rdquo; examples
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 39px;">
+                    <h3>
+                        Basic Idea
+                    </h3>
+                    A <strong>Markov Decision Process (MDP)</strong> is a discrete-time stochastic control process<span class="fragment">, i.e., similar to usual Markov chain, but the transition events can be influenced by some action.</span>
+                    <ul>
+                        <li class="fragment">
+                            Transitions are partly random, and partly under the <strong>influence of a decision maker</strong>.
+                        </li>
+                        <li class="fragment">
+                            Additionally, there is some <strong>reward/penalty</strong> for each transition event.
+                        </li>
+                        <li class="fragment">
+                            The goal is to find a <strong>policy/strategy</strong> such that the total reward is <strong>maximized in long term</strong>.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                    <h3>
+                        Formally,
+                    </h3>
+                    A Markov Decision Process consists of
+                    <ul>
+                        <span class="fragment">
+                            <li>
+                                A state space $\mathcal{X}$
+                            </li>
+                            <li>
+                                An action space $\mathcal{A}$
+                            </li>
+                        </span>
+                        <li class="fragment">
+                            For each $a\in \mathcal{A}$, we have a Markov chain with state space $\mathcal{X}$ & transition matrix $P_a$.
+                            $$
+                            P_a(s, s')=\mathbb{P}\left[X_{t+1}=s'|X_t=s, A_t=a\right]
+                            $$
+                        </li>
+                        <li class="fragment">
+                            For each $a\in \mathcal{A}$, we have a real valued reward matrix.
+                            $$
+                            R_a(s, s')=\mathbb{E}\left[R_{t+1}|X_t=s, A_t=a, X_{t+1}=s'\right]
+                            $$
+                        </li>
+                    </ul>
+                </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left;">
                     <h3>
                         Dataset Description:
