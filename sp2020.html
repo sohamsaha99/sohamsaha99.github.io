@@ -477,9 +477,11 @@
                     From the last set of equations, we can think of the following iteration:
                     <div class="fragment">
                         $$
-                        J^{(i+1)}(x):=\sum_{y\in\mathcal{X}}P_{\pi^{(i)}(x)}(x,y)\left\{R_{\pi^{(i)}(x)}(x,y)+\alpha J^{(i)}(y)\right\}\\
-                        \pi^{(i)}(x):=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{(i)}(y)\right\}
+                        J^{(k+1)}(x):=\sum_{y\in\mathcal{X}}P_{\pi^{(i)}(x)}(x,y)\left\{R_{\pi^{(i)}(x)}(x,y)+\alpha J^{(k)}(y)\right\}
+                        $$ until convergence. Call the limit $J^{\pi^{(i)}}$.<br><span class="fragment">Then update the policy with,
                         $$
+                        \pi^{(i+1)}(x):=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\pi^{(i)}}(y)\right\}
+                        $$</span>
                     </div>
                 </section>
                 <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
@@ -495,7 +497,7 @@
                             Start with some policy $\pi^{(0)}$
                         </li>
                         <li class="fragment">
-                            Compute $J^{\pi^{(i)}}$ (policy evaluation iteraion).
+                            Compute $J^{\pi^{(i)}}$ (policy evaluation iteration).
                         </li>
                         <li class="fragment">
                             Update $\pi$ with the following:
@@ -509,6 +511,106 @@
                             If $\pi^{(i)}$ does not change, then terminate.
                         </li>
                     </ol>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Policy Iteration
+                    </h3>
+                    Like the value iteration, the policy iteration also converges. One theorem says that it terminates in finite number of steps.
+                    <blockquote class="fragment">
+                        Policy iteration generates a sequence of policies with distinct, increasing values, terminating after a finite number of iteration with an optimal policy,<br>i.e., for some $k$,
+                        $$
+                        J^{\pi^{(0)}}\leq J^{\pi^{(1)}}\leq\ldots\leq J^{\pi^{(k)}}=J^{\star}
+                        $$
+                    </blockquote>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Policy Iteration
+                    </h3>
+                    There are some other variants of policy iteration. For example, in Generalized Policy iteration,
+                    <div>
+                        The value updation is done for a fixed number of times (i.e., approx. values):
+                        $$
+                        J^{(i+1)}:=T_{\pi^{i}}^{k}\circ J^{(i)}
+                        $$ and then update the policy,
+                        $$
+                        \pi^{(i+1)}=G\circ J^{(i+1)}$$
+                    </div>
+                    <div class="fragment">
+                        <hr>
+                        Though value ierations look simpler, policy iterations are faster in practice, and terminates after finite steps.
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Solution with Linear Programming
+                    </h3>
+                    Another approach for finding the optimal policies is given by LPP:
+                    <div class="fragment">
+                        Minimize $$\sum_{x\in\mathcal{X}}J(x) \text{ over }J$$
+                        under the consraints, 
+                        $$J(x)\geq \sum_{y\in\mathcal{X}}R_a(x,y)P_a(x,y)+\alpha \sum_{z\in\mathcal{X}}P_a(x,z)J(z),\\ \forall a\in\mathcal{A}, x\in\mathcal{X}
+                        $$
+                    </div>
+                    <div class="fragment">
+                        The solution will be same as $J^{\star}$.<a href="sp2020/LPP.pdf" target="_BLANK">...</a>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Applications
+                    </h3>
+                    Many applications. Some are:
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">
+                            Finance: deciding how much to invest in stock.
+                        </li>
+                        <li class="fragment fade-in-then-semi-out">
+                            Robotics: Dialogue system, navigation system
+                        </li>
+                        <li class="fragment">
+                            Traditional problems like:
+                            <ul>
+                                <li>
+                                    Which catalogues to send to individual clients?
+                                </li>
+                                <li>
+                                    At what age a vehicle needs to be repaires / replaced?
+                                </li>
+                                <li>
+                                    What proportion of fishes should be caught?
+                                </li>
+                                <li>
+                                    and many more...
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Applications
+                    </h3>
+                    The main challanges are:
+                    <ul>
+                        <li class="fragment">
+                            Transition probabilities may not be known.
+                        </li>
+                        <li class="fragment">
+                            Rewards may not be defined explicitly.
+                        </li>
+                        <li class="fragment">
+                            For all modern problems, state space is huge. Difficult to handle.
+                        </li>
+                        <li class="fragment">
+                            Sometimes the states are not fully observed. Those are called Partially Observable MDP.
+                        </li>
+                    </ul>
+                    <div class="fragment">
+                        <hr>
+                        When the parameters are unknown, the decision maker tries to learn those from &ldquo;experience&rdquo;. That is called Reinforcement Learning (stay tuned for more on this 🙂). <br>Here we present two <strong>toy</strong> examples.
+                    </div>
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
