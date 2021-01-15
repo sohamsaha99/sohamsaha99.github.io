@@ -212,7 +212,7 @@
                         Solving MDP
                     </h3>
                     <div>
-                        One crucial observation is, for the optimal policy $\mathbf{\pi}^{\star}$ and any state $x_i$, the tail policy $(\pi_i^{\star}, \ldots, \pi_{n-1}^{\star})$ optimizes the value from $x_i$ irrespective of the previous actions and transitions. This is known as the <strong>Bellman’s Principle of optimality</strong>.
+                        One crucial observation is, for the optimal policy $\mathbf{\pi}^{\star}$ and any state $x_i$, the tail policy $(\pi_i^{\star}, \ldots, \pi_{n-1}^{\star})$ optimizes the value from $x_i$ irrespective of the previous actions and transitions. This is the <strong>Bellman&rsquo;s Principle of optimality</strong>.
                     </div>
                     <div class="fragment">
                         <hr>
@@ -310,6 +310,7 @@
                         Infinite horizon
                     </h3>
                     <div>
+                        <strong><u>Value Iteration:</u></strong><br>
                         Similar to the finite case, the obvious choice for an iterative procedure to find the optimal policy is,
                         <br>
                         <ol>
@@ -337,7 +338,7 @@
                     <div>
                         <strong><u>More intuition behind the iteration:</u></strong>
                         <div class="fragment">
-                            For infinite horizon, Bellman&lsquo;s optimality condition implies that,
+                            For infinite horizon, Bellman&rsquo;s optimality condition implies that,
                             $$
                             J_{\alpha}(x)=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}(y)\right\}
                             $$
@@ -349,7 +350,7 @@
                             $$
                         </div>
                         <div class="fragment">
-                            So if the iteration converges, we get a relation similar to Bellman&lsquo;s equation.
+                            So if the iteration converges, we get a relation similar to Bellman&rsquo;s equation.
                         </div>
                 </section>
                 <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
@@ -375,7 +376,7 @@
                         </ul>
                     </div>
                 </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
                         Q: Does it converge?
                     </h3>
@@ -386,7 +387,7 @@
                             <li class="fragment">
                                 For all $J\in\mathbb{R}^{\mathcal{X}}$,
                                 $$
-                                J_{\pi}=\lim_{k\rightarrow\infty}T_{\pi}^{k}J
+                                J^{\pi}=\lim_{k\rightarrow\infty}T_{\pi}^{k}J
                                 $$
                             </li>
                             <li class="fragment">
@@ -397,7 +398,7 @@
                         </blockquote>
                     </div>
                 </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
                         Q: Does it converge?
                     </h3>
@@ -423,127 +424,91 @@
                         </div>
                     </div>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
-                        Effect of time:
+                        Q: Does it converge?
                     </h3>
-                    <div style="text-align: center;" class="r-stack">
-                        <span class="fragment fade-out" data-fragment-index="0">
-                            <img data-src="rt2020/dailytrend.png">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="0">
-                            <img src="rt2020/montheffect.png">
-                        </span>
+                    <div>
+                        A similar theorem for optimal value function:
+                        <blockquote>
+                            For any $\pi$ and $0<\alpha<1$, there is $J^{\star}\in\mathbb{R}^{\mathcal{X}}$ such that,
+                            <li class="fragment">
+                                For all $J\in\mathbb{R}^{\mathcal{X}}$,
+                                $$
+                                J^{\star}=\lim_{k\rightarrow\infty}T^{k}J
+                                $$
+                            </li>
+                            <li class="fragment">
+                                $J^{\pi}$ is the unique solution to
+                                $$J=T\circ J
+                                $$
+                            </li>
+                            <li class="fragment">
+                                $J^{\star}=\max_{\pi}J^{\pi}$
+                                 and 
+                                $J^{\star}=J^{\pi^{\star}}$
+                            </li>
+                        </blockquote>
                     </div>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
-                        Model with meteorological factors:
+                        Policy Iteration
                     </h3>
-                    $$\text{PM}_{2.5} \sim sin\left(\frac{2\pi h}{24}\right)+cos\left(\frac{2\pi h}{24}\right) + month+ TEMP\\+PRES+DEWP+WSPM+RAIN+station$$
-                    <pre class="fragment"><code data-trim data-noescape>
-                        |                       Estimate Std. Error t value Pr(>|t|)    
-                        (Intercept)            150.82776   96.09912   1.570  0.11654    
-                        sin(2 * pi * hour/24)  -10.42687    0.75967 -13.725  < 2e-16 ***
-                        cos(2 * pi * hour/24)    0.03913    0.84293   0.046  0.96298    
-                        TEMP                    -3.32817    0.16970 -19.612  < 2e-16 ***
-                        PRES                     0.04890    0.09464   0.517  0.60536    
-                        DEWP                    10.00022    0.09677 103.335  < 2e-16 ***<!-- stationChangping        19.13986    2.41744   7.917 2.52e-15 ***
-                        stationDingling          9.63755    2.41744   3.987 6.72e-05 ***
-                        stationDongsi           23.40131    2.39027   9.790  < 2e-16 ***
-                        stationGuanyuan          4.36065    2.38207   1.831  0.06717 .  
-                        stationGucheng          11.34187    2.40378   4.718 2.39e-06 ***
-                        stationHuairou           1.08693    2.45238   0.443  0.65761    
-                        stationNongzhanguan     25.06289    2.39027  10.485  < 2e-16 ***
-                        stationShunyi            7.83615    2.39250   3.275  0.00106 ** 
-                        stationTiantan          17.66983    2.39027   7.392 1.49e-13 ***
-                        stationWanliu           18.57454    2.38207   7.798 6.54e-15 ***
-                        stationWanshouxigong    20.79018    2.38581   8.714  < 2e-16 *** -->
-                        month_number            13.68644    0.64482  21.225  < 2e-16 ***
-                        RAIN                  -205.74689   15.28953 -13.457  < 2e-16 ***
-                        WSPM                    -6.73357    0.47992 -14.031  < 2e-16 ***
-                        .... and station effects                                     ***
-                        ---
-                        Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-                        Residual standard error: 78.28 on 25900 degrees of freedom
-                        Multiple R-squared:  0.4404,    Adjusted R-squared:   0.44 
-                        F-statistic:  1073 on 19 and 25900 DF,  p-value: < 2.2e-16
-                    </code></pre>
-                </section>
-                <!-- <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Model with meteorological factors:
-                    </h3>
-                    <img data-src="rt2020/basicmodelhistogram.png">
-                </section> -->
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Include pollutants:
-                    </h3>
-                    $$\text{Include }SO_2, NO_2, CO, O_3$$
-                    <pre class="fragment"><code data-trim data-noescape>
-                        |                      Estimate Std. Error t value Pr(>|t|)    
-                        (Intercept)          -1.132e+02  6.318e+01  -1.792   0.0732 .  
-                        sin(2 * pi * No/24)   2.368e-01  5.662e-01   0.418   0.6758    
-                        cos(2 * pi * No/24)   6.020e+00  5.316e-01  11.323  < 2e-16 ***
-                        month_number          1.281e+01  4.471e-01  28.645  < 2e-16 ***
-                        DEWP                  4.462e+00  7.559e-02  59.032  < 2e-16 ***
-                        WSPM                  3.107e+00  3.303e-01   9.405  < 2e-16 ***
-                        PRES                  8.761e-02  6.219e-02   1.409   0.1589    
-                        TEMP                 -8.768e-01  1.155e-01  -7.594 3.22e-14 ***
-                        RAIN                 -4.100e+01  1.006e+01  -4.074 4.63e-05 ***<!-- stationChangping      6.320e+00  1.595e+00   3.963 7.44e-05 ***
-                        stationDingling       2.874e+01  1.603e+00  17.935  < 2e-16 ***
-                        stationDongsi         9.506e+00  1.580e+00   6.016 1.82e-09 ***
-                        stationGuanyuan      -3.470e+00  1.568e+00  -2.213   0.0269 *  
-                        stationGucheng       -1.928e+01  1.639e+00 -11.761  < 2e-16 ***
-                        stationHuairou        1.467e+01  1.643e+00   8.931  < 2e-16 ***
-                        stationNongzhanguan   6.680e+00  1.572e+00   4.249 2.16e-05 ***
-                        stationShunyi         1.738e+01  1.578e+00  11.012  < 2e-16 ***
-                        stationTiantan        3.646e+00  1.586e+00   2.300   0.0215 *  
-                        stationWanliu        -1.553e+01  1.613e+00  -9.628  < 2e-16 ***
-                        stationWanshouxigong  1.653e+00  1.569e+00   1.053   0.2921     -->
-                        SO2                   4.469e-01  1.399e-02  31.942  < 2e-16 ***
-                        NO2                   9.185e-01  1.852e-02  49.597  < 2e-16 ***
-                        CO                    2.721e-02  3.945e-04  68.985  < 2e-16 ***
-                        O3                    6.985e-01  2.422e-02  28.844  < 2e-16 ***
-                        .... and station effects                                    ***
-                        ---
-                        Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-                        Residual standard error: 51.3 on 25896 degrees of freedom
-                        Multiple R-squared:  0.7597,    Adjusted R-squared:  0.7595 
-                        F-statistic:  3560 on 23 and 25896 DF,  p-value: < 2.2e-16
-                    </code></pre>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Include pollutants:
-                    </h3>
-                    <img data-src="rt2020/model0.1histogram.png">
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
-                    <h3>
-                        Modifications:
-                    </h3>
-                    <ul>
-                        <li>
-                            Skewed error. Try to model $log(PM_{2.5})$
-                        </li>
-                        <li>
-                            Explore relationships. May not be linear.
-                        </li>
-                    </ul>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
-                    <h3>
-                        Plots:
-                    </h3>
-                    <div class="r-stack">
-                        <img data-src="rt2020/piecemodelSO2.png" class="fragment fade-out" data-fragment-index="0">
-                        <img data-src="rt2020/piecemodelNO2.png" class="fragment current-visible" data-fragment-index="0">
-                        <img data-src="rt2020/PM2.5vsTEMP.png" class="fragment">
+                    Instead of iterating over the value function, we can also iterate over the policy.
+                    <span class="fragment">
+                        First note that,
+                        $$
+                        J^{\star}(x)=\sum_{y\in\mathcal{X}}P_{\pi^{\star}(x)}(x,y)\left\{R_{\pi^{\star}(x)}(x,y)+\alpha J^{\star}(y)\right\}\\
+                        \pi^{\star}(x)=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\star}(y)\right\}
+                        $$
+                    </span>
+                    <div class="fragment">
+                        So we can define a <strong>Greedy operator</strong> $G:\mathbb{R}^{\mathcal{X}}\rightarrow\mathcal{A}^{\mathcal{X}}$ as:
+                        $$
+                        (GJ)(x)=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=a\right]
+                        $$
                     </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Policy Iteration
+                    </h3>
+                    From the last set of equations, we can think of the following iteration:
+                    <div class="fragment">
+                        $$
+                        J^{(i+1)}(x):=\sum_{y\in\mathcal{X}}P_{\pi^{(i)}(x)}(x,y)\left\{R_{\pi^{(i)}(x)}(x,y)+\alpha J^{(i)}(y)\right\}\\
+                        \pi^{(i)}(x):=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{(i)}(y)\right\}
+                        $$
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Policy Iteration
+                    </h3>
+                    <div>
+                        Equivalently,
+                    </div>
+                    <br>
+                    <ol>
+                        <li>
+                            Start with some policy $\pi^{(0)}$
+                        </li>
+                        <li class="fragment">
+                            Compute $J^{\pi^{(i)}}$ (policy evaluation iteraion).
+                        </li>
+                        <li class="fragment">
+                            Update $\pi$ with the following:
+                            $$
+                            \pi^{(i+1)}=G\circ J^{\pi^{(i)}}
+                            $$
+                        </li>
+                        <li class="fragment">
+                            If $\pi^{(i)}$ changes in the last step, go to step 2.
+                            <br>
+                            If $\pi^{(i)}$ does not change, then terminate.
+                        </li>
+                    </ol>
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
