@@ -129,8 +129,8 @@
                         Policies can also be time dependent, i.e., we may want to consider different $\pi_t$ for each time point.
                     </span>
                 </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
                         Objective Function
                     </h3>
                     We want to maximize some cumulative function of the random rewards. These are called value functions.
@@ -159,35 +159,92 @@
                         </li>
                     </ul>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
-                    <h3>
-                        Before starting:
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Objective Function
                     </h3>
-                    <ul>
-                        <li class="fragment">
-                            Instead of calendar years, we shall work with seasonal years.
-                        </li>
-                        <li class="fragment">
-                            4 seasons in a year:
-                            <ul>
-                                <li>
-                                    Spring (March - May)
-                                </li>
-                                <li>
-                                    Summer (June - August)
-                                </li>
-                                <li>
-                                    Autumn (September - November)
-                                </li>
-                                <li>
-                                    Winter (December - February)
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="fragment">
-                            Hence, for a given year and season, there are nearly 2160 observations per station.
-                        </li>
-                    </ul>
+                    So, for a given policy $\pi$, we can evaluate the policy as,
+                    $$
+                    J^{\pi}_{\alpha}(x_0)=\mathbb{E}\left[\sum_{t=0}^{\infty}\alpha^t R_t^{\pi}\mid X_0=x_0\right]
+                    $$
+                    where $A_t=\pi(X_t)$ at each step, and thus, $R^{\pi}_t=R_{\pi(X_t)}(X_t, X_{t+1})$.
+                    <div class="fragment">
+                        For other value functions, we can evaluate the policy similarly.
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Objective Function
+                    </h3>
+                    <div>
+                        Clearly, the maximized objective function is given by,
+                        $$
+                        J^{\star}_{\alpha}(x_0)=\max_{\pi}J^{\pi}_{\alpha}(x_0)
+                        $$
+                    </div>
+                    <div class="fragment">
+                        and the optimal policy is,
+                        $$
+                        \pi^{\star}=\arg\max_{\pi}J^{\pi}_{\alpha}(x_0)
+                        $$
+                    </div>
+                    <div class="fragment">
+                        <hr>
+                        But these are just notations. How to &ldquo;compute&rdquo; those quantities for a given problem?
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3 id="heading">
+                        Solving MDP
+                    </h3>
+                    First consider the problem for finite horizon, upto time $n$. Want to find $\pi$ such that $J^{\pi}_n(x)$ is maximized.<br>
+                    <span class="fragment">
+                        The policy need not be time homogeneous, as the time horizon is finite. So consider $\mathbf{\pi}=(\pi_0, \ldots, \pi_{n-1})$.
+                    </span>
+                    <span class="fragment">
+                        Define a value function for the tail part, i.e.,
+                        $$
+                        J^{\pi}_{i,n}(x_i)=\mathbb{E}\left[\sum_{t=i}^{n-1}R_t\mid X_i=x_i\right]$$
+                    </span>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Solving MDP
+                    </h3>
+                    <div>
+                        One crucial observation is, for the optimal policy $\mathbf{\pi}^{\star}$ and any state $x_i$, the tail policy $(\pi_i^{\star}, \ldots, \pi_{n-1}^{\star})$ optimizes the value from $x_i$ irrespective of the previous actions and transitions. This is known as the <strong>Bellman’s Principle of optimality</strong>.
+                    </div>
+                    <div class="fragment">
+                        <hr>
+                        So to find $(\pi_0^{\star}, \ldots, \pi_{n-1}^{\star})$, we can start with finding $\pi_{n-1}^{\star}$. Then using that $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$, and so on.
+                    </div>
+                    <div class="fragment">
+                        Thus, we can do <strong>Dynamic Programming</strong> with <strong>Backward Induction</strong>.
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Solving MDP
+                    </h3>
+                    <div>
+                        Finding $\pi_{n-1}^{\star}$ is easy. It is given by,
+                        $$
+                        \pi_{n-1}^{\star}(x_{n-1})=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1}, A_{n-1}=a\right]\\
+                        \text{and }J_{n-1, n}^{\star}(x_{n-1})=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1},A_{n-1}=a\right]
+                        $$
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Solving MDP
+                    </h3>
+                    <div>
+                        Using $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$ using,
+                        $$
+                        \pi_{n-1}^{\star}(x_{n-2})=\\ \arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]\\
+                        \text{and, }J_{n-2, n}^{\star}(x_{n-2})=\\ \max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]
+                        $$
+                    </div>
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
                     <h3>
