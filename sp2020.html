@@ -86,11 +86,11 @@
                         </li>
                     </ul>
                 </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 34px;">
                     <h3>
-                        Formally,
+                        Definition
                     </h3>
-                    A Markov Decision Process consists of
+                    Formally, a Markov Decision Process consists of
                     <ul>
                         <span class="fragment">
                             <li>
@@ -113,47 +113,49 @@
                             $$
                         </li>
                     </ul>
+                    <span class="fragment">The tuple $(\mathcal{X}, \mathcal{A}, \{P_a\}, \{R_a\})$ defines the process completely.</span>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 34px;">
                     <h3>
-                        Dataset Description:
+                        Objective
                     </h3>
-                    <ul>
-                        <li class="fragment">
-                            Hourly data measured by 12 sites of Beijing Municipal Environmental Monitoring Center.
-                        </li>
-                        <li class="fragment">
-                            Contains data from <strong>March &rsquo;13</strong> to <strong> February &rsquo;17</strong>.
-                        </li>
-                        <li class="fragment">
-                            Attributes are:
-                            <ul>
-                                <li>
-                                    $\text{PM}_{2.5}\text{, PM}_{10}\text{, SO}_2\text{, NO}_2\text{, CO, O}_3$
-                                </li>
-                                <li>
-                                    Temparature, Pressure, Dew-point, Wind Speed, Wind direction, Rain
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="fragment">
-                            Meteorological data are matched with the nearest weather station from the China Meteorological Administration.
-                        </li>
-                    </ul>
+                    The goal is to find a good &ldquo;policy&rdquo;. <span class="fragment">A policy $\pi$ is a function,
+                    $$
+                    \pi:\mathcal{X}\rightarrow\mathcal{A}\\ \text{ or }\\
+                    \pi:\mathcal{X}\rightarrow\Delta{(\mathcal{A})}
+                    $$
+                    Given the policy, the decision maker will choose the action $\pi(s)$ when the process is at state $s$.</span>
+                    <span class="fragment">
+                        Policies can also be time dependent, i.e., we may want to consider different $\pi_t$ for each time point.
+                    </span>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
                     <h3>
-                        We are going to discuss:
+                        Objective Function
                     </h3>
+                    We want to maximize some cumulative function of the random rewards. These are called value functions.
                     <ul>
-                        <li>
-                            Is there a <strong>decrease in $\mathbf{\text{PM}_{2.5}}$ concentration</strong> over the years?
+                        <li class="fragment fade-in-then-semi-out">
+                            If interested only upto a finite time, we can maximize,
+                            $$
+                            J_n(x_0)=\mathbb{E}\left[\sum_{t=0}^{n-1}R_t\mid X_0=x_0\right]
+                            $$
                         </li>
-                        <li>
-                            What are the factors that influence <strong>rainfall</strong>?
-                        </li>
-                        <li>
-                            What are the effects of the variables on <strong>temparature</strong>?
+                        <li class="fragment">
+                            If interested upto long/infinite time, we can maximize,
+                            <div class="r-stack">
+                                <span class="fragment fade-out">
+                                    $$
+                                    J_{\alpha}(x_0)=\mathbb{E}\left[\sum_{t=0}^{\infty}\alpha^t R_t\mid X_0=x_0\right]
+                                    $$
+                                    where $0<\alpha<1$ is the discount factor.
+                                </span>
+                                <span class="fragment">
+                                    $$
+                                    J(x_0)=\lim_{n\rightarrow\infty}\mathbb{E}\left[\frac{1}{n}\sum_{t=0}^{n}R_t\mid X_0=x_0\right]
+                                    $$
+                                </span>
+                            </div>
                         </li>
                     </ul>
                 </section>
