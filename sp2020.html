@@ -56,7 +56,7 @@
                             Value functions
                         </li>
                         <li>
-                            Bellman's equation
+                            Bellman&lsquo;s equation
                         </li>
                         <li>
                             Iterative methods
@@ -310,46 +310,118 @@
                         Infinite horizon
                     </h3>
                     <div>
-                        Similar to the finite case, the obvious choice for an iterative procedure is,
+                        Similar to the finite case, the obvious choice for an iterative procedure to find the optimal policy is,
                         <br>
                         <ol>
                             <li class="fragment">
-                                Start with a reasonable choice for $J(x)\forall x\in\mathcal{X}$
+                                Start with a reasonable choice for $\left\{J_{\alpha}(x):x\in\mathcal{X}\right\}$. Call it $J_{\alpha}^{(0)}$
+                            </li>
+                            <li class="fragment">
+                                Do the iteration,
+                                $$
+                                J_{\alpha}^{(i+1)}:=T\circ J_{\alpha}^{(i)}
+                                $$
+                            </li>
+                            <li class="fragment">
+                                When it converges(?), say, to $\hat{J_{\alpha}}$, the optimal policy can be found with,
+                                $$
+                                \hat{\pi}^{\star}(x):=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha \hat{J_{\alpha}}(x)\mid X_0=x, A_0=a\right]
+                                $$
                             </li>
                         </ol>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="font-size: 36px;">
-                    <h3>
-                        Centrality measures
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Infinite horizon
                     </h3>
-                    <div class="r-stack">
-                        <span class="fragment fade-out" data-fragment-index="3">
-                            <img data-src="rt2020/Yearwise.png" height="450px">
-                            <br>
-                            <span class="fragment fade-in-then-out" data-fragment-index="2" style="text-align: center; align-content: center;">
-                                <strong>&ldquo;Are you watching closely?&rdquo;</strong>
-                            </span>
-                        </span>
-                        <span class="fragment" data-fragment-index="3">
-                            <img data-src="rt2020/seasonwise.png">
-                        </span>
+                    <div>
+                        <strong><u>More intuition behind the iteration:</u></strong>
+                        <div class="fragment">
+                            For infinite horizon, Bellman&lsquo;s optimality condition implies that,
+                            $$
+                            J_{\alpha}(x)=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}(y)\right\}
+                            $$
+                        </div>
+                        <div class="fragment">
+                            If we write the iterative step more explicitly, it turns out to be,
+                            $$
+                            J_{\alpha}^{(i+1)}(x):=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}^{(i)}(y)\right\}
+                            $$
+                        </div>
+                        <div class="fragment">
+                            So if the iteration converges, we get a relation similar to Bellman&lsquo;s equation.
+                        </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Infinite horizon
+                    </h3>
+                    <div>
+                        Similarly if we want to find $J_{\alpha}^{\pi}$ for a given policy, we can do a similar iteration:
+                        $$
+                        J_{\alpha}^{\pi,(i+1)}:=T_{\pi}\circ J_{\alpha}^{\pi,(i)}
+                        $$
+                    </div>
+                    <div class="fragment">
+                        <hr>
+                        The major questions are,<br>
+                        <ul>
+                            <li>
+                                Do these procedures converge?
+                            </li>
+                            <li>
+                                If yes, how fast?
+                            </li>
+                        </ul>
                     </div>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
                     <h3>
-                        Goal
+                        Q: Does it converge?
                     </h3>
-                    <ul>
-                        <li>
-                            Try to model $\text{PM}_{2.5}$ using other variables. First consider only the winter of first year.
-                        </li>
-                        <li>
-                            Check the model assumptions.
-                        </li>
-                        <li>
-                            See how does a same model perform for different years. Also check, whether a factor of &ldquo;year&rdquo; improves the model.
-                        </li>
-                    </ul>
+                    <div>
+                        Here is a theorem:
+                        <blockquote>
+                            For any $\pi$ and $0<\alpha<1$, there is $J^{\pi}\in\mathbb{R}^{\mathcal{X}}$ such that,
+                            <li class="fragment">
+                                For all $J\in\mathbb{R}^{\mathcal{X}}$,
+                                $$
+                                J_{\pi}=\lim_{k\rightarrow\infty}T_{\pi}^{k}J
+                                $$
+                            </li>
+                            <li class="fragment">
+                                $J^{\pi}$ is the unique solution to
+                                $$J=T_{\pi}\circ J
+                                $$
+                            </li>
+                        </blockquote>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Q: Does it converge?
+                    </h3>
+                    <div>
+                        The idea of the proof is as follows:
+                        <div class="fragment">
+                            First we can <a href="sp2020/convergence_proofs.pdf" target="_BLANK">show</a> that $T_{\pi}$ is a contraction, i.e., for any $J$ and $J'$,
+                            $$
+                            \lvert\lvert T_{\pi}J-T_{\pi}J'\rvert\rvert_{\infty}\leq\alpha\lvert\lvert J -J'\rvert\rvert_{\infty}
+                            $$
+                        </div>
+                        <div class="fragment">
+                            Contraction property also implies existence and uniqueness of fixed point $J^{\pi}$. (<a href="https://en.wikipedia.org/wiki/Banach_fixed-point_theorem">Banach fixed point theorem</a>)
+                        </div>
+                        <div class="fragment">
+                            For convergence, note that,
+                            $$
+                            \lvert\lvert T_{\pi}J-J^{\pi}\rvert\rvert_{\infty}\leq \alpha \lvert\lvert J-J^{\pi}\rvert\rvert_{\infty}\\ 0<\alpha<1
+                            $$
+                        </div>
+                        <div class="fragment">
+                            Thus the policy iteration converges.
+                        </div>
+                    </div>
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
                     <h3>
