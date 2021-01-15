@@ -246,21 +246,77 @@
                         $$
                     </div>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
                     <h3>
-                        $\mathbf{\text{PM}_{2.5}}$ concentration: <br><u>Background</u>
+                        Optimal Value Operator
                     </h3>
-                    <ul>
-                        <li class="fragment">
-                            The official air-quality statistic reported that Beijing had a <strong>9.9% decline</strong> in the annual concentration of $\text{PM}_{2.5}$ in 2016.
-                        </li>
-                        <li class="fragment">
-                            It was in a sharp contrast to local experience. There was <strong>severe smog</strong> during  winter&rsquo;16.
-                        </li>
-                        <li class="fragment">
-                            Observed $\text{PM}_{2.5}$ level is <strong>significantly impacted</strong> by the meteorological condition and presence of other pollutants. So measurements may not reflect the true situation.
-                        </li>
-                    </ul>
+                    <div>
+                        So if we define the opertor $T:\mathbb{R}^\mathcal{X}\rightarrow\mathbb{R}^\mathcal{X}$ as,
+                        $$
+                        (TJ)(x)=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+J(X_1)\mid X_0=x, A_0=a\right]
+                        $$
+                        <span class="fragment">
+                            then $J_{n}^{\star}=J_{0,n}^{\star}$ can be found using,
+                            $$
+                            J_{i,n}^{\star}=T\circ J_{i+1, n}^{\star}
+                            $$ and starting with $J_{n,n}^{\star}=0$
+                        </span>
+                        <div class="fragment">
+                            The operator $T$ maybe called <strong>Optimal Value Operator</strong>.
+                        </div>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Policy Evaluation Operator
+                    </h3>
+                    <div>
+                        Similarly for a stationary policy $\mathbf{\pi}$, if we define the opertor $T_{\pi}:\mathbb{R}^\mathcal{X}\rightarrow\mathbb{R}^\mathcal{X}$ as,
+                        $$
+                        (T_{\pi}J)(x)=\mathbb{E}\left[R_0+J(X_1)\mid X_0=x, A_0=\pi(x)\right]
+                        $$
+                        <span class="fragment">
+                            then $J_{n}^{\pi}=J_{0,n}^{\pi}$ can be found using,
+                            $$
+                            J_{i,n}^{\pi}=T\circ J_{i+1, n}^{\pi}
+                            $$ and starting with $J_{n,n}^{\pi}=0$
+                        </span>
+                        <div class="fragment">
+                            The operator $T_{\pi}$ maybe called <strong>Policy Evaluation Operator</strong>.
+                        </div>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Infinite horizon
+                    </h3>
+                    <div>
+                        For finite horizon, we know how to compute the optimal quantities in finite number of steps. What if we want the optimal policy for infinite horizon considering the discounted total reward?
+                        <div class="fragment">
+                            <hr>
+                            Suppose we similarly define the two operators taking into account the discount factor:
+                            $$
+                            (TJ)(x)=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=a\right]
+                            $$
+                            and
+                            $$
+                            (T_{\pi}J)(x)=\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=\pi(x)\right]
+                            $$
+                        </div>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3 id="heading">
+                        Infinite horizon
+                    </h3>
+                    <div>
+                        Similar to the finite case, the obvious choice for an iterative procedure is,
+                        <br>
+                        <ol>
+                            <li class="fragment">
+                                Start with a reasonable choice for $J(x)\forall x\in\mathcal{X}$
+                            </li>
+                        </ol>
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="font-size: 36px;">
                     <h3>
