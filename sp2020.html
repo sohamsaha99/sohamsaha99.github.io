@@ -612,75 +612,154 @@
                         When the parameters are unknown, the decision maker tries to learn those from &ldquo;experience&rdquo;. That is called Reinforcement Learning (stay tuned for more on this 🙂). <br>Here we present two <strong>toy</strong> examples.
                     </div>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
                     <h3>
-                        Piecewise linear model:
+                        Cart-Pole problem
                     </h3>
-                    $$log(PM_{2.5})\sim\text{linear with meteorological factors and}\\ \text{piecewise linear with }log_e\text{ of }SO_2, NO_2, CO, O_3$$
-                    <pre><code data-trim data-noescape>
-                        |                        Estimate Std. Error t value Pr(>|t|)    
-                        (Intercept)            37.0150635  3.4655333  10.681  < 2e-16 ***
-                        sin(2 * pi * No/24)    -0.0762300  0.0043478 -17.533  < 2e-16 ***
-                        cos(2 * pi * No/24)     0.0724955  0.0041475  17.479  < 2e-16 ***
-                        log(SO2)                0.2822197  0.0086411  32.660  < 2e-16 ***
-                        I(log(SO2) * SO2large)  0.0637371  0.0115529   5.517 3.48e-08 ***
-                        SO2large               -0.0515072  0.0361220  -1.426   0.1539    
-                        log(NO2)                0.1197390  0.0101626  11.782  < 2e-16 ***
-                        I(log(NO2) * NO2large)  0.3560944  0.0162255  21.947  < 2e-16 ***
-                        NO2large               -1.1970848  0.0581545 -20.585  < 2e-16 ***
-                        log(CO)                 0.3853594  0.0069738  55.258  < 2e-16 ***
-                        I(log(CO) * COlarge)    0.0104144  0.0011900   8.752  < 2e-16 ***
-                        log(O3)                -0.0208861  0.0034980  -5.971 2.39e-09 ***
-                        DEWP                    0.0429893  0.0006058  70.959  < 2e-16 ***
-                        log(PRES)              -5.4004590  0.5011932 -10.775  < 2e-16 ***
-                        RAIN                    0.2194079  0.0864746   2.537   0.0112 *  
-                        month_number            0.1214104  0.0037977  31.970  < 2e-16 ***<!-- stationChangping        0.1444035  0.0141397  10.213  < 2e-16 ***
-                        stationDingling         0.4090198  0.0140340  29.145  < 2e-16 ***
-                        stationDongsi           0.1732482  0.0142363  12.169  < 2e-16 ***
-                        stationGuanyuan         0.0153284  0.0135513   1.131   0.2580    
-                        stationGucheng          0.0039919  0.0147456   0.271   0.7866    
-                        stationHuairou          0.2701692  0.0140761  19.193  < 2e-16 ***
-                        stationNongzhanguan     0.1356339  0.0138033   9.826  < 2e-16 ***
-                        stationShunyi           0.2926349  0.0137781  21.239  < 2e-16 ***
-                        stationTiantan          0.1555230  0.0138771  11.207  < 2e-16 ***
-                        stationWanliu          -0.0210734  0.0139238  -1.513   0.1302    
-                        stationWanshouxigong    0.0308787  0.0134974   2.288   0.0222 *   -->
-                        .... and station effects                                      ***
-                        ---
-                        Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-                        Residual standard error: 0.4415 on 25873 degrees of freedom
-                        Multiple R-squared:  0.8662,    Adjusted R-squared:  0.866 
-                        F-statistic:  6439 on 26 and 25873 DF,  p-value: < 2.2e-16
-                    </code></pre>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Piecewise linear model:
-                    </h3>
-                    <div class="r-stack">
-                        <img data-src="rt2020/model2histogram.png" class="fragment fade-out" data-fragment-index="0" height="500px">
-                        <img data-src="rt2020/model2diag1.png" class="fragment current-visible" data-fragment-index="0" height="500px">
-                        <img data-src="rt2020/model2diag2.png" class="fragment current-visible" data-fragment-index="1" height="500px">
-                        <img data-src="rt2020/model2diag3.png" class="fragment current-visible" data-fragment-index="2" height="500px">
-                        <img data-src="rt2020/model2acf.png" class="fragment" height="500px">
+                    Classical problem of balancing a pole by applying force on a cart.
+                    <div class="fragment">
+                        We have a system like this:
+                        <br>
+                        <div style="text-align: center;" class="r-stretch">
+                            <img data-src="sp2020/cartpole_preview_loop.gif">
+                            <br>
+                            Want to balance the stick
+                        </div>
+                        <br>
                     </div>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
-                        Spatio-temporal model:
+                        Cart-Pole problem
                     </h3>
-                    <ul>
-                        <li>
-                            Include subject-specific random intercept for different stations.
-                        </li>
-                        <li>
-                            Consider $AR(1)$ structure for temporal autocorrelation.
-                        </li>
-                        <li class="fragment">
-                            Model: $$log(PM_{2.5})_{it}=\text{Linear effects as before }+b_i+\epsilon_{it},\\ i=1,\ldots, 12\text{ and }t=1,\ldots, 2160,\\ b_1,\ldots, b_{12}\sim N(0, \sigma_b^2)\text{ i.i.d., }\epsilon_{it}\sim  N(0, \sigma_{\epsilon}^2),\\ cor(\epsilon_{it}, \epsilon_{jt})=0\text{ for }i\ne j\text{ and }cor(\epsilon_{it}, \epsilon_{i,t+k})=\rho^k$$
-                        </li>
-                    </ul>
+                    Here are the values:
+                    $$M=1kg, m=0.1kg, L=1m,\\ g=9.8ms^{-2}, \Delta t=0.02s$$
+                    <div class="fragment">
+                        After each 0.02s, the decision maker decides to apply a force $F$ on the cart for the next 0.02s. Possible values of $F$ are $-10N, 0N, 10N$
+                    </div>
+                    <div class="fragment">
+                        Objectives are:
+                        <ul>
+                            <li>
+                                To keep the cart within boundary.
+                            </li>
+                            <li>
+                                To keep the angle of the pole withinn a range ($-12^o$ to $12^o$)
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    The dynamics of the system is described by the following:
+                    <br>
+                    Define
+                    $$
+                    p(t)=\frac{F+m\omega^2(t)L \sin(\theta(t))}{M+m}
+                    $$
+                    Then,
+                    $$
+                    \frac{d\omega(t)}{dt}=\frac{g\sin(\theta(t))-p(t)\cos(\theta(t))}{L\left(\frac{4}{3}-\frac{m\cos^2(\theta(t))}{M+m}\right)}\\
+                    \frac{dv(t)}{dt}=p(t)-\frac{mL\frac{d\omega(t)}{dt}\cos(\theta(t))}{M+m}
+                    $$
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    Given $x, v, \theta, \omega$ at time $t$, we can compute the state for time $t+\Delta t$. And apply the force accordingly.
+                    <div class="fragment">
+                        Yes, the process is deterministic if the precise measurements are given. <span class="fragment">But a little child can also balance a pole on his/her hand, without knowing the physics or the precise measurements.</span>
+                        <div class="fragment">
+                            Here we try to mimic the same behaviour. We shall provide only some discrete info about the state and see if we can find a good policy.
+                        </div>
+                        <div class="fragment">
+                            <strong>Drawback:</strong> Markov property may no longer be valid. But let&rsquo;s see how it goes.
+                        </div>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <h3>
+                        Some bad policies:
+                    </h3>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <div>
+                        Discrete representation of the states:
+                        <ul>
+                            <li>
+                                The whole range of $x$ was divided into three regions: Left-Forbidden, Good, Right-Forbidden
+                            </li>
+                            <li>
+                                Each of $v, \theta, \omega$ was also categorized into 5 regions.
+                            </li>
+                            <li class="fragment">
+                                So $\#$ of states$=3\times 5^3=375$
+                            </li>
+                            <li class="fragment">
+                                At each time point, the continuous observations are collected from the simulator. Then a small amount of random noise is added, and then the observation is categorized.
+                            </li>
+                            <li class="fragment">
+                                Based on the supplied category, the program has to take a decision which will be sent to the simulator.
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <div>
+                        The transition probabilities under each action were estimated beforehand using simulation.
+                        <br>
+                        <div class="fragment">
+                            The reward is defined as follows:
+                            $$
+                            R_a(x,y)=
+                            \begin{cases}
+                            -10, & \text{if }y\text{ is a forbidden state}\\
+                            2, & \text{if }y\text{ is a `very good' state}\\
+                            0, & \text{otherwise}
+                            \end{cases}
+                            $$
+                        </div>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <div>
+                        The result is as follows:
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Toy example : 2048
+                    </h3>
+                    <div>
+                        The transition probabilities under each action were estimated beforehand using simulation.
+                        <br>
+                        <div class="fragment">
+                            The reward is defined as follows:
+                            $$
+                            R_a(x,y)=
+                            \begin{cases}
+                            -10, & \text{if }y\text{ is a forbidden state}\\
+                            2, & \text{if }y\text{ is a `very good' state}\\
+                            0, & \text{otherwise}
+                            \end{cases}
+                            $$
+                        </div>
+                    </div>
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
