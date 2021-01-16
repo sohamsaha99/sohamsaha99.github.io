@@ -744,6 +744,98 @@
                         The result is as follows:
                     </div>
                 </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <div>
+                        The result is as follows:
+                    </div>
+                    <div>
+                        For 100 simulations upto time 200, the following was obtained:
+                        <table style="color: #fff;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Mean Life</th>
+                                <th>Min.</th>
+                                <th>Max.</th>
+                                <th>#(==200)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Random policy
+                                </td>
+                                <td>
+                                    22.93
+                                </td>
+                                <td>
+                                    9
+                                </td>
+                                <td>
+                                    66
+                                </td>
+                                <td>
+                                   0 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    x-based if-else
+                                </td>
+                                <td>
+                                    29.33
+                                </td>
+                                <td>
+                                    8
+                                </td>
+                                <td>
+                                    56
+                                </td>
+                                <td>
+                                   0 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    $\theta$-based if-else
+                                </td>
+                                <td>
+                                    41.40
+                                </td>
+                                <td>
+                                    25
+                                </td>
+                                <td>
+                                    59
+                                </td>
+                                <td>
+                                   0 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    MDP
+                                </td>
+                                <td>
+                                    195.8
+                                </td>
+                                <td>
+                                    170
+                                </td>
+                                <td>
+                                    200
+                                </td>
+                                <td>
+                                    61
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </section>
                 <section data-background-iframe="https://sohamsaha99.github.io/2147483648.html?size=2&mode=normal" data-background-interactive style="text-align: left; font-size: 36px;">
                     <h3 style="color: black;">
                         Toy example : 2048
@@ -866,337 +958,6 @@
                     </ul>
                 </section>
                 <section data-background="sp2020/last_slide.png" data-background-opacity=0.25 data-background-transition="zoom">
-                    <h2>
-                        Thank You
-                    </h2>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Model 1:
-                    </h3>
-                    <div style="text-align: center;">
-                        Accuracy on training data:
-                        <br>
-                        <table style="color: #fff;">
-                        <thead>
-                            <tr>
-                                <th>Predicted</th>
-                                <th>True</th>
-                                <th>(in %)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td> </td>
-                                <td>Yes</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>Yes</td>
-                                <td>20.44</td>
-                                <td>0.41</td>
-                            </tr>
-                            <tr>
-                                <td>No</td>
-                                <td>79.56</td>
-                                <td>99.59</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div style="text-align: center;" class="fragment">
-                        Accuracy on test data:
-                        <br>
-                        <table style="color: #fff;">
-                        <thead>
-                            <tr>
-                                <th>Predicted</th>
-                                <th>True</th>
-                                <th>(in %)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td> </td>
-                                <td>Yes</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>Yes</td>
-                                <td>17.71</td>
-                                <td>0.16</td>
-                            </tr>
-                            <tr>
-                                <td>No</td>
-                                <td>82.29</td>
-                                <td>99.84</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Model 2:
-                    </h3>
-                    <ul>
-                        <li>
-                            Similarly a Tobit model was fitted with the assumption of normal distribution.
-                        </li>
-                        <li class="fragment">
-                            Fit on training data:
-                            <br>
-                            <div style="text-align: center;">
-                                <img data-src="rt2020/rain_tobit.png" height="450px">
-                            </div>
-                        </li>
-                    </ul>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Model 2:
-                    </h3>
-                    <div style="text-align: center;">
-                        Prediction of rainfall:
-                        <br>
-                        <img data-src="rt2020/rainfall_tobit.png" height="500px">
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Model 2:
-                    </h3>
-                    <div style="text-align: center;">
-                        Accuracy on training data:
-                        <br>
-                        <table style="color: #fff;">
-                        <thead>
-                            <tr>
-                                <th>Predicted</th>
-                                <th>True</th>
-                                <th>(in %)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td> </td>
-                                <td>Yes</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>Yes</td>
-                                <td>8.83</td>
-                                <td>0.10</td>
-                            </tr>
-                            <tr>
-                                <td>No</td>
-                                <td>91.17</td>
-                                <td>99.90</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div style="text-align: center;" class="fragment">
-                        Accuracy on test data:
-                        <br>
-                        <table style="color: #fff;">
-                        <thead>
-                            <tr>
-                                <th>Predicted</th>
-                                <th>True</th>
-                                <th>(in %)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td> </td>
-                                <td>Yes</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>Yes</td>
-                                <td>7.97</td>
-                                <td>0.04</td>
-                            </tr>
-                            <tr>
-                                <td>No</td>
-                                <td>92.03</td>
-                                <td>99.96</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;">
-                    <h3>
-                        Effects on <strong>Temparature</strong>
-                    </h3>
-                    <ul>
-                        <li>
-                            Find the variables that influence temparature.
-                        </li>
-                        <li>
-                            Check model assumptions and remove multicollinearity.
-                        </li>
-                        <li>
-                            Check prediction errors.
-                        </li>
-                    </ul>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Full model:
-                    </h3>
-                    $$TEMP\sim\text{Daily trend + Yearly trend + All attributes}\\ \text{(except RAIN)}$$
-                    <div style="text-align: center;" class="fragment">
-                        Fitted on 1st seasonal year (i.e., March&lsquo;13-February&lsquo;14)
-                        <img data-src="rt2020/rain_fullmodel.png">
-                        <br>
-                        $$\text{Multiple }R^2=0.9343$$
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Variable selection:
-                    </h3>
-                    <ul>
-                        <li>
-                            <strong>Forward selection:</strong> All variables except $NO_2$ were selected.
-                        </li>
-                        <li>
-                            <strong>Backward elimination:</strong> Same result.
-                        </li>
-                        <li class="fragment">
-                            Fitted model:
-                            <div style="text-align: center;">
-                                <img data-src="rt2020/rain_variableselection.png">
-                                <br>
-                                $$\text{Multiple }R^2=0.9343$$
-                            </div>
-                        </li>
-                    </ul>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Diagnostics:
-                    </h3>
-                    <div class="r-stack">
-                        <img data-src="rt2020/rain_selectiondiag1.png" class="fragment fade-out" data-fragment-index="0">
-                        <img data-src="rt2020/rain_selectiondiag2.png" class="fragment current-visible" data-fragment-index="0">
-                        <img data-src="rt2020/rain_selectiondiag3.png" class="fragment current-visible" data-fragment-index="1">
-                        <img data-src="rt2020/rain_selectiondiag4.png" class="fragment current-visible" data-fragment-index="2">
-                        <img data-src="rt2020/rain_selectiondiag5.png" class="fragment">
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Prediction error:
-                    </h3>
-                    <table style="color: #fff;">
-                        <thead>
-                            <tr>
-                                <th>Year</th>
-                                <th>Data</th>
-                                <th>MSE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Seasonal year 1</td>
-                                <td>Training data</td>
-                                <td>2.861424</td>
-                            </tr>
-                            <tr>
-                                <td>Seasonal year 2</td>
-                                <td>Test data</td>
-                                <td>3.419270</td>
-                            </tr>
-                            <tr>
-                                <td>Seasonal year 3</td>
-                                <td>Test data</td>
-                                <td>3.638287</td>
-                            </tr>
-                            <tr>
-                                <td>Seasonal year 4</td>
-                                <td>Test data</td>
-                                <td>3.588154</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Handle multicollinearity
-                    </h3>
-                    <div class="r-stack" style="text-align: center;">
-                        <span class="fragment fade-out" data-fragment-index="0">
-                            Correlation structure between explanatory variables
-                            <br>
-                            <img data-src="rt2020/corplot1.jpeg" height="450px">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="0">
-                            Performing Ridge regression on the data
-                            <br>
-                            <img data-src="rt2020/ridge_lambda.jpeg"  height="425px">
-                            <br>
-                            $$\lambda=0.9430256$$
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="1">
-                            Coefficients
-                            <br>
-                            <img data-src="rt2020/ridge_coeff.png"  height="400px">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="2">
-                            
-                            <br>
-                            <img data-src="rt2020/ridge.jpeg"  height="450px">
-                        </span>
-                        <span class="fragment current-visible" data-fragment-index="3">
-                            Correlation
-                            <br>
-                            <img data-src="rt2020/corplot2.jpeg"  height="450px">
-                        </span>
-                        <span class="fragment">
-                            Final model
-                            <br>
-                            <img data-src="rt2020/ridge_model.png"  height="400px">
-                            <br>
-                            $$\text{Multiple }R^2=0.9319$$
-                        </span>
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-background-transition="zoom">
-                    <ul>
-                        <li>
-                            <u>References:</u>
-                            <ul>
-                                <li>
-                                    Dataset obtained from <strong>UCI Machine Learning Repository</strong>
-                                </li>
-                                <li>
-                                    Zhang, S., Guo, B., Dong, A., He, J., Xu, Z. and Chen, S.X. (2017) <strong>Cautionary Tales on Air-Quality Improvement in Beijing</strong>. Proceedings of the Royal Society A, Volume 473, No. 2205, Pages 20170457.
-
-                                </li>
-                            </ul>
-                        </li>
-                        <br>
-                        <li>
-                            <u>Presented by:</u>
-                            <ul>
-                                <li>
-                                    Dibyendu Saha
-                                </li>
-                                <li>
-                                    Riddhiman Saha
-                                </li>
-                                <li>
-                                    Souhardya Ray
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07>
                     <h2>
                         Thank You
                     </h2>
