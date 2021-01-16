@@ -646,6 +646,9 @@
                             <li>
                                 To keep the angle of the pole withinn a range ($-12^o$ to $12^o$)
                             </li>
+                            <li>
+                                To keep the system within these limits upto $200^{th}$ timepoint.
+                            </li>
                         </ul>
                     </div>
                 </section>
@@ -702,7 +705,7 @@
                                 Each of $v, \theta, \omega$ was also categorized into 5 regions.
                             </li>
                             <li class="fragment">
-                                So $\#$ of states$=3\times 5^3=375$
+                                So, $\#$ of states$=3\times 5^3=375$
                             </li>
                             <li class="fragment">
                                 At each time point, the continuous observations are collected from the simulator. Then a small amount of random noise is added, and then the observation is categorized.
@@ -741,128 +744,76 @@
                         The result is as follows:
                     </div>
                 </section>
+                <section data-background-iframe="https://sohamsaha99.github.io/2147483648.html?size=2&mode=normal" data-background-interactive style="text-align: left; font-size: 36px;">
+                    <h3 style="color: black;">
+                        Toy example : 2048
+                    </h3>
+                </section>
                 <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
                     <h3>
                         Toy example : 2048
                     </h3>
-                    <div>
-                        The transition probabilities under each action were estimated beforehand using simulation.
-                        <br>
-                        <div class="fragment">
-                            The reward is defined as follows:
-                            $$
-                            R_a(x,y)=
-                            \begin{cases}
-                            -10, & \text{if }y\text{ is a forbidden state}\\
-                            2, & \text{if }y\text{ is a `very good' state}\\
-                            0, & \text{otherwise}
-                            \end{cases}
-                            $$
-                        </div>
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Spatio-temporal model:
-                    </h3>
-                    <pre><code data-trim data-noescape>
-                        Random effects:
-                        |       (Intercept) Residual
-                        StdDev:   0.1361253 0.441552
-
-                        Correlation Structure: AR(1)
-                        |Parameter estimate(s):
-                        |     Phi
-                        0.7139503
-
-                        Fixed effects:
-                        |                         Value Std.Error   t-value p-value
-                        (Intercept)            37.47478  3.459479  10.83249  0.0000
-                        sin(2 * pi * No/24)    -0.07634  0.004346 -17.56476  0.0000
-                        cos(2 * pi * No/24)     0.07215  0.004135  17.44906  0.0000
-                        log(SO2)                0.28872  0.007337  39.35026  0.0000
-                        I(log(SO2) * SO2large)  0.04819  0.003589  13.42904  0.0000
-                        log(NO2)                0.11614  0.009887  11.74599  0.0000
-                        I(log(NO2) * NO2large)  0.36453  0.014956  24.37338  0.0000
-                        NO2large               -1.22684  0.053631 -22.87568  0.0000
-                        log(CO)                 0.38499  0.006971  55.22699  0.0000
-                        I(log(CO) * COlarge)    0.01084  0.001159   9.34849  0.0000
-                        log(O3)                -0.02004  0.003455  -5.79859  0.0000
-                        DEWP                    0.04296  0.000605  70.96695  0.0000
-                        log(PRES)              -5.44853  0.500311 -10.89029  0.0000
-                        RAIN                    0.21370  0.086396   2.47353  0.0134
-                        month_number            0.12179  0.003787  32.16372  0.0000
-                    </code></pre>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Spatio-temporal model:
-                    </h3>
-                    <div class="r-stack">
-                        <img data-src="rt2020/finalmodelhistogram.png" class="fragment fade-out" data-fragment-index="0" height="500px">
-                        <img data-src="rt2020/finalmodelQQ.png" class="fragment current-visible" data-fragment-index="0" height="500px">
-                        <img data-src="rt2020/finalmodelACF.png" class="fragment" height="500px">
-                    </div>
-                </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Next step:
-                    </h3>
+                    Why $2\times 2$?
                     <ul>
-                        <li>
-                            Now we can use this model to make predictions for next 3 winters.
+                        <li class="fragment">
+                            For $4\times 4$, it is possibe to go to 2048 (possibly more than that), and there are trillions of states.
                         </li>
-                        <li>
-                            If the distribution of $\text{PM}_{2.5}$ (given the other factors) remains same over the years, we can expect that the predictions will be similar to the actual data.
+                        <li class="fragment">
+                            If we consider the $4\times 4$ game upto 64, that has about 40 billion states.
                         </li>
-                        <li>
-                            If there is really a decrease in $\text{PM}_{2.5}$ concentration, we can expect that the predictions will be higher than actual data.
+                        <li class="fragment">
+                            For $3\times 3$, it is possible to go upto 1024 and there are about 25 million states.
                         </li>
-                        <li>
-                            If there is an increase in $\text{PM}_{2.5}$ concentration, we would expect that the predictions will be lower than actual data.
+                        <li class="fragment">
+                            For $2\times 2$, it is possible to reach 32, and there are at most $6^4=1296$ states.
                         </li>
                     </ul>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
                     <h3>
-                        Predictions:
+                        Toy example : 2048
                     </h3>
-                    Plot of yearwise median of actual data and predicted values:
-                    <img data-src="rt2020/prediction.png">
+                    <div class="fragment">
+                        <ul>
+                            <li>
+                                After each move, the game randomly chooses a blank tile.
+                            </li>
+                            <li>
+                                In that position, a <strong>4</strong> is placed with probability 0.1, a <strong>2</strong> is placed with probability 0.9
+                            </li>
+                            <li>
+                                If there is no blank space, the game is over.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        So we can explicitly calculate the transition probabilities.
+                    </div>
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                <section data-background-iframe="sp2020/invert_svg_2048.html" data-background-interactive style="text-align: right; font-size: 36px;" data-background-opacity=1>
                     <h3>
-                        Checking &ldquo;year&rdquo; effect
+                        Toy example : 2048
                     </h3>
-                    Instead of fitting on the first year, we can consider model for 4 years, and check if there is any &ldquo;year&rdquo; effect. The result is as follows:
-                    <pre class="fragment"><code data-trim data-noescape>
-                        Fixed effects:
-                        |                         Value Std.Error  t-value p-value
-                        paste(seasonal_year)2   0.12747  0.062163  2.05061  0.0463
-                        paste(seasonal_year)3   0.17065  0.062177  2.74457  0.0087
-                        paste(seasonal_year)4   0.22195  0.062188  3.56903  0.0009
-                        ... other effects are similar as before.
-                    </code></pre>
-                    <span class="fragment">
-                        If there was a decrease, the estimates were supposed to be negative. But they are not very significant, and the values are positive.
-                    </span>
-                    <span class="fragment">
-                        <hr>
-                        The results indicate that the air pollution situation was not as good as the official statistic would convey, and improvement, if any, was rather uncertain.
-                    </span>
+                    Transition probabilities
                 </section>
-                <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
                     <h3>
-                        Effects on <strong>Rainfall</strong>
+                        Toy example : 2048
                     </h3>
-                    <ul>
-                        <li>
-                            Fit a model to predict rainfall.
-                        </li>
-                        <li>
-                            Check accuracy on training and test data.
-                        </li>
-                    </ul>
+                    Reward is defined as follows:
+                    $$R_a(x,y)=
+                    \begin{cases}
+                    +5, & \text{if }y\text{ contains 32}\\
+                    -5, & \text{if move }a\text{ is invalid for state }x\\
+                    0, & \text{otherwise}
+                    \end{cases}
+                    $$
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Toy example : 2048
+                    </h3>
+                    Here is the result:
                 </section>
                 <section data-background="rt2020/beijing.jpg" data-background-opacity=0.07 style="text-align: left; font-size: 36px;" data-auto-animate>
                     <h3>
