@@ -4,8 +4,8 @@
 
         <title>Markov Decision Processes (MDP)</title>
 
-        <meta name="description" content="SP2020">
-        <meta name="author" content="Riddhiman Saha">
+        <meta name="description" content="SP2021">
+        <meta name="author" content="Tamoghna Gupta">
 
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -167,7 +167,7 @@
                     $$
                     J^{\pi}_{\alpha}(x_0)=\mathbb{E}\left[\sum_{t=0}^{\infty}\alpha^t R_t^{\pi}\mid X_0=x_0\right]
                     $$
-                    where $A_t=\pi(X_t)$ at each step, and thus, $R^{\pi}_t=R_{\pi(X_t)}(X_t, X_{t+1})$.
+                    where $A_t=\pi(X_t)$ at each step, and <br>thus, expected $R^{\pi}_t=R_{\pi(X_t)}(X_t, X_{t+1})$.
                     <div class="fragment">
                         For other value functions, we can evaluate the policy similarly.
                     </div>
@@ -241,7 +241,7 @@
                     <div>
                         Using $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$ using,
                         $$
-                        \pi_{n-1}^{\star}(x_{n-2})=\\ \arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]\\
+                        \pi_{n-2}^{\star}(x_{n-2})=\\ \arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]\\
                         \text{and, }J_{n-2, n}^{\star}(x_{n-2})=\\ \max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]
                         $$
                     </div>
@@ -278,7 +278,7 @@
                         <span class="fragment">
                             then $J_{n}^{\pi}=J_{0,n}^{\pi}$ can be found using,
                             $$
-                            J_{i,n}^{\pi}=T\circ J_{i+1, n}^{\pi}
+                            J_{i,n}^{\pi}=T_{\pi}\circ J_{i+1, n}^{\pi}
                             $$ and starting with $J_{n,n}^{\pi}=0$
                         </span>
                         <div class="fragment">
@@ -506,9 +506,9 @@
                             $$
                         </li>
                         <li class="fragment">
-                            If $\pi^{(i)}$ changes in the last step, go to step 2.
+                            If $\pi^{(i+1)}$ changes in the last step, go to step 2.
                             <br>
-                            If $\pi^{(i)}$ does not change, then terminate.
+                            If $\pi^{(i+1)}$ does not change, then terminate.
                         </li>
                     </ol>
                 </section>
@@ -609,7 +609,7 @@
                     </ul>
                     <div class="fragment">
                         <hr>
-                        When the parameters are unknown, the decision maker tries to learn those from &ldquo;experience&rdquo;. That is called Reinforcement Learning (stay tuned for more on this 🙂). <br>Here we present two <strong>toy</strong> examples.
+                        When the parameters are unknown, the decision maker tries to learn those from &ldquo;experience&rdquo;. That is called Reinforcement Learning. <br>Here we present two <strong>toy</strong> examples.
                     </div>
                 </section>
                 <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
@@ -974,13 +974,13 @@
                             <br>
                             <ul>
                                 <li>
+                                    Tamoghna Gupta
+                                </li>
+                                <li>
                                     Riddhiman Saha
                                 </li>
                                 <li>
                                     Souhardya Ray
-                                </li>
-                                <li>
-                                    Tamoghna Gupta
                                 </li>
                             </ul>
                         </li>
