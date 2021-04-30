@@ -58,12 +58,12 @@
                         <li>
                             Solving MDP
                         </li>
-                        <li>
+                        <!-- <li>
                             Value Iteration & Policy Iteration
                         </li>
                         <li>
                             Linear programming
-                        </li>
+                        </li> -->
                         <li>
                             Two &ldquo;Toy&rdquo; examples
                         </li>
@@ -193,354 +193,427 @@
                         But these are just notations. How to &ldquo;compute&rdquo; those quantities for a given problem?
                     </div>
                 </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3 id="heading">
-                        Solving MDP
-                    </h3>
-                    First consider the problem for finite horizon, upto time $n$. Want to find $\pi$ such that $J^{\pi}_n(x)$ is maximized.<br>
-                    <span class="fragment">
-                        The policy need not be time homogeneous, as the time horizon is finite. So consider $\mathbf{\pi}=(\pi_0, \ldots, \pi_{n-1})$.
-                    </span>
-                    <span class="fragment">
-                        Define a value function for the tail part, i.e.,
-                        $$
-                        J^{\pi}_{i,n}(x_i)=\mathbb{E}\left[\sum_{t=i}^{n-1}R_t\mid X_i=x_i\right]$$
-                    </span>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3 id="heading">
-                        Solving MDP
-                    </h3>
-                    <div>
-                        One crucial observation is, for the optimal policy $\mathbf{\pi}^{\star}$ and any state $x_i$, the tail policy $(\pi_i^{\star}, \ldots, \pi_{n-1}^{\star})$ optimizes the value from $x_i$ irrespective of the previous actions and transitions. This is the <strong>Bellman&rsquo;s Principle of optimality</strong>.
-                    </div>
-                    <div class="fragment">
-                        <hr>
-                        So to find $(\pi_0^{\star}, \ldots, \pi_{n-1}^{\star})$, we can start with finding $\pi_{n-1}^{\star}$. Then using that $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$, and so on.
-                    </div>
-                    <div class="fragment">
-                        Thus, we can do <strong>Dynamic Programming</strong> with <strong>Backward Induction</strong>.
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3 id="heading">
-                        Solving MDP
-                    </h3>
-                    <div>
-                        Finding $\pi_{n-1}^{\star}$ is easy. It is given by,
-                        $$
-                        \pi_{n-1}^{\star}(x_{n-1})=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1}, A_{n-1}=a\right]\\
-                        \text{and }J_{n-1, n}^{\star}(x_{n-1})=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1},A_{n-1}=a\right]
-                        $$
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3 id="heading">
-                        Solving MDP
-                    </h3>
-                    <div>
-                        Using $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$ using,
-                        $$
-                        \pi_{n-2}^{\star}(x_{n-2})=\\ \arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]\\
-                        \text{and, }J_{n-2, n}^{\star}(x_{n-2})=\\ \max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]
-                        $$
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Optimal Value Operator
-                    </h3>
-                    <div>
-                        So if we define the opertor $T:\mathbb{R}^\mathcal{X}\rightarrow\mathbb{R}^\mathcal{X}$ as,
-                        $$
-                        (TJ)(x)=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+J(X_1)\mid X_0=x, A_0=a\right]
-                        $$
-                        <span class="fragment">
-                            then $J_{n}^{\star}=J_{0,n}^{\star}$ can be found using,
-                            $$
-                            J_{i,n}^{\star}=T\circ J_{i+1, n}^{\star}
-                            $$ and starting with $J_{n,n}^{\star}=0$
-                        </span>
-                        <div class="fragment">
-                            The operator $T$ maybe called <strong>Optimal Value Operator</strong>.
+                <section>
+                    <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div>
+                            For finite horizon, note that the optimal policy must optimize the tail part obtained by truncating at each time point. This motivates <strong>Dynamic Programming</strong> with <strong>Backward Induction</strong>.
                         </div>
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
-                    <h3>
-                        Policy Evaluation Operator
-                    </h3>
-                    <div>
-                        Similarly for a stationary policy $\mathbf{\pi}$, if we define the opertor $T_{\pi}:\mathbb{R}^\mathcal{X}\rightarrow\mathbb{R}^\mathcal{X}$ as,
-                        $$
-                        (T_{\pi}J)(x)=\mathbb{E}\left[R_0+J(X_1)\mid X_0=x, A_0=\pi(x)\right]
-                        $$
-                        <span class="fragment">
-                            then $J_{n}^{\pi}=J_{0,n}^{\pi}$ can be found using,
-                            $$
-                            J_{i,n}^{\pi}=T_{\pi}\circ J_{i+1, n}^{\pi}
-                            $$ and starting with $J_{n,n}^{\pi}=0$
-                        </span>
                         <div class="fragment">
-                            The operator $T_{\pi}$ maybe called <strong>Policy Evaluation Operator</strong>.
+                            For example, find $\pi_{n-1}^{\star}$ using,
+                            $$
+                            \pi_{n-1}^{\star}(x_{n-1})=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1}, A_{n-1}=a\right]
+                            $$
                         </div>
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3 id="heading">
-                        Infinite horizon
-                    </h3>
-                    <div>
-                        For finite horizon, we know how to compute the optimal quantities in finite number of steps. What if we want the optimal policy for infinite horizon considering the discounted total reward?
+                        <div class="fragment">
+                            Using $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$ using,
+                            $$
+                            \pi_{n-2}^{\star}(x_{n-2})=\\ \arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]
+                            $$
+                            and so on.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        First consider the problem for finite horizon, upto time $n$. Want to find $\pi$ such that $J^{\pi}_n(x)$ is maximized.<br>
+                        <span class="fragment">
+                            The policy need not be time homogeneous, as the time horizon is finite. So consider $\mathbf{\pi}=(\pi_0, \ldots, \pi_{n-1})$.
+                        </span>
+                        <span class="fragment">
+                            Define a value function for the tail part, i.e.,
+                            $$
+                            J^{\pi}_{i,n}(x_i)=\mathbb{E}\left[\sum_{t=i}^{n-1}R_t\mid X_i=x_i\right]$$
+                        </span>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div>
+                            One crucial observation is, for the optimal policy $\mathbf{\pi}^{\star}$ and any state $x_i$, the tail policy $(\pi_i^{\star}, \ldots, \pi_{n-1}^{\star})$ optimizes the value from $x_i$ irrespective of the previous actions and transitions. This is the <strong>Bellman&rsquo;s Principle of optimality</strong>.
+                        </div>
                         <div class="fragment">
                             <hr>
-                            Suppose we similarly define the two operators taking into account the discount factor:
+                            So to find $(\pi_0^{\star}, \ldots, \pi_{n-1}^{\star})$, we can start with finding $\pi_{n-1}^{\star}$. Then using that $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$, and so on.
+                        </div>
+                        <div class="fragment">
+                            Thus, we can do <strong>Dynamic Programming</strong> with <strong>Backward Induction</strong>.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div>
+                            Finding $\pi_{n-1}^{\star}$ is easy. It is given by,
                             $$
-                            (TJ)(x)=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=a\right]
-                            $$
-                            and
-                            $$
-                            (T_{\pi}J)(x)=\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=\pi(x)\right]
+                            \pi_{n-1}^{\star}(x_{n-1})=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1}, A_{n-1}=a\right]\\
+                            \text{and }J_{n-1, n}^{\star}(x_{n-1})=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1},A_{n-1}=a\right]
                             $$
                         </div>
-                    </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div>
+                            Using $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$ using,
+                            $$
+                            \pi_{n-2}^{\star}(x_{n-2})=\\ \arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]\\
+                            \text{and, }J_{n-2, n}^{\star}(x_{n-2})=\\ \max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]
+                            $$
+                        </div>
+                    </section>
                 </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3 id="heading">
-                        Infinite horizon
-                    </h3>
-                    <div>
-                        <strong><u>Value Iteration:</u></strong><br>
-                        Similar to the finite case, the obvious choice for an iterative procedure to find the optimal policy is,
-                        <br>
-                        <ol>
-                            <li class="fragment">
-                                Start with a reasonable choice for $\left\{J_{\alpha}(x):x\in\mathcal{X}\right\}$. Call it $J_{\alpha}^{(0)}$
-                            </li>
-                            <li class="fragment">
-                                Do the iteration,
-                                $$
-                                J_{\alpha}^{(i+1)}:=T\circ J_{\alpha}^{(i)}
-                                $$
-                            </li>
-                            <li class="fragment">
-                                When it converges(?), say, to $\hat{J_{\alpha}}$, the optimal policy can be found with,
-                                $$
-                                \hat{\pi}^{\star}(x):=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha \hat{J_{\alpha}}(x)\mid X_0=x, A_0=a\right]
-                                $$
-                            </li>
-                        </ol>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3 id="heading">
-                        Infinite horizon
-                    </h3>
-                    <div>
-                        <strong><u>More intuition behind the iteration:</u></strong>
+                <section>
+                    <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Value Iteration
+                        </h3>
                         <div class="fragment">
-                            For infinite horizon, Bellman&rsquo;s optimality condition implies that,
+                            For infinite horizon, the optimal policy satisfies the following:
                             $$
                             J_{\alpha}(x)=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}(y)\right\}
                             $$
                         </div>
                         <div class="fragment">
-                            If we write the iterative step more explicitly, it turns out to be,
+                            So we can do the iteration,
                             $$
                             J_{\alpha}^{(i+1)}(x):=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}^{(i)}(y)\right\}
                             $$
                         </div>
                         <div class="fragment">
-                            So if the iteration converges, we get a relation similar to Bellman&rsquo;s equation.
+                            It is possible to prove <strong>convergence</strong> of the process.
                         </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3 id="heading">
-                        Infinite horizon
-                    </h3>
-                    <div>
-                        Similarly if we want to find $J_{\alpha}^{\pi}$ for a given policy, we can do a similar iteration:
-                        $$
-                        J_{\alpha}^{\pi,(i+1)}:=T_{\pi}\circ J_{\alpha}^{\pi,(i)}
-                        $$
-                    </div>
-                    <div class="fragment">
-                        <hr>
-                        The major questions are,<br>
-                        <ul>
-                            <li>
-                                Do these procedures converge?
-                            </li>
-                            <li>
-                                If yes, how fast?
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Q: Does it converge?
-                    </h3>
-                    <div>
-                        Here is a theorem:
-                        <blockquote>
-                            For any $\pi$ and $0<\alpha<1$, there is $J^{\pi}\in\mathbb{R}^{\mathcal{X}}$ such that,
-                            <li class="fragment">
-                                For all $J\in\mathbb{R}^{\mathcal{X}}$,
-                                $$
-                                J^{\pi}=\lim_{k\rightarrow\infty}T_{\pi}^{k}J
-                                $$
-                            </li>
-                            <li class="fragment">
-                                $J^{\pi}$ is the unique solution to
-                                $$J=T_{\pi}\circ J
-                                $$
-                            </li>
-                        </blockquote>
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Q: Does it converge?
-                    </h3>
-                    <div>
-                        The idea of the proof is as follows:
-                        <div class="fragment">
-                            First we can <a href="sp2020/convergence_proofs.pdf" target="_BLANK">show</a> that $T_{\pi}$ is a contraction, i.e., for any $J$ and $J'$,
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Optimal Value Operator
+                        </h3>
+                        <div>
+                            So if we define the opertor $T:\mathbb{R}^\mathcal{X}\rightarrow\mathbb{R}^\mathcal{X}$ as,
                             $$
-                            \lvert\lvert T_{\pi}J-T_{\pi}J'\rvert\rvert_{\infty}\leq\alpha\lvert\lvert J -J'\rvert\rvert_{\infty}
+                            (TJ)(x)=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+J(X_1)\mid X_0=x, A_0=a\right]
                             $$
+                            <span class="fragment">
+                                then $J_{n}^{\star}=J_{0,n}^{\star}$ can be found using,
+                                $$
+                                J_{i,n}^{\star}=T\circ J_{i+1, n}^{\star}
+                                $$ and starting with $J_{n,n}^{\star}=0$
+                            </span>
+                            <div class="fragment">
+                                The operator $T$ maybe called <strong>Optimal Value Operator</strong>.
+                            </div>
                         </div>
-                        <div class="fragment">
-                            Contraction property also implies existence and uniqueness of fixed point $J^{\pi}$. (<a href="https://en.wikipedia.org/wiki/Banach_fixed-point_theorem">Banach fixed point theorem</a>)
-                        </div>
-                        <div class="fragment">
-                            For convergence, note that,
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Policy Evaluation Operator
+                        </h3>
+                        <div>
+                            Similarly for a stationary policy $\mathbf{\pi}$, if we define the opertor $T_{\pi}:\mathbb{R}^\mathcal{X}\rightarrow\mathbb{R}^\mathcal{X}$ as,
                             $$
-                            \lvert\lvert T_{\pi}J-J^{\pi}\rvert\rvert_{\infty}\leq \alpha \lvert\lvert J-J^{\pi}\rvert\rvert_{\infty}\\ 0<\alpha<1
+                            (T_{\pi}J)(x)=\mathbb{E}\left[R_0+J(X_1)\mid X_0=x, A_0=\pi(x)\right]
                             $$
-                        </div>
-                        <div class="fragment">
-                            Thus the policy iteration converges.
-                        </div>
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Q: Does it converge?
-                    </h3>
-                    <div>
-                        A similar theorem for optimal value function:
-                        <blockquote>
-                            For any $\pi$ and $0<\alpha<1$, there is $J^{\star}\in\mathbb{R}^{\mathcal{X}}$ such that,
-                            <li class="fragment">
-                                For all $J\in\mathbb{R}^{\mathcal{X}}$,
+                            <span class="fragment">
+                                then $J_{n}^{\pi}=J_{0,n}^{\pi}$ can be found using,
                                 $$
-                                J^{\star}=\lim_{k\rightarrow\infty}T^{k}J
+                                J_{i,n}^{\pi}=T_{\pi}\circ J_{i+1, n}^{\pi}
+                                $$ and starting with $J_{n,n}^{\pi}=0$
+                            </span>
+                            <div class="fragment">
+                                The operator $T_{\pi}$ maybe called <strong>Policy Evaluation Operator</strong>.
+                            </div>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Infinite horizon
+                        </h3>
+                        <div>
+                            For finite horizon, we know how to compute the optimal quantities in finite number of steps. What if we want the optimal policy for infinite horizon considering the discounted total reward?
+                            <div class="fragment">
+                                <hr>
+                                Suppose we similarly define the two operators taking into account the discount factor:
                                 $$
-                            </li>
-                            <li class="fragment">
-                                $J^{\pi}$ is the unique solution to
-                                $$J=T\circ J
+                                (TJ)(x)=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=a\right]
                                 $$
-                            </li>
-                            <li class="fragment">
-                                $J^{\star}=\max_{\pi}J^{\pi}$
-                                 and 
-                                $J^{\star}=J^{\pi^{\star}}$
-                            </li>
-                        </blockquote>
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Policy Iteration
-                    </h3>
-                    Instead of iterating over the value function, we can also iterate over the policy.
-                    <span class="fragment">
-                        First note that,
-                        $$
-                        J^{\star}(x)=\sum_{y\in\mathcal{X}}P_{\pi^{\star}(x)}(x,y)\left\{R_{\pi^{\star}(x)}(x,y)+\alpha J^{\star}(y)\right\}\\
-                        \pi^{\star}(x)=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\star}(y)\right\}
-                        $$
-                    </span>
-                    <div class="fragment">
-                        So we can define a <strong>Greedy operator</strong> $G:\mathbb{R}^{\mathcal{X}}\rightarrow\mathcal{A}^{\mathcal{X}}$ as:
-                        $$
-                        (GJ)(x)=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=a\right]
-                        $$
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Policy Iteration
-                    </h3>
-                    From the last set of equations, we can think of the following iteration:
-                    <div class="fragment">
-                        $$
-                        J^{(k+1)}(x):=\sum_{y\in\mathcal{X}}P_{\pi^{(i)}(x)}(x,y)\left\{R_{\pi^{(i)}(x)}(x,y)+\alpha J^{(k)}(y)\right\}
-                        $$ until convergence. Call the limit $J^{\pi^{(i)}}$.<br><span class="fragment">Then update the policy with,
-                        $$
-                        \pi^{(i+1)}(x):=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\pi^{(i)}}(y)\right\}
-                        $$</span>
-                    </div>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Policy Iteration
-                    </h3>
-                    <div>
-                        Equivalently,
-                    </div>
-                    <br>
-                    <ol>
-                        <li>
-                            Start with some policy $\pi^{(0)}$
-                        </li>
-                        <li class="fragment">
-                            Compute $J^{\pi^{(i)}}$ (policy evaluation iteration).
-                        </li>
-                        <li class="fragment">
-                            Update $\pi$ with the following:
-                            $$
-                            \pi^{(i+1)}=G\circ J^{\pi^{(i)}}
-                            $$
-                        </li>
-                        <li class="fragment">
-                            If $\pi^{(i+1)}$ changes in the last step, go to step 2.
+                                and
+                                $$
+                                (T_{\pi}J)(x)=\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=\pi(x)\right]
+                                $$
+                            </div>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Infinite horizon
+                        </h3>
+                        <div>
+                            <strong><u>Value Iteration:</u></strong><br>
+                            Similar to the finite case, the obvious choice for an iterative procedure to find the optimal policy is,
                             <br>
-                            If $\pi^{(i+1)}$ does not change, then terminate.
-                        </li>
-                    </ol>
+                            <ol>
+                                <li class="fragment">
+                                    Start with a reasonable choice for $\left\{J_{\alpha}(x):x\in\mathcal{X}\right\}$. Call it $J_{\alpha}^{(0)}$
+                                </li>
+                                <li class="fragment">
+                                    Do the iteration,
+                                    $$
+                                    J_{\alpha}^{(i+1)}:=T\circ J_{\alpha}^{(i)}
+                                    $$
+                                </li>
+                                <li class="fragment">
+                                    When it converges(?), say, to $\hat{J_{\alpha}}$, the optimal policy can be found with,
+                                    $$
+                                    \hat{\pi}^{\star}(x):=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha \hat{J_{\alpha}}(x)\mid X_0=x, A_0=a\right]
+                                    $$
+                                </li>
+                            </ol>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Infinite horizon
+                        </h3>
+                        <div>
+                            <strong><u>More intuition behind the iteration:</u></strong>
+                            <div class="fragment">
+                                For infinite horizon, Bellman&rsquo;s optimality condition implies that,
+                                $$
+                                J_{\alpha}(x)=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}(y)\right\}
+                                $$
+                            </div>
+                            <div class="fragment">
+                                If we write the iterative step more explicitly, it turns out to be,
+                                $$
+                                J_{\alpha}^{(i+1)}(x):=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}^{(i)}(y)\right\}
+                                $$
+                            </div>
+                            <div class="fragment">
+                                So if the iteration converges, we get a relation similar to Bellman&rsquo;s equation.
+                            </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Infinite horizon
+                        </h3>
+                        <div>
+                            Similarly if we want to find $J_{\alpha}^{\pi}$ for a given policy, we can do a similar iteration:
+                            $$
+                            J_{\alpha}^{\pi,(i+1)}:=T_{\pi}\circ J_{\alpha}^{\pi,(i)}
+                            $$
+                        </div>
+                        <div class="fragment">
+                            <hr>
+                            The major questions are,<br>
+                            <ul>
+                                <li>
+                                    Do these procedures converge?
+                                </li>
+                                <li>
+                                    If yes, how fast?
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Q: Does it converge?
+                        </h3>
+                        <div>
+                            Here is a theorem:
+                            <blockquote>
+                                For any $\pi$ and $0<\alpha<1$, there is $J^{\pi}\in\mathbb{R}^{\mathcal{X}}$ such that,
+                                <li class="fragment">
+                                    For all $J\in\mathbb{R}^{\mathcal{X}}$,
+                                    $$
+                                    J^{\pi}=\lim_{k\rightarrow\infty}T_{\pi}^{k}J
+                                    $$
+                                </li>
+                                <li class="fragment">
+                                    $J^{\pi}$ is the unique solution to
+                                    $$J=T_{\pi}\circ J
+                                    $$
+                                </li>
+                            </blockquote>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Q: Does it converge?
+                        </h3>
+                        <div>
+                            The idea of the proof is as follows:
+                            <div class="fragment">
+                                First we can <a href="sp2020/convergence_proofs.pdf" target="_BLANK">show</a> that $T_{\pi}$ is a contraction, i.e., for any $J$ and $J'$,
+                                $$
+                                \lvert\lvert T_{\pi}J-T_{\pi}J'\rvert\rvert_{\infty}\leq\alpha\lvert\lvert J -J'\rvert\rvert_{\infty}
+                                $$
+                            </div>
+                            <div class="fragment">
+                                Contraction property also implies existence and uniqueness of fixed point $J^{\pi}$. (<a href="https://en.wikipedia.org/wiki/Banach_fixed-point_theorem">Banach fixed point theorem</a>)
+                            </div>
+                            <div class="fragment">
+                                For convergence, note that,
+                                $$
+                                \lvert\lvert T_{\pi}J-J^{\pi}\rvert\rvert_{\infty}\leq \alpha \lvert\lvert J-J^{\pi}\rvert\rvert_{\infty}\\ 0<\alpha<1
+                                $$
+                            </div>
+                            <div class="fragment">
+                                Thus the policy iteration converges.
+                            </div>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Q: Does it converge?
+                        </h3>
+                        <div>
+                            A similar theorem for optimal value function:
+                            <blockquote>
+                                For any $\pi$ and $0<\alpha<1$, there is $J^{\star}\in\mathbb{R}^{\mathcal{X}}$ such that,
+                                <li class="fragment">
+                                    For all $J\in\mathbb{R}^{\mathcal{X}}$,
+                                    $$
+                                    J^{\star}=\lim_{k\rightarrow\infty}T^{k}J
+                                    $$
+                                </li>
+                                <li class="fragment">
+                                    $J^{\pi}$ is the unique solution to
+                                    $$J=T\circ J
+                                    $$
+                                </li>
+                                <li class="fragment">
+                                    $J^{\star}=\max_{\pi}J^{\pi}$
+                                     and 
+                                    $J^{\star}=J^{\pi^{\star}}$
+                                </li>
+                            </blockquote>
+                        </div>
+                    </section>
                 </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Policy Iteration
-                    </h3>
-                    Like the value iteration, the policy iteration also converges. One theorem says that it terminates in finite number of steps.
-                    <blockquote class="fragment">
-                        Policy iteration generates a sequence of policies with distinct, increasing values, terminating after a finite number of iteration with an optimal policy,<br>i.e., for some $k$,
-                        $$
-                        J^{\pi^{(0)}}\leq J^{\pi^{(1)}}\leq\ldots\leq J^{\pi^{(k)}}=J^{\star}
-                        $$
-                    </blockquote>
-                </section>
-                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
-                    <h3>
-                        Policy Iteration
-                    </h3>
-                    There are some other variants of policy iteration. For example, in Generalized Policy iteration,
-                    <div>
-                        The value updation is done for a fixed number of times (i.e., approx. values):
-                        $$
-                        J^{(i+1)}:=T_{\pi^{i}}^{k}\circ J^{(i)}
-                        $$ and then update the policy,
-                        $$
-                        \pi^{(i+1)}=G\circ J^{(i+1)}$$
-                    </div>
-                    <div class="fragment">
-                        <hr>
-                        Though value ierations look simpler, policy iterations are faster in practice, and terminates after finite steps.
-                    </div>
+                <section>
+                    <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        <div class="r-stack">
+                            <div class="fragment current-visible" data-fragment-index="0">
+                                Similar as value iteration, but uses the following set of equations:
+                                $$
+                                J^{\star}(x)=\sum_{y\in\mathcal{X}}P_{\pi^{\star}(x)}(x,y)\left\{R_{\pi^{\star}(x)}(x,y)+\alpha J^{\star}(y)\right\}\\
+                                \pi^{\star}(x)=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\star}(y)\right\}
+                                $$
+                            </div>
+                            <div class="fragment" data-fragment-index="2">
+                                Iteration is done as follows: Start with some $\pi^{(0)}, J^{(0)}$
+                                $$
+                                J^{(k+1)}(x):=\sum_{y\in\mathcal{X}}P_{\pi^{(i)}(x)}(x,y)\left\{R_{\pi^{(i)}(x)}(x,y)+\alpha J^{(k)}(y)\right\}
+                                $$ until convergence. Call the limit $J^{\pi^{(i)}}$.<br><span class="fragment" data-fragment-index="3">Then update the policy with,
+                                $$
+                                \pi^{(i+1)}(x):=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\pi^{(i)}}(y)\right\}
+                                $$ and go to the above step if the policy changes. Else stop.</span>
+                            </div>
+                        </div>
+                        <div class="fragment" data-fragment-index="4">
+                            Terminates after finite number of steps.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        Instead of iterating over the value function, we can also iterate over the policy.
+                        <span class="fragment">
+                            First note that,
+                            $$
+                            J^{\star}(x)=\sum_{y\in\mathcal{X}}P_{\pi^{\star}(x)}(x,y)\left\{R_{\pi^{\star}(x)}(x,y)+\alpha J^{\star}(y)\right\}\\
+                            \pi^{\star}(x)=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\star}(y)\right\}
+                            $$
+                        </span>
+                        <div class="fragment">
+                            So we can define a <strong>Greedy operator</strong> $G:\mathbb{R}^{\mathcal{X}}\rightarrow\mathcal{A}^{\mathcal{X}}$ as:
+                            $$
+                            (GJ)(x)=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=a\right]
+                            $$
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        From the last set of equations, we can think of the following iteration:
+                        <div class="fragment">
+                            $$
+                            J^{(k+1)}(x):=\sum_{y\in\mathcal{X}}P_{\pi^{(i)}(x)}(x,y)\left\{R_{\pi^{(i)}(x)}(x,y)+\alpha J^{(k)}(y)\right\}
+                            $$ until convergence. Call the limit $J^{\pi^{(i)}}$.<br><span class="fragment">Then update the policy with,
+                            $$
+                            \pi^{(i+1)}(x):=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\pi^{(i)}}(y)\right\}
+                            $$</span>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        <div>
+                            Equivalently,
+                        </div>
+                        <br>
+                        <ol>
+                            <li>
+                                Start with some policy $\pi^{(0)}$
+                            </li>
+                            <li class="fragment">
+                                Compute $J^{\pi^{(i)}}$ (policy evaluation iteration).
+                            </li>
+                            <li class="fragment">
+                                Update $\pi$ with the following:
+                                $$
+                                \pi^{(i+1)}=G\circ J^{\pi^{(i)}}
+                                $$
+                            </li>
+                            <li class="fragment">
+                                If $\pi^{(i+1)}$ changes in the last step, go to step 2.
+                                <br>
+                                If $\pi^{(i+1)}$ does not change, then terminate.
+                            </li>
+                        </ol>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        Like the value iteration, the policy iteration also converges. One theorem says that it terminates in finite number of steps.
+                        <blockquote class="fragment">
+                            Policy iteration generates a sequence of policies with distinct, increasing values, terminating after a finite number of iteration with an optimal policy,<br>i.e., for some $k$,
+                            $$
+                            J^{\pi^{(0)}}\leq J^{\pi^{(1)}}\leq\ldots\leq J^{\pi^{(k)}}=J^{\star}
+                            $$
+                        </blockquote>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        There are some other variants of policy iteration. For example, in Generalized Policy iteration,
+                        <div>
+                            The value updation is done for a fixed number of times (i.e., approx. values):
+                            $$
+                            J^{(i+1)}:=T_{\pi^{i}}^{k}\circ J^{(i)}
+                            $$ and then update the policy,
+                            $$
+                            \pi^{(i+1)}=G\circ J^{(i+1)}$$
+                        </div>
+                        <div class="fragment">
+                            <hr>
+                            Though value ierations look simpler, policy iterations are faster in practice, and terminates after finite steps.
+                        </div>
+                    </section>
                 </section>
                 <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
                     <h3>
