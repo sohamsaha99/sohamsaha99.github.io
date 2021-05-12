@@ -1,0 +1,1189 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>Markov Decision Processes (MDP)</title>
+
+        <meta name="description" content="SP2021">
+        <meta name="author" content="Riddhiman Saha">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style type="text/css">
+            .twocolumn {
+               display: grid;
+               grid-template-columns: 1fr 1fr;
+               grid-gap: 30px;
+               text-align: justify;
+            }
+        </style>
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/night.css" id="theme">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+        <link href="css/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+        <link href="css/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-background="sp2020/cartpole_preview_loop.gif" data-background-opacity=0.05 style="font-size: 37px;">
+                    <!-- <video autoplay="autoplay" controls>
+                        <source data-src="sp2020/2048_preview.webm" type="video/webm">
+                    </video> -->
+                    <img data-src="sp2020/2048_preview.gif" style="margin-bottom: 30px;">
+                    <h3 style="color: #f82249DD; text-align: center;">
+                        <b>Markov Decision Processes<br>Theory and Applications</b>
+                    </h3>
+                    <br>
+                    <hr>
+                    <!-- <br> -->
+                    <div style="text-align: center;">
+                        <!-- Group Project -->
+                        <br>
+                        <strong>Stochastic Processes</strong>
+                        <br>
+                        M.Stat. $1^{\text{st}}$ Year, ISI Kolkata
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left;">
+                    <h3>
+                        We are going to discuss:
+                    </h3>
+                    <ul>
+                        <li>
+                            Definition and Objective
+                        </li>
+                        <!-- <li>
+                            Value functions
+                        </li> -->
+                        <li>
+                            Solving MDP
+                        </li>
+                        <!-- <li>
+                            Value Iteration & Policy Iteration
+                        </li>
+                        <li>
+                            Linear programming
+                        </li> -->
+                        <li>
+                            Two &ldquo;Toy&rdquo; examples
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 39px;">
+                    <h3>
+                        Basic Idea
+                    </h3>
+                    A <strong>Markov Decision Process (MDP)</strong> is a discrete-time stochastic control process<span class="fragment">, i.e., similar to usual Markov chain, but the transition events can be influenced by some action.</span>
+                    <ul>
+                        <li class="fragment">
+                            Transitions are partly random, and partly under the <strong>influence of a decision maker</strong>.
+                        </li>
+                        <li class="fragment">
+                            Additionally, there is some <strong>reward/penalty</strong> for each transition event.
+                        </li>
+                        <li class="fragment">
+                            The goal is to find a <strong>policy/strategy</strong> such that the total reward is <strong>maximized in long term</strong>.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 34px;">
+                    <h3>
+                        Definition
+                    </h3>
+                    Formally, a Markov Decision Process consists of
+                    <ul>
+                        <span class="fragment">
+                            <li>
+                                A state space $\mathcal{X}$
+                            </li>
+                            <li>
+                                An action space $\mathcal{A}$
+                            </li>
+                        </span>
+                        <li class="fragment">
+                            For each $a\in \mathcal{A}$, we have a Markov chain with state space $\mathcal{X}$ & transition matrix $P_a$.
+                            $$
+                            P_a(s, s')=\mathbb{P}\left[X_{t+1}=s'|X_t=s, A_t=a\right]
+                            $$
+                        </li>
+                        <li class="fragment">
+                            For each $a\in \mathcal{A}$, we have a real valued reward matrix.
+                            $$
+                            R_a(s, s')=\mathbb{E}\left[R_{t}|X_t=s, A_t=a, X_{t+1}=s'\right]
+                            $$
+                        </li>
+                    </ul>
+                    <span class="fragment">The tuple $(\mathcal{X}, \mathcal{A}, \{P_a\}, \{R_a\})$ defines the process completely.</span>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 34px;">
+                    <h3>
+                        Objective
+                    </h3>
+                    The goal is to find a good &ldquo;policy&rdquo;. <span class="fragment">A policy $\pi$ is a function,
+                    $$
+                    \pi:\mathcal{X}\rightarrow\mathcal{A}\\ \text{ or }\\
+                    \pi:\mathcal{X}\rightarrow\Delta{(\mathcal{A})}
+                    $$
+                    Given the policy, the decision maker will choose the action $\pi(s)$ when the process is at state $s$.</span>
+                    <span class="fragment">
+                        Policies can also be time dependent, i.e., we may want to consider different $\pi_t$ for each time point.
+                    </span>
+                </section>
+                <section>
+                    <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Objective Function
+                        </h3>
+                        We want to maximize some cumulative function of the random rewards. These are called value functions.
+                        <ul>
+                            <li class="fragment fade-in-then-semi-out">
+                                If interested only upto a finite time, we can maximize,
+                                $$
+                                J_n(x_0)=\mathbb{E}\left[\sum_{t=0}^{n-1}R_t\mid X_0=x_0\right]
+                                $$
+                            </li>
+                            <li class="fragment">
+                                If interested upto long/infinite time, we can maximize,
+                                <div class="r-stack">
+                                    <span class="fragment fade-out">
+                                        $$
+                                        J_{\alpha}(x_0)=\mathbb{E}\left[\sum_{t=0}^{\infty}\alpha^t R_t\mid X_0=x_0\right]
+                                        $$
+                                        where $0<\alpha<1$ is the discount factor.
+                                    </span>
+                                    <span class="fragment">
+                                        $$
+                                        J(x_0)=\lim_{n\rightarrow\infty}\mathbb{E}\left[\frac{1}{n}\sum_{t=0}^{n}R_t\mid X_0=x_0\right]
+                                        $$
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Objective Function
+                        </h3>
+                        So, for a given policy $\pi$, we can evaluate the policy as,
+                        $$
+                        J^{\pi}_{\alpha}(x_0)=\mathbb{E}\left[\sum_{t=0}^{\infty}\alpha^t R_t^{\pi}\mid X_0=x_0\right]
+                        $$
+                        where $A_t=\pi(X_t)$ at each step, and <br>thus, expected $R^{\pi}_t=R_{\pi(X_t)}(X_t, X_{t+1})$.
+                        <div class="fragment">
+                            For other value functions, we can evaluate the policy similarly.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Objective Function
+                        </h3>
+                        <div>
+                            Clearly, the maximized objective function is given by,
+                            $$
+                            J^{\star}_{\alpha}(x_0)=\max_{\pi}J^{\pi}_{\alpha}(x_0)
+                            $$
+                        </div>
+                        <div class="fragment">
+                            and the optimal policy is,
+                            $$
+                            \pi^{\star}=\arg\max_{\pi}J^{\pi}_{\alpha}(x_0)
+                            $$
+                        </div>
+                        <div class="fragment">
+                            <hr>
+                            But these are just notations. How to &ldquo;compute&rdquo; those quantities for a given problem?
+                        </div>
+                    </section>
+                </section>
+                <section>
+                    <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div class="twocolumn">
+                            <div class="fragment fade-in-then-semi-out">
+                                For finite horizon problem, note that the optimal policy must optimize the tail part obtained by truncating at each time point. This motivates <strong>Dynamic Programming</strong> with <strong>Backward Induction</strong>.
+                            </div>
+                            <div class="fragment">
+                                For infinite horizon, a <strong>Linear Programming Problem</strong> can be formulated. But the two most popular methods are:<br><strong>Value Iteration</strong> and <strong>Policy Iteration</strong>.
+                            </div>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div>
+                            For finite horizon, note that the optimal policy must optimize the tail part obtained by truncating at each time point. This motivates <strong>Dynamic Programming</strong> with <strong>Backward Induction</strong>.
+                        </div>
+                        <div class="fragment">
+                            For example, find $\pi_{n-1}^{\star}$ using,
+                            $$
+                            \pi_{n-1}^{\star}(x_{n-1})=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1}, A_{n-1}=a\right]
+                            $$
+                        </div>
+                        <div class="fragment">
+                            Using $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$ using,
+                            $$
+                            \pi_{n-2}^{\star}(x_{n-2})=\\ \arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]
+                            $$
+                            and so on.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        First consider the problem for finite horizon, upto time $n$. Want to find $\pi$ such that $J^{\pi}_n(x)$ is maximized.<br>
+                        <span class="fragment">
+                            The policy need not be time homogeneous, as the time horizon is finite. So consider $\mathbf{\pi}=(\pi_0, \ldots, \pi_{n-1})$.
+                        </span>
+                        <span class="fragment">
+                            Define a value function for the tail part, i.e.,
+                            $$
+                            J^{\pi}_{i,n}(x_i)=\mathbb{E}\left[\sum_{t=i}^{n-1}R_t\mid X_i=x_i\right]$$
+                        </span>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div>
+                            One crucial observation is, for the optimal policy $\mathbf{\pi}^{\star}$ and any state $x_i$, the tail policy $(\pi_i^{\star}, \ldots, \pi_{n-1}^{\star})$ optimizes the value from $x_i$ irrespective of the previous actions and transitions. This is the <strong>Bellman&rsquo;s Principle of optimality</strong>.
+                        </div>
+                        <div class="fragment">
+                            <hr>
+                            So to find $(\pi_0^{\star}, \ldots, \pi_{n-1}^{\star})$, we can start with finding $\pi_{n-1}^{\star}$. Then using that $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$, and so on.
+                        </div>
+                        <div class="fragment">
+                            Thus, we can do <strong>Dynamic Programming</strong> with <strong>Backward Induction</strong>.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div>
+                            Finding $\pi_{n-1}^{\star}$ is easy. It is given by,
+                            $$
+                            \pi_{n-1}^{\star}(x_{n-1})=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1}, A_{n-1}=a\right]\\
+                            \text{and }J_{n-1, n}^{\star}(x_{n-1})=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-1}\mid X_{n-1}=x_{n-1},A_{n-1}=a\right]
+                            $$
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Solving MDP
+                        </h3>
+                        <div>
+                            Using $\pi_{n-1}^{\star}$, we can find $\pi_{n-2}^{\star}$ using,
+                            $$
+                            \pi_{n-2}^{\star}(x_{n-2})=\\ \arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]\\
+                            \text{and, }J_{n-2, n}^{\star}(x_{n-2})=\\ \max_{a\in\mathcal{A}}\mathbb{E}\left[R_{n-2}+J_{n-1,n}^{\star}\mid X_{n-2}=x_{n-2}, A_{n-2}=a\right]
+                            $$
+                        </div>
+                    </section>
+                </section>
+                <section>
+                    <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Value Iteration
+                        </h3>
+                        <div class="fragment">
+                            For infinite horizon, the optimal value satisfies the following:
+                            $$
+                            J_{\alpha}(x)=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}(y)\right\}
+                            $$
+                        </div>
+                        <div class="fragment">
+                            So we can do the iteration,
+                            $$
+                            J_{\alpha}^{(i+1)}(x):=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}^{(i)}(y)\right\}
+                            $$
+                        </div>
+                        <div class="fragment">
+                            It is possible to prove <strong>convergence</strong> of the process.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Optimal Value Operator
+                        </h3>
+                        <div>
+                            So if we define the opertor $T:\mathbb{R}^\mathcal{X}\rightarrow\mathbb{R}^\mathcal{X}$ as,
+                            $$
+                            (TJ)(x)=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+J(X_1)\mid X_0=x, A_0=a\right]
+                            $$
+                            <span class="fragment">
+                                then $J_{n}^{\star}=J_{0,n}^{\star}$ can be found using,
+                                $$
+                                J_{i,n}^{\star}=T\circ J_{i+1, n}^{\star}
+                                $$ and starting with $J_{n,n}^{\star}=0$
+                            </span>
+                            <div class="fragment">
+                                The operator $T$ maybe called <strong>Optimal Value Operator</strong>.
+                            </div>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Policy Evaluation Operator
+                        </h3>
+                        <div>
+                            Similarly for a stationary policy $\mathbf{\pi}$, if we define the opertor $T_{\pi}:\mathbb{R}^\mathcal{X}\rightarrow\mathbb{R}^\mathcal{X}$ as,
+                            $$
+                            (T_{\pi}J)(x)=\mathbb{E}\left[R_0+J(X_1)\mid X_0=x, A_0=\pi(x)\right]
+                            $$
+                            <span class="fragment">
+                                then $J_{n}^{\pi}=J_{0,n}^{\pi}$ can be found using,
+                                $$
+                                J_{i,n}^{\pi}=T_{\pi}\circ J_{i+1, n}^{\pi}
+                                $$ and starting with $J_{n,n}^{\pi}=0$
+                            </span>
+                            <div class="fragment">
+                                The operator $T_{\pi}$ maybe called <strong>Policy Evaluation Operator</strong>.
+                            </div>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Infinite horizon
+                        </h3>
+                        <div>
+                            For finite horizon, we know how to compute the optimal quantities in finite number of steps. What if we want the optimal policy for infinite horizon considering the discounted total reward?
+                            <div class="fragment">
+                                <hr>
+                                Suppose we similarly define the two operators taking into account the discount factor:
+                                $$
+                                (TJ)(x)=\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=a\right]
+                                $$
+                                and
+                                $$
+                                (T_{\pi}J)(x)=\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=\pi(x)\right]
+                                $$
+                            </div>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Infinite horizon
+                        </h3>
+                        <div>
+                            <strong><u>Value Iteration:</u></strong><br>
+                            Similar to the finite case, the obvious choice for an iterative procedure to find the optimal policy is,
+                            <br>
+                            <ol>
+                                <li class="fragment">
+                                    Start with a reasonable choice for $\left\{J_{\alpha}(x):x\in\mathcal{X}\right\}$. Call it $J_{\alpha}^{(0)}$
+                                </li>
+                                <li class="fragment">
+                                    Do the iteration,
+                                    $$
+                                    J_{\alpha}^{(i+1)}:=T\circ J_{\alpha}^{(i)}
+                                    $$
+                                </li>
+                                <li class="fragment">
+                                    When it converges(?), say, to $\hat{J_{\alpha}}$, the optimal policy can be found with,
+                                    $$
+                                    \hat{\pi}^{\star}(x):=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha \hat{J_{\alpha}}(x)\mid X_0=x, A_0=a\right]
+                                    $$
+                                </li>
+                            </ol>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Infinite horizon
+                        </h3>
+                        <div>
+                            <strong><u>More intuition behind the iteration:</u></strong>
+                            <div class="fragment">
+                                For infinite horizon, Bellman&rsquo;s optimality condition implies that,
+                                $$
+                                J_{\alpha}(x)=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}(y)\right\}
+                                $$
+                            </div>
+                            <div class="fragment">
+                                If we write the iterative step more explicitly, it turns out to be,
+                                $$
+                                J_{\alpha}^{(i+1)}(x):=\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_a(x, y)\left\{R_a(x,y)+\alpha J_{\alpha}^{(i)}(y)\right\}
+                                $$
+                            </div>
+                            <div class="fragment">
+                                So if the iteration converges, we get a relation similar to Bellman&rsquo;s equation.
+                            </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3 id="heading">
+                            Infinite horizon
+                        </h3>
+                        <div>
+                            Similarly if we want to find $J_{\alpha}^{\pi}$ for a given policy, we can do a similar iteration:
+                            $$
+                            J_{\alpha}^{\pi,(i+1)}:=T_{\pi}\circ J_{\alpha}^{\pi,(i)}
+                            $$
+                        </div>
+                        <div class="fragment">
+                            <hr>
+                            The major questions are,<br>
+                            <ul>
+                                <li>
+                                    Do these procedures converge?
+                                </li>
+                                <li>
+                                    If yes, how fast?
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Q: Does it converge?
+                        </h3>
+                        <div>
+                            Here is a theorem:
+                            <blockquote>
+                                For any $\pi$ and $0<\alpha<1$, there is $J^{\pi}\in\mathbb{R}^{\mathcal{X}}$ such that,
+                                <li class="fragment">
+                                    For all $J\in\mathbb{R}^{\mathcal{X}}$,
+                                    $$
+                                    J^{\pi}=\lim_{k\rightarrow\infty}T_{\pi}^{k}J
+                                    $$
+                                </li>
+                                <li class="fragment">
+                                    $J^{\pi}$ is the unique solution to
+                                    $$J=T_{\pi}\circ J
+                                    $$
+                                </li>
+                            </blockquote>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Q: Does it converge?
+                        </h3>
+                        <div>
+                            The idea of the proof is as follows:
+                            <div class="fragment">
+                                First we can <a href="sp2020/convergence_proofs.pdf" target="_BLANK">show</a> that $T_{\pi}$ is a contraction, i.e., for any $J$ and $J'$,
+                                $$
+                                \lvert\lvert T_{\pi}J-T_{\pi}J'\rvert\rvert_{\infty}\leq\alpha\lvert\lvert J -J'\rvert\rvert_{\infty}
+                                $$
+                            </div>
+                            <div class="fragment">
+                                Contraction property also implies existence and uniqueness of fixed point $J^{\pi}$. (<a href="https://en.wikipedia.org/wiki/Banach_fixed-point_theorem">Banach fixed point theorem</a>)
+                            </div>
+                            <div class="fragment">
+                                For convergence, note that,
+                                $$
+                                \lvert\lvert T_{\pi}J-J^{\pi}\rvert\rvert_{\infty}\leq \alpha \lvert\lvert J-J^{\pi}\rvert\rvert_{\infty}\\ 0<\alpha<1
+                                $$
+                            </div>
+                            <div class="fragment">
+                                Thus the policy iteration converges.
+                            </div>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Q: Does it converge?
+                        </h3>
+                        <div>
+                            A similar theorem for optimal value function:
+                            <blockquote>
+                                For any $\pi$ and $0<\alpha<1$, there is $J^{\star}\in\mathbb{R}^{\mathcal{X}}$ such that,
+                                <li class="fragment">
+                                    For all $J\in\mathbb{R}^{\mathcal{X}}$,
+                                    $$
+                                    J^{\star}=\lim_{k\rightarrow\infty}T^{k}J
+                                    $$
+                                </li>
+                                <li class="fragment">
+                                    $J^{\pi}$ is the unique solution to
+                                    $$J=T\circ J
+                                    $$
+                                </li>
+                                <li class="fragment">
+                                    $J^{\star}=\max_{\pi}J^{\pi}$
+                                     and 
+                                    $J^{\star}=J^{\pi^{\star}}$
+                                </li>
+                            </blockquote>
+                        </div>
+                    </section>
+                </section>
+                <section>
+                    <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        <div class="r-stack">
+                            <div class="fragment current-visible" data-fragment-index="0">
+                                Similar as value iteration, but uses the following set of equations:
+                                $$
+                                J^{\star}(x)=\sum_{y\in\mathcal{X}}P_{\pi^{\star}(x)}(x,y)\left\{R_{\pi^{\star}(x)}(x,y)+\alpha J^{\star}(y)\right\}\\
+                                \pi^{\star}(x)=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\star}(y)\right\}
+                                $$
+                            </div>
+                            <div class="fragment" data-fragment-index="2">
+                                Iteration is done as follows: Start with some $\pi^{(0)}, J^{(0)}$
+                                $$
+                                J^{(k+1)}(x):=\sum_{y\in\mathcal{X}}P_{\pi^{(i)}(x)}(x,y)\left\{R_{\pi^{(i)}(x)}(x,y)+\alpha J^{(k)}(y)\right\}
+                                $$ until convergence. Call the limit $J^{\pi^{(i)}}$.<br><span class="fragment" data-fragment-index="3">Then update the policy with,
+                                $$
+                                \pi^{(i+1)}(x):=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\pi^{(i)}}(y)\right\}
+                                $$ and go to the above step if the policy changes. Else stop.</span>
+                            </div>
+                        </div>
+                        <div class="fragment" data-fragment-index="4">
+                            Terminates after finite number of steps.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        Instead of iterating over the value function, we can also iterate over the policy.
+                        <span class="fragment">
+                            First note that,
+                            $$
+                            J^{\star}(x)=\sum_{y\in\mathcal{X}}P_{\pi^{\star}(x)}(x,y)\left\{R_{\pi^{\star}(x)}(x,y)+\alpha J^{\star}(y)\right\}\\
+                            \pi^{\star}(x)=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\star}(y)\right\}
+                            $$
+                        </span>
+                        <div class="fragment">
+                            So we can define a <strong>Greedy operator</strong> $G:\mathbb{R}^{\mathcal{X}}\rightarrow\mathcal{A}^{\mathcal{X}}$ as:
+                            $$
+                            (GJ)(x)=\arg\max_{a\in\mathcal{A}}\mathbb{E}\left[R_0+\alpha J(X_1)\mid X_0=x, A_0=a\right]
+                            $$
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        From the last set of equations, we can think of the following iteration:
+                        <div class="fragment">
+                            $$
+                            J^{(k+1)}(x):=\sum_{y\in\mathcal{X}}P_{\pi^{(i)}(x)}(x,y)\left\{R_{\pi^{(i)}(x)}(x,y)+\alpha J^{(k)}(y)\right\}
+                            $$ until convergence. Call the limit $J^{\pi^{(i)}}$.<br><span class="fragment">Then update the policy with,
+                            $$
+                            \pi^{(i+1)}(x):=\arg\max_{a\in\mathcal{A}}\sum_{y\in\mathcal{X}}P_{a}(x,y)\left\{R_{a}(x,y)+\alpha J^{\pi^{(i)}}(y)\right\}
+                            $$</span>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        <div>
+                            Equivalently,
+                        </div>
+                        <br>
+                        <ol>
+                            <li>
+                                Start with some policy $\pi^{(0)}$
+                            </li>
+                            <li class="fragment">
+                                Compute $J^{\pi^{(i)}}$ (policy evaluation iteration).
+                            </li>
+                            <li class="fragment">
+                                Update $\pi$ with the following:
+                                $$
+                                \pi^{(i+1)}=G\circ J^{\pi^{(i)}}
+                                $$
+                            </li>
+                            <li class="fragment">
+                                If $\pi^{(i+1)}$ changes in the last step, go to step 2.
+                                <br>
+                                If $\pi^{(i+1)}$ does not change, then terminate.
+                            </li>
+                        </ol>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        Like the value iteration, the policy iteration also converges. One theorem says that it terminates in finite number of steps.
+                        <blockquote class="fragment">
+                            Policy iteration generates a sequence of policies with distinct, increasing values, terminating after a finite number of iteration with an optimal policy,<br>i.e., for some $k$,
+                            $$
+                            J^{\pi^{(0)}}\leq J^{\pi^{(1)}}\leq\ldots\leq J^{\pi^{(k)}}=J^{\star}
+                            $$
+                        </blockquote>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Policy Iteration
+                        </h3>
+                        There are some other variants of policy iteration. For example, in Generalized Policy iteration,
+                        <div>
+                            The value updation is done for a fixed number of times (i.e., approx. values):
+                            $$
+                            J^{(i+1)}:=T_{\pi^{i}}^{k}\circ J^{(i)}
+                            $$ and then update the policy,
+                            $$
+                            \pi^{(i+1)}=G\circ J^{(i+1)}$$
+                        </div>
+                        <div class="fragment">
+                            <hr>
+                            Though value ierations look simpler, policy iterations are faster in practice, and terminates after finite steps.
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Solution with Linear Programming
+                        </h3>
+                        Another approach for finding the optimal policies is given by LPP:
+                        <div class="fragment">
+                            Minimize $$\sum_{x\in\mathcal{X}}J(x) \text{ over }J$$
+                            under the consraints, 
+                            $$J(x)\geq \sum_{y\in\mathcal{X}}R_a(x,y)P_a(x,y)+\alpha \sum_{z\in\mathcal{X}}P_a(x,z)J(z),\\ \forall a\in\mathcal{A}, x\in\mathcal{X}
+                            $$
+                        </div>
+                        <div class="fragment">
+                            The solution will be same as $J^{\star}$.<a href="sp2020/LPP.pdf" target="_BLANK">...</a>
+                        </div>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Applications
+                        </h3>
+                        Many applications. Some are:
+                        <ul>
+                            <li class="fragment fade-in-then-semi-out">
+                                Finance: deciding how much to invest in stock.
+                            </li>
+                            <li class="fragment fade-in-then-semi-out">
+                                Robotics: Dialogue system, navigation system
+                            </li>
+                            <li class="fragment">
+                                Traditional problems like:
+                                <ul>
+                                    <li>
+                                        Which catalogues to send to individual clients?
+                                    </li>
+                                    <li>
+                                        At what age a vehicle needs to be repaires / replaced?
+                                    </li>
+                                    <li>
+                                        What proportion of fishes should be caught?
+                                    </li>
+                                    <li>
+                                        and many more...
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Applications
+                        </h3>
+                        The main challanges are:
+                        <ul>
+                            <li class="fragment">
+                                Transition probabilities may not be known.
+                            </li>
+                            <li class="fragment">
+                                Rewards may not be defined explicitly.
+                            </li>
+                            <li class="fragment">
+                                For all modern problems, state space is huge. Difficult to handle.
+                            </li>
+                            <li class="fragment">
+                                Sometimes the states are not fully observed. Those are called Partially Observable MDP.
+                            </li>
+                        </ul>
+                        <div class="fragment">
+                            <hr>
+                            When the parameters are unknown, the decision maker tries to learn those from &ldquo;experience&rdquo;. That is called Reinforcement Learning. <br>Here we present two <strong>toy</strong> examples.
+                        </div>
+                    </section>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    Classical problem of balancing a pole by applying force on a cart.
+                    <div class="fragment">
+                        We have a system like this:
+                        <br>
+                        <div style="text-align: center;" class="r-stretch">
+                            <img data-src="sp2020/cartpole_preview_loop.gif">
+                            <br>
+                            Want to balance the stick
+                        </div>
+                        <br>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    Here are the values:
+                    $$M=1kg, m=0.1kg, L=1m,\\ g=9.8ms^{-2}, \Delta t=0.02s$$
+                    <div class="fragment">
+                        After each 0.02s, the decision maker decides to apply a force $F$ on the cart for the next 0.02s. Possible values of $F$ are $-10N, 0N, 10N$
+                    </div>
+                    <div class="fragment">
+                        Objectives are:
+                        <ul>
+                            <li>
+                                To keep the cart within boundary.
+                            </li>
+                            <li>
+                                To keep the angle of the pole withinn a range ($-12^o$ to $12^o$)
+                            </li>
+                            <li>
+                                To keep the system within these limits upto $200^{th}$ timepoint.
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Cart-Pole problem
+                        </h3>
+                        We can use <strong>physics</strong> to derive a set of differential equations, which determines the dynamics of the process. So seems like there is nothing <strong>probabilistic</strong> here.<br>
+                        <span class="fragment">
+                            It is true only when we know the <strong>precise</strong> measurements. But a little child can also balance the pole on his/her hand without knowing the physics, and precise measurements. Here we try to mimic that behaviour.
+                        </span>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Cart-Pole problem
+                        </h3>
+                        The dynamics of the system is described by the following:
+                        <br>
+                        Define
+                        $$
+                        p(t)=\frac{F+m\omega^2(t)L \sin(\theta(t))}{M+m}
+                        $$
+                        Then,
+                        $$
+                        \frac{d\omega(t)}{dt}=\frac{g\sin(\theta(t))-p(t)\cos(\theta(t))}{L\left(\frac{4}{3}-\frac{m\cos^2(\theta(t))}{M+m}\right)}\\
+                        \frac{dv(t)}{dt}=p(t)-\frac{mL\frac{d\omega(t)}{dt}\cos(\theta(t))}{M+m}
+                        $$
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                        <h3>
+                            Cart-Pole problem
+                        </h3>
+                        Given $x, v, \theta, \omega$ at time $t$, we can compute the state for time $t+\Delta t$. And apply the force accordingly.
+                        <div class="fragment">
+                            Yes, the process is deterministic if the precise measurements are given. <span class="fragment">But a little child can also balance a pole on his/her hand, without knowing the physics or the precise measurements.</span>
+                            <div class="fragment">
+                                Here we try to mimic the same behaviour. We shall provide only some discrete info about the state and see if we can find a good policy.
+                            </div>
+                            <div class="fragment">
+                                <strong>Drawback:</strong> Markov property may no longer be valid. But let&rsquo;s see how it goes.
+                            </div>
+                        </div>
+                    </section>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <h4>
+                        Some bad policies:
+                    </h4>
+                    Choose the action randomly:
+                    <div style="text-align: center;">
+                        <img data-src="sp2020/gym_animation_random.gif">
+                        <br>
+                        Mean life: 22.93
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <h4>
+                        Some bad policies:
+                    </h4>
+                    Based on position $x$ only:
+                    <div style="text-align: center;">
+                        <img data-src="sp2020/gym_animation_x.gif">
+                        <br>
+                        Mean life: 29.33
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <h4>
+                        Some bad policies:
+                    </h4>
+                    Based on angle $\theta$ only:
+                    <div style="text-align: center;">
+                        <img data-src="sp2020/gym_animation_theta.gif">
+                        <br>
+                        Mean life: 41.40
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <div>
+                        Discrete representation of the states:
+                        <ul>
+                            <li>
+                                The whole range of $x$ was divided into three regions: Left-Forbidden, Good, Right-Forbidden
+                            </li>
+                            <li>
+                                Each of $v, \theta, \omega$ was also categorized into 5 regions.
+                            </li>
+                            <li class="fragment">
+                                So, $\#$ of states$=3\times 5^3=375$
+                            </li>
+                            <li class="fragment">
+                                At each time point, the continuous observations are collected from the simulator. Then a small amount of random noise is added, and then the observation is categorized.
+                            </li>
+                            <li class="fragment">
+                                Based on the supplied category, the program has to take a decision which will be sent to the simulator.
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <div>
+                        The transition probabilities under each action were estimated beforehand using simulation.
+                        <br>
+                        <div class="fragment">
+                            The reward is defined as follows:
+                            $$
+                            R_a(x,y)=
+                            \begin{cases}
+                            -10, & \text{if }y\text{ is a forbidden state}\\
+                            2, & \text{if }y\text{ is a `very good' state}\\
+                            0, & \text{otherwise}
+                            \end{cases}
+                            $$
+                        </div>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <!-- <div>
+                        The result is as follows:
+                    </div> -->
+                    <div style="text-align: center;">
+                        <img data-src="sp2020/mdp_cartpole_1.gif" style="padding-bottom: : 0px;">
+                        <img data-src="sp2020/mdp_cartpole_2.gif" style="padding-bottom: : 0px;">
+                    </div>
+                    <div style="text-align: center;">
+                        <img data-src="sp2020/mdp_cartpole_3.gif">
+                        <br>
+                        Mean life: 195.80
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Cart-Pole problem
+                    </h3>
+                    <div>
+                        The result is as follows:
+                    </div>
+                    <div>
+                        For 100 simulations upto time 200, the following was obtained:
+                        <table style="color: #fff;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Mean Life</th>
+                                <th>Min.</th>
+                                <th>Max.</th>
+                                <th>#(==200)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Random policy
+                                </td>
+                                <td>
+                                    22.93
+                                </td>
+                                <td>
+                                    9
+                                </td>
+                                <td>
+                                    66
+                                </td>
+                                <td>
+                                   0 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    x-based if-else
+                                </td>
+                                <td>
+                                    29.33
+                                </td>
+                                <td>
+                                    8
+                                </td>
+                                <td>
+                                    56
+                                </td>
+                                <td>
+                                   0 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    $\theta$-based if-else
+                                </td>
+                                <td>
+                                    41.40
+                                </td>
+                                <td>
+                                    25
+                                </td>
+                                <td>
+                                    59
+                                </td>
+                                <td>
+                                   0 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    MDP
+                                </td>
+                                <td>
+                                    195.8
+                                </td>
+                                <td>
+                                    170
+                                </td>
+                                <td>
+                                    200
+                                </td>
+                                <td>
+                                    61
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section data-background-iframe="https://sohamsaha99.github.io/2147483648.html?size=2&mode=normal" data-background-interactive style="text-align: left; font-size: 36px;">
+                    <h3 style="color: black;">
+                        Toy example : 2048
+                    </h3>
+                </section>
+                <section>
+                    <section data-background-iframe="sp2020/invert_svg_2048.html" data-background-interactive style="text-align: right; font-size: 36px;" data-background-opacity=1>
+                        <h3>
+                            Toy example : 2048
+                        </h3>
+                        Transition probabilities
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Toy example : 2048
+                        </h3>
+                        Why $2\times 2$?
+                        <ul>
+                            <li class="fragment">
+                                For $4\times 4$, it is possibe to go to 2048 (possibly more than that), and there are trillions of states.
+                            </li>
+                            <li class="fragment">
+                                If we consider the $4\times 4$ game upto 64, that has about 40 billion states.
+                            </li>
+                            <li class="fragment">
+                                For $3\times 3$, it is possible to go upto 1024 and there are about 25 million states.
+                            </li>
+                            <li class="fragment">
+                                For $2\times 2$, it is possible to reach 32, and there are at most $6^4=1296$ states.
+                            </li>
+                        </ul>
+                    </section>
+                    <section data-visibility="uncounted" data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;">
+                        <h3>
+                            Toy example : 2048
+                        </h3>
+                        <div class="fragment">
+                            <ul>
+                                <li>
+                                    After each move, the game randomly chooses a blank tile.
+                                </li>
+                                <li>
+                                    In that position, a <strong>4</strong> is placed with probability 0.1, a <strong>2</strong> is placed with probability 0.9
+                                </li>
+                                <li>
+                                    If there is no blank space, the game is over.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="fragment">
+                            So we can explicitly calculate the transition probabilities.
+                        </div>
+                    </section>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Toy example : 2048
+                    </h3>
+                    Reward is defined as follows:
+                    $$R_a(x,y)=
+                    \begin{cases}
+                    +5, & \text{if }y\text{ contains 32}\\
+                    -5, & \text{if move }a\text{ is invalid for state }x\\
+                    0, & \text{otherwise}
+                    \end{cases}
+                    $$
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 32px;" data-auto-animate>
+                    <h3>
+                        Toy example : 2048
+                    </h3>
+                    Here is the result:
+                    <div class="fragment">
+                        From 200 simulations, the highest tiles were as following:
+                        <table style="color: #fff;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>8</th>
+                                    <th>16</th>
+                                    <th>32</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        MDP
+                                    </td>
+                                    <td>
+                                        7
+                                    </td>
+                                    <td>
+                                        179
+                                    </td>
+                                    <td>
+                                        14
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left; font-size: 35px;">
+                    <h3>
+                        Conclusion:
+                    </h3>
+                    <ul>
+                        <li>
+                            The iterative procedures perform pretty well for a simple problem.
+                        </li>
+                        <li>
+                            For real world problems, the probabilities and rewards will be unknown. Those have to be learned by the agent from experience.
+                        </li>
+                        <li>
+                            The main challange is to solve a problem with huge number of states.
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="sp2020/pacman.png" data-background-opacity=0.07 style="text-align: left;">
+                    <h3>
+                    </h3>
+                    <ul>
+                        <li>
+                            <strong><u>References:</u></strong>
+                            <br>
+                            <ul>
+                                <li>
+                                    Reinforcement Learning: An Introduction, Richard S. Sutton and Andrew G. Barto
+                                </li>
+                                <li>
+                                    <a href="https://www.stat.berkeley.edu/~bartlett/courses/2014fall-cs294stat260/" target="_BLANK">Lecture</a> <a href="https://www.cs.cmu.edu/afs/cs/academic/class/15780-s16/www/slides/mdps.pdf" target="_BLANK">Notes</a> available online
+                                </li>
+                            </ul>
+                        </li>
+                        <br><br>
+                        <li>
+                            <strong><u>Presented by:</u></strong>
+                            <br>
+                            Riddhiman Saha
+                            <br>
+                            M.Stat. 1st Year
+                            <br>
+                            ISI Kolkata
+                        </li>
+                    </ul>
+                </section>
+                <section data-background="sp2020/last_slide.png" data-background-opacity=0.25 data-background-transition="zoom">
+                    <h2>
+                        Thank You
+                    </h2>
+                </section>
+            </div>
+        </div>
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/zoom/zoom.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script src="plugin/math/math.js"></script>
+        <script src="plugin/chalkboard/plugin.js"></script>
+        <script>
+            // More info about initialization & config:
+            // - https://revealjs.com/initialization/
+            // - https://revealjs.com/config/
+            Reveal.initialize({
+                hash: true,
+                transition: 'convex',
+                // controls: false,
+
+                // Display a presentation progress bar
+                progress: true,
+
+                // Push each slide change to the browser history
+                history: false,
+
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
+
+                // Loop the presentation
+                loop: false,
+
+                // Number of milliseconds between automatically proceeding to the 
+                // next slide, disabled when set to 0
+                autoSlide: 0,
+
+                // Enable slide navigation via mouse wheel
+                mouseWheel: false,
+
+                // Apply a 3D roll to links on hover
+                rollingLinks: true,
+                // Learn about plugins: https://revealjs.com/plugins/
+                // chalkboard: {
+                    // src: "chalkboard/chalkboard.json",
+                    // toggleChalkboardButton: false,
+                    // toggleNotesButton: false,
+                // },
+                plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom],
+            });
+        </script>
+    </body>
+</html>
