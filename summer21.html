@@ -1,0 +1,318 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>Analysis of Epidemic Data</title>
+
+        <meta name="description" content="summer21">
+        <meta name="author" content="Riddhiman Saha">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style type="text/css">
+            .twocolumn {
+               display: grid;
+               grid-template-columns: 1fr 1fr;
+               grid-gap: 30px;
+               text-align: justify;
+            }
+        </style>
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+        <link href="css/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+        <link href="css/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3 style="color: #f82249DD; text-align: center;">
+                        <b>Analysis of Epidemic Data</b>
+                    </h3>
+                    <hr>
+                    Existing Tools and Methods
+                </section>
+                <section style="text-align: left;">
+                    <h3>
+                        Existing literature: <br>Mainly 3 categories
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            Individual Based Models
+                        </li>
+                        <li class="fragment">
+                            Mean Field Models
+                        </li>
+                        <li class="fragment">
+                            Based on Branching process, Birth-Death process
+                        </li>
+                    </ul>
+                    <br><br>
+                    <span class="fragment">
+                        Another type: Analysing network / graph structure (for contact tracing data)
+                    </span>
+                </section>
+                <section style="text-align: left; font-size: 36px;">
+                    <h5>
+                        A social network analysis of the spread of COVID-19 in South Korea and policy implications (Nature, April'21)
+                    </h5>
+                    <span class="fragment">
+                        <strong>Objective:</strong> Creating an infection network and analysing its structural characteristics.
+                    </span>
+                    <br>
+                    <span class="fragment">
+                        <strong>Data:</strong> 3283 patients, January'20 - July'20
+                        <br>
+                        For all patients, sources were categorized as <strong>personal (972), group (869), overseas (748), unknown (694)</strong>
+                    </span>
+                    <br><br>
+                    <span class="fragment">
+                        <strong>Analysis methods</strong>
+                        <br>
+                        <ol>
+                            <li>
+                                Network analysis
+                            </li>
+                            <li>
+                                Distribution of out-degree
+                            </li>
+                            <li>
+                                Structural changes after removal of nodes
+                            </li>
+                        </ol>
+                    </span>
+                </section>
+                <section style="text-align: left; font-size: 36px;">
+                    <h5>
+                        1. Network Analysis
+                    </h5>
+                    <ul>
+                        <li>
+                            Computation of out-degree of each node
+                        </li>
+                        <li>
+                            Mean distance of network
+                        </li>
+                        <li>
+                            Diameter of network
+                        </li>
+                    </ul>
+                    <div class="fragment">
+                        <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-021-87837-0/MediaObjects/41598_2021_87837_Fig1_HTML.png?as=webp">
+                    </div>
+                </section>
+                <section>
+                    <img src="nature_table1.png">
+                </section>
+                <section style="text-align: left; font-size: 36px;">
+                    <h5>
+                        2. Distribution of out-degree
+                    </h5>
+                    Power-law distribution was fitted on out-degrees. Fitted distribution:
+                    $p\left(x\right)\propto {x}^{-2.70923}$
+                    <!-- (Finite mean, variance does not exist) -->
+                    <div class="fragment">
+                        <img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-021-87837-0/MediaObjects/41598_2021_87837_Fig2_HTML.png?as=webp">
+                    </div>
+                </section>
+                <section style="text-align: left; font-size: 36px;">
+                    <h5>
+                        2. Distribution of out-degree
+                    </h5>
+                    Hypothesis testing: Power-law against Log-normal, Exponential, Poisson
+                    <br>
+                    <span class="fragment">
+                        Using Likelihood-Ratio test, only Log-normal was accepted. Exponenial, Poisson strongly rejected.
+                    </span>
+                    <div class="fragment">
+                        <img src="nature_table2.png">
+                    </div>
+                </section>
+                <section style="text-align: left; font-size: 36px;">
+                    <h5>
+                        3. Network structure change depending on time and policy
+                    </h5>
+                    Removal of nodes of high-degree and observing how the previously defined measures change.
+                    Out-degree values are: (51, 25, 21, 18, 17, 16, 13, 11, 10, 8, 7, 6, 5, 4, 3, 2, 1)
+                </section>
+                <section>
+                    <img data-src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-021-87837-0/MediaObjects/41598_2021_87837_Fig4_HTML.png?as=webp">
+                </section>
+                <section>
+                    <img data-src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-021-87837-0/MediaObjects/41598_2021_87837_Fig5_HTML.png?as=webp">
+                </section>
+                <section>
+                    <img data-src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-021-87837-0/MediaObjects/41598_2021_87837_Fig6_HTML.png?as=webp">
+                </section>
+                <section style="text-align: left;">
+                    <h3>
+                        Regarding partial observed network:
+                    </h3>
+                    <ul>
+                        <li class="fragment">
+                            Clustering Partially Observed Graphs via Convex Optimization (2014) <a href="https://jmlr.org/papers/volume15/chen14a/chen14a.pdf" target="_BLANK">..</a>
+                        </li>
+                        <li class="fragment">
+                            Bayesian analysis for partially observed network data, missing ties, attributes and actors (2013) <a href="https://www.sciencedirect.com/science/article/pii/S0378873313000671" target="_BLANK">..</a>
+                        </li>
+                    </ul>
+                </section>
+                <!-- <section style="text-align: left;">
+                    <h3>
+                        Individual Based Model (IBM)
+                    </h3>
+                    <span class="fragment">
+                        Modelling the impact of testing, contact tracing and household quarantine on second waves of COVID-19 (Nature, 2020)
+                    </span>
+                    <div style="padding-bottom: 500px;">
+                        
+                    </div>
+                </section>
+                <section style="text-align: left;">
+                    <h3>
+                        Mean Field Model
+                    </h3>
+                    <span class="fragment">
+                        Modelling the COVID-19 epidemic and implementation of population-wide interventions in Italy (Nature, 2020)
+                    </span>
+                </section>
+                <section>
+                    <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41591-020-0883-7/MediaObjects/41591_2020_883_Fig1_HTML.png?as=webp">
+                </section>
+                <section>
+                    <img src="SIDARTHE.png">
+                </section>
+                <section style="text-align: left;">
+                    <h3>
+                        Birth-Death Process
+                    </h3>
+                    <span class="fragment">
+                        Estimation of the percentages of undiagnosed patients of the novel coronavirus (SARS-CoV-2) infection in Hokkaido, Japan by using birth-death process with recursive full tracing (2020)
+                    </span>
+                    <div style="padding-bottom: 500px;">
+                        
+                    </div>
+                </section> -->
+                <section style="text-align: left; font-size: 36px;">
+                    <h5>Quantifying SARS-CoV-2 transmission suggests epidemic control with digital contact tracing (Science, 2020)</h5>
+                    <span class="fragment">
+                        Detailed analysis on:
+                        <li class="fragment">
+                            Incubation period (Log-normal distribution)
+                        </li>
+                        <li class="fragment">
+                            Generation time (Using data on onset of symptoms, exposure time, reporting time and contact)
+                        </li>
+                        <li class="fragment">
+                            Posterior probability that transmission was presymptomatic (same data as above)
+                        </li>
+                        <li class="fragment">
+                            Infectiousness as a function of time and its decomposition
+                        </li>
+                    </span>
+                </section>
+                <section style="text-align: left; font-size: 36px;">
+                    <h5>Modelling and predicting the spatio-temporal spread of COVID-19 in Italy (2020)</h5>
+                    <span class="fragment">
+                        <strong>Objective:</strong> Analyse the diffusion of COVID-19 in Italy, and find spatial and temporal effects
+                    </span><br>
+                    <span class="fragment">
+                        <strong>Data:</strong> 26th Feb - 31st May'20, 96 days, Cases in Italy
+                    </span>
+                    
+                </section>
+
+                <section>
+                    <div>
+                        <img data-src="https://media.springernature.com/full/springer-static/image/art%3A10.1186%2Fs12879-020-05415-7/MediaObjects/12879_2020_5415_Fig2_HTML.png?as=webp" height="600px">
+                    </div>
+                </section>
+                <section style="text-align: left; font-size: 36px;">
+                    <span>
+                        <strong>Model:</strong> Spatial Generalised Linear Mixed Models (SGLMM)
+                    </span>
+                    <br>
+                    <span class="fragment">
+                        $Y_{r,t}=$ number of cases in region r on day t, modelled using Negative Binomial, conditional on previous cases
+                    </span>
+                    <br>
+                    <span class="fragment">
+                        Mean $\mu_{r,t}$ and dispersion $\psi_r$
+                    </span>
+                    <br>
+                    <span class="fragment">
+                        Mean is decomposed into three parts:
+                        <ol>
+                            <li>
+                                Epidemic-within
+                            </li>
+                            <li>
+                                Epidemic-between
+                            </li>
+                            <li>
+                                Endemic
+                            </li>
+                        </ol>
+                    </span>
+                </section>
+                <section style="text-align: left; font-size: 36px;">
+                    <h5>On Identifying and Mitigating Bias in the Estimation of the COVID-19 Case Fatality Rate (2021)</h5>
+                </section>
+            </div>
+        </div>
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/zoom/zoom.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script src="plugin/math/math.js"></script>
+        <script src="plugin/chalkboard/plugin.js"></script>
+        <script>
+            // More info about initialization & config:
+            // - https://revealjs.com/initialization/
+            // - https://revealjs.com/config/
+            Reveal.initialize({
+                hash: true,
+                transition: 'convex',
+                // controls: false,
+
+                // Display a presentation progress bar
+                progress: true,
+
+                // Push each slide change to the browser history
+                history: false,
+
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
+
+                // Loop the presentation
+                loop: false,
+
+                // Number of milliseconds between automatically proceeding to the 
+                // next slide, disabled when set to 0
+                autoSlide: 0,
+
+                // Enable slide navigation via mouse wheel
+                mouseWheel: false,
+
+                // Apply a 3D roll to links on hover
+                rollingLinks: true,
+                // Learn about plugins: https://revealjs.com/plugins/
+                // chalkboard: {
+                    // src: "chalkboard/chalkboard.json",
+                    // toggleChalkboardButton: false,
+                    // toggleNotesButton: false,
+                // },
+                plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealChalkboard, RevealZoom],
+            });
+        </script>
+    </body>
+</html>
